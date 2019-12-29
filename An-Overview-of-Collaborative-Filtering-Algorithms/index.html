@@ -1,0 +1,2171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>An Overview of Collaborative Filtering Algorithms for Implicit Feedback Data – Andreas Bloch</title>
+
+    <meta charset="utf-8" />
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+    
+    <meta name="description" content="Recommender systems are at the heart of many of today's online platforms. Numerous approaches for collaborative filtering from implicit feedback data have been invented over the years. This blogpost provides an overview of several of these recommender algorithms." />
+    <meta property="og:description" content="Recommender systems are at the heart of many of today's online platforms. Numerous approaches for collaborative filtering from implicit feedback data have been invented over the years. This blogpost provides an overview of several of these recommender algorithms." />
+    
+
+    <meta name="author" content="Andreas Bloch" />
+
+    
+    <meta property="og:title" content="An Overview of Collaborative Filtering Algorithms for Implicit Feedback Data" />
+    <meta property="twitter:title" content="An Overview of Collaborative Filtering Algorithms for Implicit Feedback Data" />
+    
+
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-151200114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-151200114-1');
+    </script>
+    
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <link rel="alternate" type="application/rss+xml" title="Andreas Bloch - " href="/feed.xml" />
+
+    <link rel="canonical" href="http://localhost:4000/An-Overview-of-Collaborative-Filtering-Algorithms/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.css?1577644687475076000">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/clean-blog.css?1577644687475076000">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css?1577644687475076000">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- MathJax Shortcuts -->
+    <p style="display: none">
+$$
+% ASYMPTOTIC NOTATIONS
+\newcommand{\BigO}{\mathcal{O}}
+
+% NUMBER SYSTEMS
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\B}{\mathbb{B}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\D}{\mathbb{D}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\G}{\mathbb{G}}
+%\newcommand{\bbH}{\mathbb{H}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\J}{\mathbb{J}}
+\newcommand{\K}{\mathbb{K}}
+%\newcommand{\bbL}{\mathbb{L}}
+\newcommand{\M}{\mathbb{M}}
+\newcommand{\N}{\mathbb{N}}
+%\newcommand{\bbO}{\mathbb{O}}
+%\newcommand{\bbP}{\mathbb{P}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+%\newcommand{\bbS}{\mathbb{S}}
+%\newcommand{\bbT}{\mathbb{T}}
+\newcommand{\U}{\mathbb{U}}
+\newcommand{\V}{\mathbb{V}}
+\newcommand{\W}{\mathbb{W}}
+\newcommand{\X}{\mathbb{X}}
+\newcommand{\Y}{\mathbb{Y}}
+\newcommand{\Z}{\mathbb{Z}}
+
+\newcommand{\bbA}{\mathbb{A}}
+\newcommand{\bbB}{\mathbb{B}}
+\newcommand{\bbC}{\mathbb{C}}
+\newcommand{\bbD}{\mathbb{D}}
+\newcommand{\bbE}{\mathbb{E}}
+\newcommand{\bbF}{\mathbb{F}}
+\newcommand{\bbG}{\mathbb{G}}
+\newcommand{\bbH}{\mathbb{H}}
+\newcommand{\bbI}{\mathbb{I}}
+\newcommand{\bbJ}{\mathbb{J}}
+\newcommand{\bbK}{\mathbb{K}}
+\newcommand{\bbL}{\mathbb{L}}
+\newcommand{\bbM}{\mathbb{M}}
+\newcommand{\bbN}{\mathbb{N}}
+\newcommand{\bbO}{\mathbb{O}}
+\newcommand{\bbP}{\mathbb{P}}
+\newcommand{\bbQ}{\mathbb{Q}}
+\newcommand{\bbR}{\mathbb{R}}
+\newcommand{\bbS}{\mathbb{S}}
+\newcommand{\bbT}{\mathbb{T}}
+\newcommand{\bbU}{\mathbb{U}}
+\newcommand{\bbV}{\mathbb{V}}
+\newcommand{\bbW}{\mathbb{W}}
+\newcommand{\bbX}{\mathbb{X}}
+\newcommand{\bbY}{\mathbb{Y}}
+\newcommand{\bbZ}{\mathbb{Z}}
+
+% CALLICGRAPHIC SHORTCUTS
+\newcommand{\cA}{\mathcal{A}}
+\newcommand{\cB}{\mathcal{B}}
+\newcommand{\cC}{\mathcal{C}}
+\newcommand{\cD}{\mathcal{D}}
+\newcommand{\cE}{\mathcal{E}}
+\newcommand{\cF}{\mathcal{F}}
+\newcommand{\cG}{\mathcal{G}}
+\newcommand{\cH}{\mathcal{H}}
+\newcommand{\cI}{\mathcal{I}}
+\newcommand{\cJ}{\mathcal{J}}
+\newcommand{\cK}{\mathcal{K}}
+\newcommand{\cL}{\mathcal{L}}
+\newcommand{\cM}{\mathcal{M}}
+\newcommand{\cN}{\mathcal{N}}
+\newcommand{\cO}{\mathcal{O}}
+\newcommand{\cP}{\mathcal{P}}
+\newcommand{\cQ}{\mathcal{Q}}
+\newcommand{\cR}{\mathcal{R}}
+\newcommand{\cS}{\mathcal{S}}
+\newcommand{\cT}{\mathcal{T}}
+\newcommand{\cU}{\mathcal{U}}
+\newcommand{\cV}{\mathcal{V}}
+\newcommand{\cW}{\mathcal{W}}
+\newcommand{\cX}{\mathcal{X}}
+\newcommand{\cY}{\mathcal{Y}}
+\newcommand{\cZ}{\mathcal{Z}}
+
+% BRACES
+\newcommand{\set}[1]{\left\{ #1 \right\}}
+\newcommand{\dset}[2]{\left\{ #1 \ \middle| \ #2 \right\}}
+\newcommand{\alg}[1]{\left\langle #1 \right\rangle}
+\newcommand{\card}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\length}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\renewcommand{\mag}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\scprod}[1]{\left\langle #1 \right\rangle}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\linsys}[2]{\left[\ #1 \ \middle| \ #2 \ \right]}
+\newcommand{\Sim}[1]{\text{Sim}\left( #1 \right)}
+\newcommand{\Tr}[1]{\mathsf{Tr}\left( #1 \right)}
+\newcommand{\bra}[1]{\left\langle #1 \right\rvert}
+\newcommand{\ket}[1]{\left\lvert #1 \right\rangle}
+\newcommand{\bracket}[2]{\left\langle #1 \ \middle| \ #2 \right\rangle}
+
+% BRACES SMALL (no adjusting)
+\newcommand{\sset}[1]{\{ #1 \}}
+\newcommand{\sdset}[2]{\{ #1 \ | \ #2 \}}
+\newcommand{\salg}[1]{\langle #1 \rangle}
+\newcommand{\scard}[1]{\lvert #1 \rvert}
+\newcommand{\slength}[1]{\lvert #1 \rvert}
+\newcommand{\sabs}[1]{\lvert #1 \rvert}
+\newcommand{\smag}[1]{\lvert #1 \rvert}
+\newcommand{\snorm}[1]{\lVert #1 \rVert}
+\newcommand{\sscprod}[1]{\langle #1 \rangle}
+\newcommand{\sceil}[1]{\lceil #1 \rceil}
+\newcommand{\sfloor}[1]{\lfloor #1 \rfloor}
+\newcommand{\slinsys}[2]{[\ #1 \ | \ #2 \ ]}
+\newcommand{\sSim}[1]{\text{Sim}( #1 )}
+\newcommand{\sTr}[1]{\mathsf{Tr}( #1 )}
+\newcommand{\sbra}[1]{\langle #1 \rvert}
+\newcommand{\sket}[1]{\lvert #1 \rangle}
+\newcommand{\sbracket}[2]{\langle #1 \ | \ #2 \rangle}
+
+% OPERATORS
+\newcommand{\conv}{*}
+
+\newcommand{\proj}{\text{proj}}
+
+% EMPTY SET
+\let\oldemptyset\emptyset
+\let\emptyset\varnothing
+
+% NOT IN SHORTCUT
+\newcommand{\nin}{\not\in}
+
+% CUSTOM STATISTICS AND PROBABILITY
+\newcommand{\Prob}[2][]{P_{#1}\left( #2 \right)}
+\newcommand{\cProb}[3][]{P_{#1}\left( #2 \,\middle|\, #3 \right)}
+\newcommand{\Dist}[2]{#1\left( #2 \right)}
+\newcommand{\cDist}[3]{#1\left( #2 \,\middle|\, #3 \right)}
+\newcommand{\hProb}[2][]{\hat{P}_{#1}\left( #2 \right)}
+\newcommand{\chProb}[2]{\hat{P}\left( #1 \,\middle|\, #2 \right)}
+\newcommand{\Var}[2][]{\operatorname{Var}_{#1}\left[ #2 \right]}
+\newcommand{\sd}[1]{\operatorname{sd}\left( #1 \right)}
+\newcommand{\Exp}[2][]{\mathbb{E}_{#1}\left[ #2 \right]}
+\newcommand{\cExp}[3][]{\mathbb{E}_{#1}\left[ #2 \,\middle|\, #3 \right]}
+\newcommand{\hExp}[2][]{\mathbb{\hat{E}_{#1}}\left[ #2 \right]}
+\newcommand{\chExp}[3][]{\mathbb{\hat{E}}_{#1}\left[ #2 \,\middle|\, #3 \right]}
+\newcommand{\Corr}[1]{\operatorname{Corr}\left[ #1 \right]}
+\newcommand{\Cov}[1]{\operatorname{Cov}\left(#1 \right)}
+\newcommand{\MSE}[2][]{\operatorname{MSE}_{#1}\left[ #2 \right]}
+\newcommand{\riid}{\stackrel{\text{i.i.d.}}{\sim}}
+\newcommand{\approxsim}{\stackrel{\text{approx.}}{\sim}}
+\newcommand{\ind}[1]{\mathbb{1}_{\set{#1}}}
+\newcommand{\eqiid}{\stackrel{\text{\tiny i.i.d.}}{=}}
+\newcommand{\eqind}{\stackrel{\text{\tiny ind.}}{=}}
+
+% BAYESIAN NETWORKS
+\newcommand{\indep}{\perp}
+\newcommand{\given}{\,\,|\,\,}
+\newcommand{\Pa}{\mathbf{Pa}}
+\newcommand{\dsep}[2]{\operatorname{d-sep}\left( #1 \,\middle|\, #2 \right)}
+
+% RANDOM VARIABLES
+\newcommand{\rA}{A}
+\newcommand{\rB}{B}
+\newcommand{\rC}{C}
+\newcommand{\rD}{D}
+\newcommand{\rE}{E}
+\newcommand{\rF}{F}
+\newcommand{\rG}{G}
+\newcommand{\rH}{H}
+\newcommand{\rI}{I}
+\newcommand{\rJ}{J}
+\newcommand{\rK}{K}
+\newcommand{\rL}{L}
+\newcommand{\rM}{M}
+\newcommand{\rN}{N}
+\newcommand{\rO}{O}
+\newcommand{\rP}{P}
+\newcommand{\rQ}{Q}
+\newcommand{\rR}{R}
+\newcommand{\rS}{S}
+\newcommand{\rT}{T}
+\newcommand{\rU}{U}
+\newcommand{\rV}{V}
+\newcommand{\rW}{W}
+\newcommand{\rX}{X}
+\newcommand{\rY}{Y}
+\newcommand{\rZ}{Z}
+
+% RANDOM VECTORS
+% declares a custom italic bold alphabet for random vectors
+\DeclareMathAlphabet{\mathbfit}{OML}{cmm}{b}{it}
+\newcommand{\rvA}{\mathbfit{A}}
+\newcommand{\rvB}{\mathbfit{B}}
+\newcommand{\rvC}{\mathbfit{C}}
+\newcommand{\rvD}{\mathbfit{D}}
+\newcommand{\rvE}{\mathbfit{E}}
+\newcommand{\rvF}{\mathbfit{F}}
+\newcommand{\rvG}{\mathbfit{G}}
+\newcommand{\rvH}{\mathbfit{H}}
+\newcommand{\rvI}{\mathbfit{I}}
+\newcommand{\rvJ}{\mathbfit{J}}
+\newcommand{\rvK}{\mathbfit{K}}
+\newcommand{\rvL}{\mathbfit{L}}
+\newcommand{\rvM}{\mathbfit{M}}
+\newcommand{\rvN}{\mathbfit{N}}
+\newcommand{\rvO}{\mathbfit{O}}
+\newcommand{\rvP}{\mathbfit{P}}
+\newcommand{\rvQ}{\mathbfit{Q}}
+\newcommand{\rvR}{\mathbfit{R}}
+\newcommand{\rvS}{\mathbfit{S}}
+\newcommand{\rvT}{\mathbfit{T}}
+\newcommand{\rvU}{\mathbfit{U}}
+\newcommand{\rvV}{\mathbfit{V}}
+\newcommand{\rvW}{\mathbfit{W}}
+\newcommand{\rvX}{\mathbfit{X}}
+\newcommand{\rvY}{\mathbfit{Y}}
+\newcommand{\rvZ}{\mathbfit{Z}}
+
+% MACHINE LEARNING
+\newcommand{\Risk}[1]{R\left(#1\right)}
+\newcommand{\empRisk}[1]{\widehat{R}\left(#1\right)}
+
+% RECOMMENDER SYSTEMS
+\newcommand{\RHR}[1]{\text{HR@}#1}
+\newcommand{\RDCG}[1]{\text{DCG@}#1}
+\newcommand{\RNDCG}[1]{\text{NDCG@}#1}
+\newcommand{\RHM}[1]{\text{HM@}#1}
+
+% ACCENTS
+% TODO: fix this, make spacing nice
+\newcommand{\Hm}{\mathsf{H}}
+\newcommand{\T}{\mathsf{T}}
+\newcommand{\Rev}{\mathsf{R}}
+\newcommand{\conj}[1]{\overline{ #1 }}
+
+% CUSTOM ALPHABETS
+\renewcommand{\S}{\Sigma}
+\newcommand{\Ss}{\Sigma^*}
+\newcommand{\Sp}{\Sigma^+}
+\newcommand{\Sbool}{\Sigma_{\text{bool}}}
+\newcommand{\Ssbool}{(\Sigma_{\text{bool}})^*}
+\newcommand{\Slogic}{\Sigma_{\text{logic}}}
+\newcommand{\Sslogic}{(\Sigma_{\text{logic}})^*}
+\newcommand{\Slat}{\Sigma_{\text{lat}}}
+\newcommand{\Sslat}{(\Sigma_{\text{lat}})^*}
+\newcommand{\Stastatur}{\Sigma_{\text{Tastatur}}}
+\newcommand{\Sstastatur}{(\Sigma_{\text{Tastatur}})^*}
+\newcommand{\Sm}{\Sigma_{m}}
+\newcommand{\Ssm}{\Sigma_{m}^*}
+\newcommand{\ZO}{\{0,1\}}
+\newcommand{\ZOs}{\{0,1\}^*}
+\newcommand{\hdelta}{\hat\delta}
+
+% OPERATORS
+% TODO: Should I design these as braces?
+\DeclareMathOperator{\id}{\text{id}}
+\DeclareMathOperator{\Kon}{\text{Kon}}
+\DeclareMathOperator{\cost}{\text{cost}}
+\DeclareMathOperator{\goal}{\text{goal}}
+\DeclareMathOperator{\Opt}{\text{Opt}}
+\DeclareMathOperator{\Bin}{\text{Bin}}
+\DeclareMathOperator{\Nummer}{\text{Nummer}}
+\DeclareMathOperator{\Prim}{\text{Prim}}
+\DeclareMathOperator{\Kl}{\text{Kl}}
+\DeclareMathOperator{\lcm}{lcm}
+\DeclareMathOperator{\glb}{glb}
+\DeclareMathOperator{\lub}{lub}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\spn}{span}
+\DeclareMathOperator{\Cost}{Cost}
+\DeclareMathOperator{\order}{order}
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\cond}{cond}
+\DeclareMathOperator{\nnz}{nnz}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Count}{Count}
+\DeclareMathOperator{\Spur}{Spur}
+\DeclareMathOperator{\triu}{triu}
+\DeclareMathOperator{\cumsum}{cumsum}
+\DeclareMathOperator{\vectorize}{vectorize}
+\DeclareMathOperator{\matrixfy}{matrixfy}
+\DeclareMathOperator{\circul}{circul}
+\DeclareMathOperator{\dft}{dft}
+\DeclareMathOperator{\invdft}{invdft}
+\DeclareMathOperator{\ones}{ones}
+\DeclareMathOperator{\arcsinh}{arcsinh}
+\DeclareMathOperator{\arccosh}{arccosh}
+\DeclareMathOperator{\arctanh}{arctanh}
+\let\division\div
+\renewcommand\div{\operatorname{div}}
+\DeclareMathOperator{\rot}{rot}
+\DeclareMathOperator{\cis}{cis}
+\DeclareMathOperator{\grad}{grad}
+\DeclareMathOperator{\Hess}{Hess}
+\newcommand{\laplace}{\Delta}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator{\odd}{odd}
+\DeclareMathOperator{\even}{even}
+\DeclareMathOperator{\Proj}{Proj}
+\DeclareMathOperator{\softmax}{\text{softmax}}
+\DeclareMathOperator{\ReLU}{\text{ReLU}}
+\DeclareMathOperator{\pmi}{\text{pmi}}
+
+% TODO: fix these operator braces
+% TODO: think about which ones should have braces
+% and which one shouldn't. E.g., a function might need derivatives '
+% or it might be used without argument, just in compositions \circ
+\newcommand{\diag}{\text{diag}}
+
+% CRYPTOGRAPHY
+\DeclareMathOperator{\concat}{ || }
+\DeclareMathOperator{\Enc}{Enc}
+\DeclareMathOperator{\Dec}{Dec}
+\DeclareMathOperator{\Gen}{Gen}
+\DeclareMathOperator{\Tag}{Tag}
+\DeclareMathOperator{\Vrfy}{Vrfy}
+\DeclareMathOperator{\MAC}{\text{MAC}}
+\newcommand{\AdvPRG}[2][]{\text{Adv}_{\text{PRG}}\left[ #2 \right]}
+\newcommand{\yes}{\text{yes}}
+\newcommand{\no}{\text{no}}
+\newcommand{\forallPPTTM}{\underset{\mathclap{\substack{\text{\tiny prob. poly-}\\\text{\tiny time TM}}}}{\forall}}
+\newcommand{\forallPTAdv}{\underset{\mathclap{\substack{\text{\tiny poly-time}\\\text{\tiny Adversaries}}}}{\forall}}
+
+% OPERATORS (OVERRIDDEN)
+\renewcommand\Re{\operatorname{Re}}
+\renewcommand\Im{\operatorname{Im}}
+
+% RELATIONS
+\newcommand{\mbeq}{\stackrel{!}{=}}
+\newcommand{\xor}{\mathrel{\text{xor}}}
+\newcommand{\relid}{\mathrel{\id}}
+\newcommand{\relrho}{\mathrel{\rho}}
+\newcommand{\relsigma}{\mathrel{\sigma}}
+\newcommand{\reltheta}{\mathrel{\theta}}
+\newcommand{\relsim}{\mathrel{\sim}}
+\newcommand{\relf}{\mathrel{f}}
+
+% RELATIONS (INVERSES)
+\newcommand{\invrelid}{\mathrel{\widehat{\id}}}
+\newcommand{\invrelrho}{\mathrel{\widehat{\rho}}}
+\newcommand{\invrelsigma}{\mathrel{\widehat{\sigma}}}
+\newcommand{\invreltheta}{\mathrel{\widehat{\theta}}}
+\newcommand{\invrelsim}{\mathrel{\widehat{\sim}}}
+\newcommand{\invrelf}{\mathrel{\widehat{f}}}
+
+% LINEAR TEMPORAL LOGIC (LTL)
+\newcommand{\until}{\texttt{\,\hstretch{0.7}{\boldsymbol{\cup}}\,}}
+\newcommand{\next}{\Circle}
+\newcommand{\eventually}{\Diamond}
+\newcommand{\always}{\square}
+
+% GLOBAL MATRICES AND VECTOR SETTINGS
+\newcommand{\boldm}[1] {\mathversion{bold}#1\mathversion{normal}}
+\newcommand{\mat}[1]{\mathbf{#1}}
+\renewcommand{\vec}[1]{\mathbf{#1}}
+
+% VECTORS (LATIN)
+\newcommand{\va}{\vec{a}}
+\newcommand{\vb}{\vec{b}}
+\newcommand{\vc}{\vec{c}}
+\newcommand{\vd}{\vec{d}}
+\newcommand{\ve}{\vec{e}}
+\newcommand{\vf}{\vec{f}}
+\newcommand{\vg}{\vec{g}}
+\newcommand{\vh}{\vec{h}}
+\newcommand{\vi}{\vec{i}}
+\newcommand{\vj}{\vec{j}}
+\newcommand{\vk}{\vec{k}}
+\newcommand{\vl}{\vec{l}}
+\newcommand{\vm}{\vec{m}}
+\newcommand{\vn}{\vec{n}}
+\newcommand{\vo}{\vec{o}}
+\newcommand{\vp}{\vec{p}}
+\newcommand{\vq}{\vec{q}}
+\newcommand{\vr}{\vec{r}}
+\newcommand{\vs}{\vec{s}}
+\newcommand{\vt}{\vec{t}}
+\newcommand{\vu}{\vec{u}}
+\newcommand{\vv}{\vec{v}}
+\newcommand{\vw}{\vec{w}}
+\newcommand{\vx}{\vec{x}}
+\newcommand{\vy}{\vec{y}}
+\newcommand{\vz}{\vec{z}}
+
+% VECTORS (LATIN) WITH TILDE ACCENT
+\newcommand{\vta}{\widetilde{\vec{a}}}
+\newcommand{\vtb}{\widetilde{\vec{b}}}
+\newcommand{\vtc}{\widetilde{\vec{c}}}
+\newcommand{\vtd}{\widetilde{\vec{d}}}
+\newcommand{\vte}{\widetilde{\vec{e}}}
+\newcommand{\vtf}{\widetilde{\vec{f}}}
+\newcommand{\vtg}{\widetilde{\vec{g}}}
+\newcommand{\vth}{\widetilde{\vec{h}}}
+\newcommand{\vti}{\widetilde{\vec{i}}}
+\newcommand{\vtj}{\widetilde{\vec{j}}}
+\newcommand{\vtk}{\widetilde{\vec{k}}}
+\newcommand{\vtl}{\widetilde{\vec{l}}}
+\newcommand{\vtm}{\widetilde{\vec{m}}}
+\newcommand{\vtn}{\widetilde{\vec{n}}}
+\newcommand{\vto}{\widetilde{\vec{o}}}
+\newcommand{\vtp}{\widetilde{\vec{p}}}
+\newcommand{\vtq}{\widetilde{\vec{q}}}
+\newcommand{\vtr}{\widetilde{\vec{r}}}
+\newcommand{\vts}{\widetilde{\vec{s}}}
+\newcommand{\vtt}{\widetilde{\vec{t}}}
+\newcommand{\vtu}{\widetilde{\vec{u}}}
+\newcommand{\vtv}{\widetilde{\vec{v}}}
+\newcommand{\vtw}{\widetilde{\vec{w}}}
+\newcommand{\vtx}{\widetilde{\vec{x}}}
+\newcommand{\vty}{\widetilde{\vec{y}}}
+\newcommand{\vtz}{\widetilde{\vec{z}}}
+
+% VECTORS (LATIN) WITH HAT ACCENT
+\newcommand{\vha}{\widehat{\vec{a}}}
+\newcommand{\vhb}{\widehat{\vec{b}}}
+\newcommand{\vhc}{\widehat{\vec{c}}}
+\newcommand{\vhd}{\widehat{\vec{d}}}
+\newcommand{\vhe}{\widehat{\vec{e}}}
+\newcommand{\vhf}{\widehat{\vec{f}}}
+\newcommand{\vhg}{\widehat{\vec{g}}}
+\newcommand{\vhh}{\widehat{\vec{h}}}
+\newcommand{\vhi}{\widehat{\vec{i}}}
+\newcommand{\vhj}{\widehat{\vec{j}}}
+\newcommand{\vhk}{\widehat{\vec{k}}}
+\newcommand{\vhl}{\widehat{\vec{l}}}
+\newcommand{\vhm}{\widehat{\vec{m}}}
+\newcommand{\vhn}{\widehat{\vec{n}}}
+\newcommand{\vho}{\widehat{\vec{o}}}
+\newcommand{\vhp}{\widehat{\vec{p}}}
+\newcommand{\vhq}{\widehat{\vec{q}}}
+\newcommand{\vhr}{\widehat{\vec{r}}}
+\newcommand{\vhs}{\widehat{\vec{s}}}
+\newcommand{\vht}{\widehat{\vec{t}}}
+\newcommand{\vhu}{\widehat{\vec{u}}}
+\newcommand{\vhv}{\widehat{\vec{v}}}
+\newcommand{\vhw}{\widehat{\vec{w}}}
+\newcommand{\vhx}{\widehat{\vec{x}}}
+\newcommand{\vhy}{\widehat{\vec{y}}}
+\newcommand{\vhz}{\widehat{\vec{z}}}
+
+% VECTORS (GREEK)
+\newcommand{\valpha}{\boldsymbol{\alpha}}
+\newcommand{\vbeta}{\boldsymbol{\beta}}
+\newcommand{\vgamma}{\boldsymbol{\gamma}}
+\newcommand{\vdelta}{\boldsymbol{\delta}}
+\newcommand{\vepsilon}{\boldsymbol{\epsilon}}
+\newcommand{\vvarepsilon}{\boldsymbol{\varepsilon}}
+\newcommand{\vzeta}{\boldsymbol{\zeta}}
+\newcommand{\veta}{\boldsymbol{\eta}}
+\newcommand{\vtheta}{\boldsymbol{\theta}}
+\newcommand{\viota}{\boldsymbol{\iota}}
+\newcommand{\vkappa}{\boldsymbol{\kappa}}
+\newcommand{\vlambda}{\boldsymbol{\lambda}}
+\newcommand{\vmu}{\boldsymbol{\mu}}
+\newcommand{\vnu}{\boldsymbol{\nu}}
+\newcommand{\vxi}{\boldsymbol{\xi}}
+% omikron is just latin 'o'
+\newcommand{\vpi}{\boldsymbol{\pi}}
+\newcommand{\vrho}{\boldsymbol{\rho}}
+\newcommand{\vsigma}{\boldsymbol{\sigma}}
+\newcommand{\vtau}{\boldsymbol{\tau}}
+\newcommand{\vupsilon}{\boldsymbol{\upsilon}}
+\newcommand{\vphi}{\boldsymbol{\phi}}
+\newcommand{\vvarphi}{\boldsymbol{\varphi}}
+\newcommand{\vchi}{\boldsymbol{\chi}}
+\newcommand{\vpsi}{\boldsymbol{\psi}}
+\newcommand{\vomega}{\boldsymbol{\omega}}
+
+% VECTORS (GREEK) WITH TILDE ACCENT
+\newcommand{\vtalpha}{\widetilde{\valpha}}
+\newcommand{\vtbeta}{\widetilde{\vbeta}}
+\newcommand{\vtgamma}{\widetilde{\vgamma}}
+\newcommand{\vtdelta}{\widetilde{\vdelta}}
+\newcommand{\vtepsilon}{\widetilde{\vepsilon}}
+\newcommand{\vtvarepsilon}{\widetilde{\vvarepsilon}}
+\newcommand{\vtzeta}{\widetilde{\vzeta}}
+\newcommand{\vteta}{\widetilde{\veta}}
+\newcommand{\vttheta}{\widetilde{\vtheta}}
+\newcommand{\vtiota}{\widetilde{\viota}}
+\newcommand{\vtkappa}{\widetilde{\vkappa}}
+\newcommand{\vtlambda}{\widetilde{\vlambda}}
+\newcommand{\vtmu}{\widetilde{\vmu}}
+\newcommand{\vtnu}{\widetilde{\vnu}}
+\newcommand{\vtxi}{\widetilde{\vxi}}
+% omikron is just latin 'o'
+\newcommand{\vtpi}{\widetilde{\vpi}}
+\newcommand{\vtrho}{\widetilde{\vrho}}
+\newcommand{\vtsigma}{\widetilde{\vsigma}}
+\newcommand{\vttau}{\widetilde{\vtau}}
+\newcommand{\vtupsilon}{\widetilde{\vupsilon}}
+\newcommand{\vtphi}{\widetilde{\vphi}}
+\newcommand{\vtvarphi}{\widetilde{\vvarphi}}
+\newcommand{\vtchi}{\widetilde{\vchi}}
+\newcommand{\vtpsi}{\widetilde{\vpsi}}
+\newcommand{\vtomega}{\widetilde{\vomega}}
+
+% VECTORS (GREEK) WITH HAT ACCENT
+\newcommand{\vhalpha}{\widehat{\valpha}}
+\newcommand{\vhbeta}{\widehat{\vbeta}}
+\newcommand{\vhgamma}{\widehat{\vgamma}}
+\newcommand{\vhdelta}{\widehat{\vdelta}}
+\newcommand{\vhepsilon}{\widehat{\vepsilon}}
+\newcommand{\vhvarepsilon}{\widehat{\vvarepsilon}}
+\newcommand{\vhzeta}{\widehat{\vzeta}}
+\newcommand{\vheta}{\widehat{\veta}}
+\newcommand{\vhtheta}{\widehat{\vtheta}}
+\newcommand{\vhiota}{\widehat{\viota}}
+\newcommand{\vhkappa}{\widehat{\vkappa}}
+\newcommand{\vhlambda}{\widehat{\vlambda}}
+\newcommand{\vhmu}{\widehat{\vmu}}
+\newcommand{\vhnu}{\widehat{\vnu}}
+\newcommand{\vhxi}{\widehat{\vxi}}
+% omikron is just latin 'o'
+\newcommand{\vhpi}{\widehat{\vpi}}
+\newcommand{\vhrho}{\widehat{\vrho}}
+\newcommand{\vhsigma}{\widehat{\vsigma}}
+\newcommand{\vhtau}{\widehat{\vthau}}
+\newcommand{\vhupsilon}{\widehat{\vupsilon}}
+\newcommand{\vhphi}{\widehat{\vphi}}
+\newcommand{\vhvarphi}{\widehat{\vvarphi}}
+\newcommand{\vhchi}{\widehat{\vchi}}
+\newcommand{\vhpsi}{\widehat{\vpsi}}
+\newcommand{\vhomega}{\widehat{\vomega}}
+
+% MATRICES (LATIN)
+\newcommand{\MA}{\mat{A}}
+\newcommand{\MB}{\mat{B}}
+\newcommand{\MC}{\mat{C}}
+\newcommand{\MD}{\mat{D}}
+\newcommand{\ME}{\mat{E}}
+\newcommand{\MF}{\mat{F}}
+\newcommand{\MG}{\mat{G}}
+\newcommand{\MH}{\mat{H}}
+\newcommand{\MI}{\mat{I}}
+\newcommand{\MJ}{\mat{J}}
+\newcommand{\MK}{\mat{K}}
+\newcommand{\ML}{\mat{L}}
+\newcommand{\MM}{\mat{M}}
+\newcommand{\MN}{\mat{N}}
+\newcommand{\MO}{\mat{0}}
+\newcommand{\MP}{\mat{P}}
+\newcommand{\MQ}{\mat{Q}}
+\newcommand{\MR}{\mat{R}}
+\newcommand{\MS}{\mat{S}}
+\newcommand{\MT}{\mat{T}}
+\newcommand{\MU}{\mat{U}}
+\newcommand{\MV}{\mat{V}}
+\newcommand{\MW}{\mat{W}}
+\newcommand{\MX}{\mat{X}}
+\newcommand{\MY}{\mat{Y}}
+\newcommand{\MZ}{\mat{Z}}
+
+% MATRICES (LATIN) TILDE
+\newcommand{\MtA}{\widetilde{\mat{A}}}
+\newcommand{\MtB}{\widetilde{\mat{B}}}
+\newcommand{\MtC}{\widetilde{\mat{C}}}
+\newcommand{\MtD}{\widetilde{\mat{D}}}
+\newcommand{\MtE}{\widetilde{\mat{E}}}
+\newcommand{\MtF}{\widetilde{\mat{F}}}
+\newcommand{\MtG}{\widetilde{\mat{G}}}
+\newcommand{\MtH}{\widetilde{\mat{H}}}
+\newcommand{\MtI}{\widetilde{\mat{I}}}
+\newcommand{\MtJ}{\widetilde{\mat{J}}}
+\newcommand{\MtK}{\widetilde{\mat{K}}}
+\newcommand{\MtL}{\widetilde{\mat{L}}}
+\newcommand{\MtM}{\widetilde{\mat{M}}}
+\newcommand{\MtN}{\widetilde{\mat{N}}}
+\newcommand{\MtO}{\widetilde{\mat{0}}}
+\newcommand{\MtP}{\widetilde{\mat{P}}}
+\newcommand{\MtQ}{\widetilde{\mat{Q}}}
+\newcommand{\MtR}{\widetilde{\mat{R}}}
+\newcommand{\MtS}{\widetilde{\mat{S}}}
+\newcommand{\MtT}{\widetilde{\mat{T}}}
+\newcommand{\MtU}{\widetilde{\mat{U}}}
+\newcommand{\MtV}{\widetilde{\mat{V}}}
+\newcommand{\MtW}{\widetilde{\mat{W}}}
+\newcommand{\MtX}{\widetilde{\mat{X}}}
+\newcommand{\MtY}{\widetilde{\mat{Y}}}
+\newcommand{\MtZ}{\widetilde{\mat{Z}}}
+
+% MATRICES (LATIN) HAT
+\newcommand{\MhA}{\widehat{\mat{A}}}
+\newcommand{\MhB}{\widehat{\mat{B}}}
+\newcommand{\MhC}{\widehat{\mat{C}}}
+\newcommand{\MhD}{\widehat{\mat{D}}}
+\newcommand{\MhE}{\widehat{\mat{E}}}
+\newcommand{\MhF}{\widehat{\mat{F}}}
+\newcommand{\MhG}{\widehat{\mat{G}}}
+\newcommand{\MhH}{\widehat{\mat{H}}}
+\newcommand{\MhI}{\widehat{\mat{I}}}
+\newcommand{\MhJ}{\widehat{\mat{J}}}
+\newcommand{\MhK}{\widehat{\mat{K}}}
+\newcommand{\MhL}{\widehat{\mat{L}}}
+\newcommand{\MhM}{\widehat{\mat{M}}}
+\newcommand{\MhN}{\widehat{\mat{N}}}
+\newcommand{\MhO}{\widehat{\mat{0}}}
+\newcommand{\MhP}{\widehat{\mat{P}}}
+\newcommand{\MhQ}{\widehat{\mat{Q}}}
+\newcommand{\MhR}{\widehat{\mat{R}}}
+\newcommand{\MhS}{\widehat{\mat{S}}}
+\newcommand{\MhT}{\widehat{\mat{T}}}
+\newcommand{\MhU}{\widehat{\mat{U}}}
+\newcommand{\MhV}{\widehat{\mat{V}}}
+\newcommand{\MhW}{\widehat{\mat{W}}}
+\newcommand{\MhX}{\widehat{\mat{X}}}
+\newcommand{\MhY}{\widehat{\mat{Y}}}
+\newcommand{\MhZ}{\widehat{\mat{Z}}}
+
+% MATRICES (GREEK)
+\newcommand{\MGamma}{\mat{\Gamma}}
+\newcommand{\MDelta}{\mat{\Delta}}
+\newcommand{\MTheta}{\mat{\Theta}}
+\newcommand{\MLambda}{\mat{\Lambda}}
+\newcommand{\MXi}{\mat{\Xi}}
+\newcommand{\MPi}{\mat{\Pi}}
+\newcommand{\MSigma}{\mat{\Sigma}}
+\newcommand{\MUpsilon}{\mat{\Upsilon}}
+\newcommand{\MPhi}{\mat{\Phi}}
+\newcommand{\MPsi}{\mat{\Psi}}
+\newcommand{\MOmega}{\mat{\Omega}}
+
+% MATRICES (GREEK) TILDE
+\newcommand{\MtGamma}{\widetilde{\MGamma}}
+\newcommand{\MtDelta}{\widetilde{\MDelta}}
+\newcommand{\MtTheta}{\widetilde{\MTheta}}
+\newcommand{\MtLambda}{\widetilde{\MLambda}}
+\newcommand{\MtXi}{\widetilde{\MXi}}
+\newcommand{\MtPi}{\widetilde{\MPi}}
+\newcommand{\MtSigma}{\widetilde{\MSigma}}
+\newcommand{\MtUpsilon}{\widetilde{\MUpsilon}}
+\newcommand{\MtPhi}{\widetilde{\MPhi}}
+\newcommand{\MtPsi}{\widetilde{\MPsi}}
+\newcommand{\MtOmega}{\widetilde{\MOmega}}
+
+% MATRICES (GREEK) HAT
+\newcommand{\MhGamma}{\widehat{\MGamma}}
+\newcommand{\MhDelta}{\widehat{\MDelta}}
+\newcommand{\MhTheta}{\widehat{\MTheta}}
+\newcommand{\MhLambda}{\widehat{\MLambda}}
+\newcommand{\MhXi}{\widehat{\MXi}}
+\newcommand{\MhPi}{\widehat{\MPi}}
+\newcommand{\MhSigma}{\widehat{\MSigma}}
+\newcommand{\MhUpsilon}{\widehat{\MUpsilon}}
+\newcommand{\MhPhi}{\widehat{\MPhi}}
+\newcommand{\MhPsi}{\widehat{\MPsi}}
+\newcommand{\MhOmega}{\widehat{\MOmega}}
+
+% TENSORS (LATIN)
+\DeclareMathAlphabet{\mathsfit}{\encodingdefault}{\sfdefault}{m}{sl}
+\SetMathAlphabet{\mathsfit}{bold}{\encodingdefault}{\sfdefault}{bx}{n}
+\newcommand{\tens}[1]{\bm{\mathsfit{#1}}}
+\newcommand{\TA}{\tens{A}}
+\newcommand{\TB}{\tens{B}}
+\newcommand{\TC}{\tens{C}}
+\newcommand{\TD}{\tens{D}}
+\newcommand{\TE}{\tens{E}}
+\newcommand{\TF}{\tens{F}}
+\newcommand{\TG}{\tens{G}}
+\renewcommand{\TH}{\tens{H}}
+\newcommand{\TI}{\tens{I}}
+\newcommand{\TJ}{\tens{J}}
+\newcommand{\TK}{\tens{K}}
+\newcommand{\TL}{\tens{L}}
+\newcommand{\TM}{\tens{M}}
+\newcommand{\TN}{\tens{N}}
+\newcommand{\TO}{\tens{O}}
+\newcommand{\TP}{\tens{P}}
+\newcommand{\TQ}{\tens{Q}}
+\newcommand{\TR}{\tens{R}}
+\newcommand{\TS}{\tens{S}}
+\newcommand{\TT}{\tens{T}}
+\newcommand{\TU}{\tens{U}}
+\newcommand{\TV}{\tens{V}}
+\newcommand{\TW}{\tens{W}}
+\newcommand{\TX}{\tens{X}}
+\newcommand{\TY}{\tens{Y}}
+\newcommand{\TZ}{\tens{Z}}
+
+% MATRIX SPACING BARS (for representing row/column-vectors)
+\newcommand{\vertbar}{\rule[-1ex]{0.5pt}{4ex}}
+\newcommand{\horzbar}{\rule[.5ex]{4ex}{0.5pt}}
+\newcommand{\svertbar}{\rule[-0.5ex]{0.5pt}{2ex}}
+\newcommand{\veclines}[1]{
+\begin{matrix}
+\svertbar\\
+\displaystyle #1\\
+\svertbar\\
+\end{matrix}
+}
+
+% CUSTOM NUMERICS
+\newcommand{\EPS}{\text{EPS}}
+\DeclareMathOperator{\rd}{rd}
+\newcommand{\op}{\mathbin{\text{op}}}
+\newcommand{\mop}{\mathbin{\widetilde{\text{op}}}}
+
+% CUSTOM CALCULUS
+\newcommand{\evalat}[2]{\left. #1 \right|_{#2}}
+\newcommand{\evalint}[3]{\left. #1 \right|_{#2}^{#3}}
+\newcommand{\fpartial}[2]{\frac{\partial #1}{\partial #2}}
+
+% TILDE CHARACTERS
+\newcommand{\wta}{\widetilde{a}}
+\newcommand{\wtb}{\widetilde{b}}
+\newcommand{\wtc}{\widetilde{c}}
+\newcommand{\wtd}{\widetilde{d}}
+\newcommand{\wte}{\widetilde{e}}
+\newcommand{\wtf}{\widetilde{f}}
+\newcommand{\wtg}{\widetilde{g}}
+\newcommand{\wth}{\widetilde{h}}
+\newcommand{\wti}{\widetilde{i}}
+\newcommand{\wtj}{\widetilde{j}}
+\newcommand{\wtk}{\widetilde{k}}
+\newcommand{\wtl}{\widetilde{l}}
+\newcommand{\wtm}{\widetilde{m}}
+\newcommand{\wtn}{\widetilde{n}}
+\newcommand{\wto}{\widetilde{o}}
+\newcommand{\wtp}{\widetilde{p}}
+\newcommand{\wtq}{\widetilde{q}}
+\newcommand{\wtr}{\widetilde{r}}
+\newcommand{\wts}{\widetilde{s}}
+\newcommand{\wtt}{\widetilde{t}}
+\newcommand{\wtu}{\widetilde{u}}
+\newcommand{\wtv}{\widetilde{v}}
+\newcommand{\wtw}{\widetilde{w}}
+\newcommand{\wtx}{\widetilde{x}}
+\newcommand{\wty}{\widetilde{y}}
+\newcommand{\wtz}{\widetilde{z}}
+\newcommand{\wtA}{\widetilde{A}}
+\newcommand{\wtB}{\widetilde{B}}
+\newcommand{\wtC}{\widetilde{C}}
+\newcommand{\wtD}{\widetilde{D}}
+\newcommand{\wtE}{\widetilde{E}}
+\newcommand{\wtF}{\widetilde{F}}
+\newcommand{\wtG}{\widetilde{G}}
+\newcommand{\wtH}{\widetilde{H}}
+\newcommand{\wtI}{\widetilde{I}}
+\newcommand{\wtJ}{\widetilde{J}}
+\newcommand{\wtK}{\widetilde{K}}
+\newcommand{\wtL}{\widetilde{L}}
+\newcommand{\wtM}{\widetilde{M}}
+\newcommand{\wtN}{\widetilde{N}}
+\newcommand{\wtO}{\widetilde{O}}
+\newcommand{\wtP}{\widetilde{P}}
+\newcommand{\wtQ}{\widetilde{Q}}
+\newcommand{\wtR}{\widetilde{R}}
+\newcommand{\wtS}{\widetilde{S}}
+\newcommand{\wtT}{\widetilde{T}}
+\newcommand{\wtU}{\widetilde{U}}
+\newcommand{\wtV}{\widetilde{V}}
+\newcommand{\wtW}{\widetilde{W}}
+\newcommand{\wtX}{\widetilde{X}}
+\newcommand{\wtY}{\widetilde{Y}}
+\newcommand{\wtZ}{\widetilde{Z}}
+
+% HAT CHARACTERS
+\newcommand{\wha}{\widehat{a}}
+\newcommand{\whb}{\widehat{b}}
+\newcommand{\whc}{\widehat{c}}
+\newcommand{\whd}{\widehat{d}}
+\newcommand{\whe}{\widehat{e}}
+\newcommand{\whf}{\widehat{f}}
+\newcommand{\whg}{\widehat{g}}
+\newcommand{\whh}{\widehat{h}}
+\newcommand{\whi}{\widehat{i}}
+\newcommand{\whj}{\widehat{j}}
+\newcommand{\whk}{\widehat{k}}
+\newcommand{\whl}{\widehat{l}}
+\newcommand{\whm}{\widehat{m}}
+\newcommand{\whn}{\widehat{n}}
+\newcommand{\who}{\widehat{o}}
+\newcommand{\whp}{\widehat{p}}
+\newcommand{\whq}{\widehat{q}}
+\newcommand{\whr}{\widehat{r}}
+\newcommand{\whs}{\widehat{s}}
+\newcommand{\wht}{\widehat{t}}
+\newcommand{\whu}{\widehat{u}}
+\newcommand{\whv}{\widehat{v}}
+\newcommand{\whw}{\widehat{w}}
+\newcommand{\whx}{\widehat{x}}
+\newcommand{\why}{\widehat{y}}
+\newcommand{\whz}{\widehat{z}}
+\newcommand{\whA}{\widehat{A}}
+\newcommand{\whB}{\widehat{B}}
+\newcommand{\whC}{\widehat{C}}
+\newcommand{\whD}{\widehat{D}}
+\newcommand{\whE}{\widehat{E}}
+\newcommand{\whF}{\widehat{F}}
+\newcommand{\whG}{\widehat{G}}
+\newcommand{\whH}{\widehat{H}}
+\newcommand{\whI}{\widehat{I}}
+\newcommand{\whJ}{\widehat{J}}
+\newcommand{\whK}{\widehat{K}}
+\newcommand{\whL}{\widehat{L}}
+\newcommand{\whM}{\widehat{M}}
+\newcommand{\whN}{\widehat{N}}
+\newcommand{\whO}{\widehat{O}}
+\newcommand{\whP}{\widehat{P}}
+\newcommand{\whQ}{\widehat{Q}}
+\newcommand{\whR}{\widehat{R}}
+\newcommand{\whS}{\widehat{S}}
+\newcommand{\whT}{\widehat{T}}
+\newcommand{\whU}{\widehat{U}}
+\newcommand{\whV}{\widehat{V}}
+\newcommand{\whW}{\widehat{W}}
+\newcommand{\whX}{\widehat{X}}
+\newcommand{\whY}{\widehat{Y}}
+\newcommand{\whZ}{\widehat{Z}}
+
+% ARGUMENT DOT
+\newcommand{\argdot}{\,\cdot\,}
+
+% QUANTUM MECHANICS
+\newcommand{\gates}[1]{\stackrel{#1}{\longrightarrow}}
+\newcommand{\sbell}{\ket{\psi_{\text{Bell}}}}
+
+% GYROSPACES
+\newcommand{\vzero}{\mathbf{0}}
+\newcommand{\gyr}{\operatorname{gyr}}
+
+% ABSTRACT ALGEBRA
+\newcommand{\Aut}{\operatorname{Aut}}
+$$
+</p>
+
+</head>
+<body>
+  <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top" style="background: black; border: none;">
+    <div class="container-fluid">
+
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <!-- Logo -->
+            <!-- <a class="navbar-brand mr-0 mr-md-2" href="/" aria-label="Bootstrap" style="margin-top: -8px;"><img src="/img/A-circle.png" style="width: 36px;"></a> -->
+            <a class="navbar-brand" href="/">Andreas Bloch</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+            
+            
+                
+                
+                    <li><a href="/">ML Blog</a></li>
+                
+                
+            
+                
+                
+                    <li><a href="/summaries/">Summaries</a></li>
+                
+                
+            
+                
+                
+                    <li><a href="/about/">About Me & CV</a></li>
+                
+                
+            
+                
+            
+                
+            
+                
+                
+                
+            
+            </ul>
+        </div>
+    </div>
+</nav>
+  <!-- Post Header -->
+<!--
+<header class="intro-header" style="position: relative; background-image: url('/img/2019-10-30-An-Overview-of-Collaborative-Filtering-Algorithms/bipartite-graph.svg');">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>An Overview of Collaborative Filtering Algorithms for Implicit Feedback Data</h1>
+                    
+                    <span class="meta">Posted by Andreas Bloch under the assistance of Octavian Ganea and Gary Bécigneul on December 16, 2019</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+-->
+
+<!-- Post Content -->
+<article style="padding-top: 125px;">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post">
+          <h1 style="text-align: center; font-size: 36px; padding-bottom: 1em;">An Overview of Collaborative Filtering Algorithms for Implicit Feedback Data</h1>
+          <div class="post-author">Posted by Andreas Bloch under the assistance of Octavian Ganea and Gary Bécigneul on December 16, 2019</div>
+          <!-- The .md content of the post-->
+          <p>This blogpost gives an overview of today’s most predominant types of 
+recommender systems for collaborative filtering from implicit feedback data. 
+The overview is by no means exhaustive, but it should provide the reader with 
+a good overview about the topic.</p>
+
+<p>First, some background about recommender systems is given. Also, the setting
+of <em>collaborative filtering from implicit feedback data</em> is defined and 
+the typical application structure of a recommender service is explained. 
+Then, several collaborative filtering models are described in more detail
+together with a discussion on their advantages and disadvantages. Finally, a summary
+of the different approaches is given. A slide deck accompanying the article 
+can be found here:</p>
+
+<p><a href="/files/collaborative-filtering-algorithms-for-implicit-feedback-data.pdf" target="_blank">
+<img src="/img/2019-10-30-An-Overview-of-Collaborative-Filtering-Algorithms/slide-deck.png?v=1" alt="Slide Deck" width="60%" />
+</a></p>
+
+<h2 id="background-on-recommender-systems">Background on Recommender Systems</h2>
+
+<p>Recommender systems are at the heart of any of today’s large-scale e-commerce,
+news, content-streaming, dating or search platforms.  A critical success factor
+of such platforms is the ability to reduce the overwhelming amount of options to
+a few relevant recommendations matching the users’ individual and trending
+interests.</p>
+
+<p>According to McKinsey &amp; Company, 35% of the consumer purchases on Amazon and
+75% of the views on Netflix in 2012 came from product recommendations based on
+recommendation engines <a class="citation" href="#mckinsey">[1]</a>. 
+Goodwater Capital <a class="citation" href="#goodwatercap">[2]</a>
+also reports that in 2017, 31% of the tracks listened on Spotify stemmed from
+personalized playlists generated by Spotify’s recommender system. These numbers
+clearly demonstrate the significance of algorithmic recommendations in online
+services.</p>
+
+<p>Connecting customers to products that they love is critical to both, the
+customers and the companies. Because if users fail to find the products that
+interest and engage them, they tend to abandon the platforms
+<a class="citation" href="#bennett2007netflix">[3]</a>. In a report about the 
+business-value of their recommender algorithms Netflix describes how the reduction 
+of the monthly churn both increases the lifetime value of existing subscribers, 
+and reduces the number of new subscribers that they need to acquire to replace 
+cancelled members. They estimate the combined effect of personalization and
+recommendations to save them more than the exorbitant amount of $1B per year
+<a class="citation" href="#gomez2016netflix">[4]</a>.</p>
+
+<p>The urgency of the capability to provide relevant and personalized
+recommendations can also be seen in the prize money of $1M that Netflix
+advertised in its famous “Netflix Prize” competition of 2006 for the first
+team that could improve the Netflix algorithm’s RMSE by 10%
+<a class="citation" href="#koren2009matrix">[5]</a>. The competition inspired a multitude of researchers to
+participate and to contribute to the development of next-generation recommender
+systems. In the end, the grand prize was won by Yehuda Koren, Robert Bell and
+Chris Volinsky in 2009 who had developed a model that blended the predictions of
+hundreds of predictors, including a plethora of matrix factorization models,
+neighbourhood models and restricted Boltzmann machines <a class="citation" href="#koren2009bellkor">[6]</a>.</p>
+
+<p>Ironically, in 2012 Netflix published in a blogpost of theirs <a class="citation" href="#netflixblog">[7]</a>
+that they never happened to use Koren et al.’s algorithm in production due to its
+engineering costs: “the additional accuracy gains that we measured did not seem
+to justify the engineering effort needed to bring them into a production
+environment.” Anyways, the field of recommender systems has certainly
+profited from the inventions that were sparked by virtue of the competition.</p>
+
+<h2 id="the-collaborative-filtering-setting">The Collaborative Filtering Setting</h2>
+
+<p>Many different types of recommender systems have evolved over the years.
+One way to characterize recommender systems is through the information that 
+they consider to produce their rankings:</p>
+
+<ul>
+  <li>
+    <p><strong>Collaborative Filtering:</strong> In collaborative filtering the
+recommender system purely learns form the interaction patterns between users
+and items <a class="citation" href="#hu2008collaborative">[8]</a>. 
+The contents and features of the items and users are completely ignored. 
+Users and items are just treated as enumerated nodes of an undirected 
+(weighted or unweighted) bipartite graph $G=(U\cup I, E)$ where the 
+items $I$ are indexed as $i_1,…,i_{\card{I}}$ and the users $U$ are indexed as
+$u_1,…,u_{\card{U}}$. Nothing more than the vertices, edges $\set{u_j,i_k}$ and
+maybe a some edge weights $w_{u_j,i_k}$ are known. Hence collaborative filtering 
+corresponds to predicting promising links from user nodes to item nodes based 
+on the observed common connection patterns. It is called <em>collaborative</em> filtering,
+because in the collaborative filtering approaches it is commonly assumed that learning the
+interaction patterns of one user (e.g., the items he has interacted) will
+help to predict relevant items for another user that has a similar
+interaction pattern (in terms of interacted items) as the latter user.
+Hence it is as if users were <em>collaborating</em> to produce the rankings of items
+for each other.</p>
+  </li>
+  <li>
+    <p><strong>Content-Based:</strong> In content-based recommender systems, the
+recommender system additionally learns from the content and features of the items 
+(e.g., image location and data or text data) and sometimes also from the features 
+of the users, to produce a list of rankings as done for example in 
+<a class="citation" href="#cml">[9]</a>.</p>
+  </li>
+  <li>
+    <p><strong>Context-Aware:</strong> These recommender systems include additional information 
+about a user’s context <a class="citation" href="#adomavicius2011context">[10]</a>,
+e.g., whether he is accessing the service from a mobile or desktop client, 
+his current geolocation, his current time of day, whether he is stationary or 
+travelling, or whether he is in a quiet or noisy place.</p>
+  </li>
+</ul>
+
+<p>This blogpost is purely concerned with the <em>collaborative filtering</em> setting. 
+However, most of the collaborative filtering approaches can usually be extended 
+to include the other aforementioned information sources, as for example done in the
+approach of <a class="citation" href="#cml">[9]</a>.</p>
+
+<h2 id="explicit-vs-implicit-feedback-data">Explicit VS Implicit Feedback Data</h2>
+
+<p>The training of recommender systems relies on data that is gathered from the
+feedback that users gave to items. This feedback can be divided into two
+categories as defined in <a class="citation" href="#oard1998implicit">[11]</a>:</p>
+
+<ul>
+  <li>
+    <p><strong>Explicit Feedback:</strong> Here a user explicitly gives a rating to an
+item on a certain scale.</p>
+  </li>
+  <li>
+    <p><strong>Implicit Feedback:</strong> Here a user implicitly provides the
+information about the relevance of an item by interacting with it according
+to a certain notion of time, e.g., a certain amount of times, 
+or a total amount of time, or the percentage watched of a movie.</p>
+  </li>
+</ul>
+
+<p>The relevance of algorithms capable of dealing with implicit feedback data can
+be motivated by the natural abundance of implicit feedback data versus the
+usual scarcity of explicit feedback data <a class="citation" href="#davidson2010youtube">[12]</a>. 
+This blogpost is purely concerned with <em>binary implicit feedback</em> data,
+as done in most of the academic literature.</p>
+
+<h2 id="recommender-service-an-interplay-of-a-retrieval-and-a-ranking-system">Recommender Service: An Interplay of a Retrieval and a Ranking System</h2>
+
+<p>Before looking at our first concrete collaborative filtering model, let’s
+first have a look at how a recommender service is usually structured.
+A common practice <a class="citation" href="#cheng2016wide">[13]</a> is to 
+structure a <em>recommendation service</em> into two components as follows :</p>
+
+<ol>
+  <li>
+    <p>A <strong>retrieval system</strong> that retrieves potential relevant items in
+a very efficient manner (e.g., KD-trees <a class="citation" href="#kdtrees">[14]</a>), 
+maximum inner product search (MIPS) <a class="citation" href="#mips">[15]</a>, 
+locality-sensitive hashing (LSH) <a class="citation" href="#lsh1">[16, 17, 18]</a>,
+or also neural-network based methods <a class="citation" href="#davidson2010youtube">[12]</a>.</p>
+  </li>
+  <li>
+    <p>A <strong>ranking system</strong>, which we also refer to as <em>recommender
+system</em>, which usually runs a more expensive and sophisticated algorithm
+to precisely rank the retrieved potential positive candidates such that 
+they can be presented in their final estimated relevance order to a user
+<a class="citation" href="#davidson2010youtube">[12]</a>.</p>
+  </li>
+</ol>
+
+<p>The figure below illustrates the interplay of a retrieval and a ranking system. 
+Whether to use just a recommender system, or a combination of a retrieval and 
+recommender system depends on the size of the data (in terms of number of users 
+and items) and the computational cost of the recommender system. If the ranking 
+has a high computational cost, and there are lots of items, then it makes sense 
+to have a retrieval system that retrieves a subset of potential candidates in a 
+cheap way. An important thing to note here is that, besides the ranking accuracy
+of the ranking system, also the quality of the subsample retrieved by 
+the retrieval system strongly affects the performance metrics of the entire 
+recommender service.</p>
+
+<div class="figure-with-caption">
+<img src="/img/2019-10-30-An-Overview-of-Collaborative-Filtering-Algorithms/retrieval-and-ranking-system.png?v=1" alt="Interplay of Retrieval and Ranking System" width="100%" />
+<div class="figure-caption">
+The illustration by <a class="citation" href="#cheng2016wide">[13]</a> shows the 
+typical structuring of a recommender service into a retrieval system and a 
+ranking system.
+</div>
+</div>
+
+<p>In the collaborative filtering setting, the query is just a user index and the 
+result is a ranked list of indices of recommended items. As depicted, the 
+retrieval system usually returns a subset in the order of $N=100$ items to 
+the ranking system.</p>
+
+<p>Now that we have enough background on recommender systems we can have a look at
+the first collaborative filtering model.</p>
+
+<h2 id="item-popularity">Item Popularity</h2>
+
+<p>The Item Popularity model is a very simple and efficient ranking model that
+simply recommends items based on their popularities. The more popular an item
+is, the higher up it is on its recommendation list. Thus, the ranking of an item
+$i$ for user $u$ is simply computed through</p>
+
+<script type="math/tex; mode=display">\hat{x}_{ui}=\frac{\#\text{interactions with item }i}{\# \text{interactions in total}}.</script>
+
+<p>Hence, it completely ignores the user’s features, which can be
+disadvantageous if one wants to create recommendations tailored to a user’s
+preferences.</p>
+
+<p>Nevertheless, it can be a very powerful prediction model.
+Its strengths lie in its simplicity and its efficiency. The Item Popularity
+model can be particularly useful in situations where there is little information
+known about a user’s preferences. Therefore, it is often used to overcome
+the cold-start problem.</p>
+
+<p>A reason why the Item Popularity model works quite well in practice is
+because, usually, the popularity of items is distributed according to a
+power-law: most of the interactions happen with a few popular items, and the
+rest of the items only have a few interactions. The following plot
+illustrates how the number of interactions per item is distributed according to a
+power-law for the <a href="https://grouplens.org/datasets/movielens/20m/">Movielens-20M</a>
+dataset.</p>
+
+<div class="figure-with-caption">
+<img src="/img/2019-10-30-An-Overview-of-Collaborative-Filtering-Algorithms/movielens-20M-item-popularity.png?v=1" alt="MovieLens-20M Item Popularity" width="100%" />
+<div class="figure-caption">
+The plot shows the number of ratings per movie in descending order for
+the MovieLens-20M dataset. One can clearly observe the power-law nature of the
+popularities of the movies in terms of their number of ratings.
+</div>
+</div>
+
+<h2 id="matrix-factorization-mf">Matrix Factorization (MF)</h2>
+
+<p><em>Matrix factorization (MF)</em> predicts the relevance $\hat{x}_{ui}$ of an
+item $i\in I$ for a user $u\in U$ through the dot product</p>
+
+<script type="math/tex; mode=display">\hat{x}_{ui}=\scprod{\vx_u,\vx_i},</script>
+
+<p>where $\vx_u$ and $\vx_i$ are $d$-dimensional representations of the user $u$
+and item $i$ in a <em>latent factor space</em>. These latent factor representations
+of users and items are the parameters $\vtheta$ that are aimed to be learned:</p>
+
+<script type="math/tex; mode=display">\vtheta=\set{\MX_U,\MX_I},
+\qquad
+\MX_U\in\R^{\card{U}\times d},\quad
+\MX_I\in\R^{\card{I}\times d}.</script>
+
+<p>Several works showed how these latent factor space dimensions tend to capture
+concepts of users and items, e.g., “male” or “female” for users, or “serious” vs
+“escapist” for movies as illustrated below from the work of <a class="citation" href="#koren2009matrix">[5]</a>.</p>
+
+<div class="figure-with-caption">
+<img src="/img/2019-10-30-An-Overview-of-Collaborative-Filtering-Algorithms/mf-latent-factors-interpretation.png?v=1" alt="Concepts captured in latent factor space" width="100%" />
+<div class="figure-caption">
+The illustration by <a class="citation" href="#koren2009matrix">[5]</a> shows
+how the latent factor dimensions tend to capture concepts about users or items.
+</div>
+</div>
+
+<p>For <em>explicit</em> feedback data the parameters are trained by minimizing the
+squared loss over the observed rankings $x_{ui}$ of the interaction matrix 
+$\MX\in\R^{\card{U}\times\card{I}}$, collected as training instances $(u,i)\in\cD$:</p>
+
+<script type="math/tex; mode=display">\cL(\vtheta)
+=
+\sum_{(u,i)\in\cD}\left(x_{ui}-\hat{x}_{ui}\right)^2
+=
+\sum_{(u,i)\in\cD}\left(x_{ui}-\scprod{\vx_u,\vx_i}\right)^2.</script>
+
+<p>Some approaches for <em>implicit</em> feedback data, such as
+<a class="citation" href="#sarwar2000application">[19, 20]</a>, rely on
+binarization and imputation of the unobserved entries of $\MX$ as 0, turning the
+optimization problem into</p>
+
+<script type="math/tex; mode=display">\cL(\vtheta)=\norm{\MX - \MX_U\MX_I^T}_2^2.</script>
+
+<p>The latter loss clearly shows why the recommender system approach has its name
+<em>matrix factorization</em>. Under some conditions, one can assume that
+$\rank(\MX_U\MX_I^\T)\leq d$, making the problem tightly
+related to Singular Value Decomposition (SVD) and Principal Component Analysis (PCA).</p>
+
+<p>Other approaches for <em>implicit</em> feedback data argue that one should still
+impute the non-observed interactions as $0$, but weigh the
+prediction errors for observed and unobserved interactions differently. Such
+approaches fall under the category of <em>weighted regularized matrix
+factorization (WMRF)</em>, having a training loss of the form</p>
+
+<script type="math/tex; mode=display">\cL(\vtheta)
+=
+\sum_{(u,i)\in\cD} c_{ui}(x_{ui}-\hat{x}_{ui})^2.</script>
+
+<p>where the weights $c_{ui}$ are chosen according to a <em>weighting-strategy</em>.
+Hu et al. <a class="citation" href="#hu2008collaborative">[8]</a>, Pan et al. <a class="citation" href="#pan2008one">[21]</a> and He et al.
+<a class="citation" href="#eals">[22]</a>, proposed various weighting-schemes that all assign a fixed weight
+$c_{ui}=1$ to the observed interactions, and the weights $c_{ui}$ for the
+unobserved interactions are chosen according to one of the following strategies:</p>
+
+<ul>
+  <li><strong>Uniform-Weighting:</strong> Chooses some fixed weight $c_{ui}\in[0,1)$,
+meaning that all unobserved interactions share the same probability of 
+being negative examples.</li>
+  <li><strong>User-Activity Based:</strong> Chooses the weight based on the number of
+ratings that a user $u$ gave: $c_{ui}\propto\norm{\vx_u}_1$. With the argument
+that, the more a user has interacted with the system, the more confident one can
+be about the inferred irrelevance of the user’s left-out items.</li>
+  <li><strong>Item-Popularity Based:</strong> Assigns lower weights to popular items.
+The rationale behind this is: the more popular an item is, the more likely it
+is to be known. Hence, a non-interaction on a popular item is more likely to
+be due to its true irrelevance to a user.</li>
+</ul>
+
+<p>Other more advanced models also train a global bias $\mu$, and user- and
+item-specific biases $\mu_u$ and $\mu_i$ to predict the rankings as</p>
+
+<script type="math/tex; mode=display">\hat{x}_{ui}=\scprod{\vx_u,\vx_i}+\mu_u+\mu_i+\mu.</script>
+
+<p>This aims to compensate for the systematic tendencies that some users tend to
+give higher ratings than others, and some items tend to receive higher ratings
+than others. The rationale behind this is that the latent concepts (the
+$d$-dimensions of the latent factor space) should not be used to explain these
+systematic tendencies <a class="citation" href="#koren2009matrix">[5]</a>.</p>
+
+<p>It is also a common practice to regularize the user- and item-embeddings and the
+means with L2-regularization</p>
+
+<script type="math/tex; mode=display">\Omega(\theta)
+=
+\norm{\MX_U}_2^2
++\norm{\MX_I}_2^2
++\norm{\vmu_U}_2^2
++\norm{\vmu_I}_2^2
++\mu^2.</script>
+
+<p>This form of regularization can also be motivated from a probabilistic
+perspective where the user- and item-embeddings and the means are assumed to be
+distributed according to multivariate Gaussian distributions in the latent factor
+space. For a derivation see <a class="citation" href="#mnih2008probabilistic">[23]</a>.</p>
+
+<p>In the famous Netflix Prize, launched in 2006, the majority of the successful
+recommender systems were using matrix-factorization approaches
+<a class="citation" href="#bennett2007netflix">[3]</a>.  For many years, matrix factorization 
+has been the ranking model of 
+first-choice and a lot of improvements and extensions have been proposed, including:</p>
+
+<ul>
+  <li>
+    <p><strong>Alternating Least-Squares (ALS):</strong> Various <em>alternating
+least-squares (ALS)</em> optimization approaches, such as eALS <a class="citation" href="#eals">[22]</a>
+and ALS-WR <a class="citation" href="#alswr">[24]</a>, have been developed. These approaches aim to
+speed-up the convergence of the non-convex optimization problem through
+the surrogate of two convex optimization problems. ALS works through the following 
+alternation: at each iteration, once the user embeddings are fixed and the solutions for the
+items are obtained in a closed-form, and vice-versa.</p>
+  </li>
+  <li>
+    <p><strong>Including Temporal Dimensions:</strong> Another direction of work, e.g.
+<a class="citation" href="#koren2009collaborative">[25, 26]</a>, has been 
+concerned with incorporating temporal dimensions into matrix factorization. These
+approaches model the trends of items and the changes of users’ tastes by expressing 
+the user and item embeddings, and also the biases, as functions of time.</p>
+  </li>
+  <li>
+    <p><strong>Non-Negative Matrix Factorization:</strong> For some ranking applications it might
+be desirable to only have predictions that are positive.
+To this end, several works have been concerned with applying non-negative matrix
+factorization to collaborative filtering, including
+<a class="citation" href="#luo2014efficient">[27, 28]</a>.</p>
+  </li>
+  <li>
+    <p><strong>On-line Learning and Regret Bounds:</strong> A lot of effort has
+also been invested in the development of on-line learning algorithms (e.g.
+<a class="citation" href="#eals">[22, 29]</a>) and the derivation of regret bounds (e.g.
+<a class="citation" href="#dadkhahi2018alternating">[30, 31]</a>), making it 
+possible to scale matrix factorization to big-data settings with on-line learning
+and convenient regret bounds.</p>
+  </li>
+</ul>
+
+<p>Note that while all examples here have been using the squared loss,
+<em>matrix factorization</em> can also be trained using the pair-wise BPR loss as done in
+<a class="citation" href="#rendle2009bpr">[32]</a>.</p>
+
+<p>All-in-all, matrix factorization has demonstrated to be a powerful and
+successful recommender model. Indeed, it had been successfully used to do
+YouTube video recommendations, until it got replaced by neural network
+approaches recently <a class="citation" href="#davidson2010youtube">[12]</a>. The fact that, at its heart,
+matrix factorization only uses a bi-linear form to predict the rankings, makes
+it computationally very attractive. However, as we will see in what follows,
+recent state-of-the-art approaches critique the inner product for failing at
+propagating similarities <a class="citation" href="#cml">[9]</a> and for being too rigid, in the sense that
+it is only a bi-linear form as opposed to a more powerfulnon-linear prediction function
+<a class="citation" href="#ncf">[33]</a>.</p>
+
+<h2 id="collaborative-metric-learning-cml">Collaborative Metric Learning (CML)</h2>
+
+<p>Metric learning approaches aim to learn a distance metric that assigns smaller
+distances between similar pairs, and larger distances between dissimilar pairs.
+Collaborative Metric Learning (CML) <a class="citation" href="#cml">[9]</a> advocates the embedding of users
+and items for recommender systems in <em>metric spaces</em> in order to exploit a
+phenomenon called <em>similarity propagation</em>. In their work, Hsieh et al.
+<a class="citation" href="#cml">[9]</a> explain how <em>similarity propagation</em> is achieved 
+due to the fact that a distance metric $d$ must respect, amongst several other conditions, 
+the crucial triangle-inequality:</p>
+
+<script type="math/tex; mode=display">\forall x,y,z\colon
+\quad
+d(y,z)\leq d(x,y) + d(x,z).</script>
+
+<p>This implies that, given the information that “$x$ is similar to both $y$ and
+$z$” the learned metric $d$ will not only pull the pairs $y$ and $z$ close to
+$x$, but <em>also</em> pull $y$ and $z$ relatively close to one-another. Thus, the
+similarity of $(x,y)$ and $(x,z)$ is <em>propagated</em> to $(y,z)$.</p>
+
+<p>The authors critique that, since matrix factorization is using the
+inner-product, and the inner-product does not necessarily respect the
+triangle inequality (e.g., violation for $x=-1$, $y=z=1$), such a <em>similarity
+propagation</em> is not happening in matrix factorization approaches.
+An illustration of how the inner-product fails at propagating similarities
+even for a simple interaction matrix is given below:</p>
+
+<div class="figure-with-caption">
+<img src="/img/2019-10-30-An-Overview-of-Collaborative-Filtering-Algorithms/cml-similarity-propagation-illustration.png?v=1" alt="CML Similarity Propagation Illustration" width="100%" />
+<div class="figure-caption">
+Illustration by <a class="citation" href="#cml">[9]</a> showing how the inner-product
+fails at propagating similarities. In the example $U_3$ likes both, $v_1$ and
+$v_2$. Since $U_1$ likes $v_1$ and $U_2$ likes $v_2$ the items $v_1$ and
+$v_2$ are placed in-between the users in the metric-learning approach. With
+matrix factorization the dot-product is 2 if a user liked an item and 0
+otherwise, representing a stable setting. However, the similarity between
+$(U_3,v_1)$ and $(U_3,v_2)$ is not propagated to $(v_1,v_2)$ because we have that
+$\scprod{v_1,v_2}=0$. Even though MF may yield the same recommendation
+performance, the similarities between the items $v_1$ and $v_2$ aren't
+obtained as well as with the metric learning approach.
+</div>
+</div>
+
+<p>The great convenience of encoding users and items in a metric space $(\cM,d)$ is
+that the joint metric space does not only encode the similarity between users
+and items, but it can also be used to determine user-user and item-item
+similarities. This improves the interpretability of the model, as opposed to a
+model that relies on the inner product to compute similarities. What matrix
+factorization approaches usually do to compensate for this lack is to compute
+user-user or item-item similarities using the cosine-distance.
+However as illustrated in the figure above, this doesn’t yield optimal results.</p>
+
+<p>Hopefully, by now the reader should be convinced that <em>similarity propagation</em> 
+is a desirable property to have in order to generalize from the observed user-item 
+interactions to unseen pairs of interactions and user-user and item-item similarities.
+Next, we’ll look at how the training of the embeddings is performed in CML.</p>
+
+<p>The embedding training approach of of CML is to pull positive user-item
+pairs close together and to push negative user-item pairs far apart according
+to some margin. This process will then cluster users who co-like the same items 
+together, and also cluster the items that are co-liked by the same users together. 
+Eventually, a situation is reached where the nearest neighbours of any user will become:</p>
+
+<ul>
+  <li>the items he liked, and</li>
+  <li>the items liked by other users who share a similar taste with this user.</li>
+</ul>
+
+<p>Therefore, learning from the observed positive interactions
+<em>propagates</em> these relationships also to user-user and item-item pairs for
+which there are <em>no</em> observed relationships.</p>
+
+<p>In CML the relevances then are simply predicted as the negative distance</p>
+
+<script type="math/tex; mode=display">\hat{x}_{ui}=-d(\vx_u,\vx_i),</script>
+
+<p>meaning that a closeby item as a higher ranking than an item that is farther away.
+The optimization objective trained to achieve the aforementioned desiderata
+is the following:</p>
+
+<script type="math/tex; mode=display">\cL(\vtheta)
+=
+\cL_m(\vtheta)
++
+\lambda\Omega(\vtheta)
+\quad \text{s.t. }
+\norm{\vx_*}\leq 1,</script>
+
+<p>where the various loss terms have the following meanings:</p>
+
+<ul>
+  <li>
+    <p>The term $\cL_m(\vtheta)$ is the WARP loss of the predicted rankings, given
+by the negative metric space distances $\hat{x}_{ui}=-d(\vx_u,\vx_i)$ and 
+$\hat{x}_{uj}=-d(\vx_u,\vx_j)$:</p>
+
+    <script type="math/tex; mode=display">\cL_m(\vtheta)=\sum_{(i,j)\in\cS}\sum_{(u,k)\nin\cS}
+w_{ij}\left[m+d(\vx_u,\vx_i)^2-d(\vx_u,\vx_j)^2\right]_+.</script>
+
+    <p>The set $\cS$ is the set of observed positive interactions. The gradients caused
+by the WARP loss for a user $u$ and its positive and negative items are
+illustrated in the figure below.</p>
+
+    <div class="figure-with-caption">
+<img src="/img/2019-10-30-An-Overview-of-Collaborative-Filtering-Algorithms/cml-positive-and-negative-item-gradients.png?v=1" alt="CML Gradients" width="100%" />
+<div class="figure-caption">
+The figure by <a class="citation" href="#cml">[9]</a> shows the gradients created by the WARP loss
+in CML. For the positive items of a user, gradients are created to pull them closer
+until they lie within a certain margin $m$ to the user. For the negative items of a 
+user, gradients are created to push them away until they lie far away from the user,
+outside a ball of radius $m$, where $m$ is the margin, usually chosen as $1$.
+</div>
+</div>
+  </li>
+  <li>
+    <p>The regularization term $\Omega(\vtheta)$ uses <em>covariance
+regularization</em> as proposed by Cogswell et al. <a class="citation" href="#cogswell2015reducing">[34]</a>.</p>
+
+    <script type="math/tex; mode=display">\Omega(\vtheta)=\norm{\MSigma - \diag(\MSigma)}_2^2,</script>
+
+    <p>where $\MSigma$ is the covariance matrix of the concatenation of all the user
+and item embeddings.
+This de-correlates the dimensions of the metric space. Since covariances can
+be seen as a measure of linear redundancy between dimensions, this loss
+essentially tries to prevent each dimension from being redundant by penalizing
+off-diagonal entries in the covariance matrix and thus encouraging the
+embeddings to efficiently utilize the given space.
+The covariance matrix is computed as follows: Let $\MY$ be the concatenation
+of the $d$-dimensional user and item-embeddings $\MX_U$ and $\MX_I$:</p>
+
+    <script type="math/tex; mode=display">\MY=\begin{bmatrix}
+\MX_U\\
+\MX_I
+\end{bmatrix}
+\in\R^{(\card{U}+\card{I})\times d}.</script>
+
+    <p>The mean embedding vector is then computed as</p>
+
+    <script type="math/tex; mode=display">\vmu
+:=
+\frac{1}{\card{U}+\card{I}}\sum_{i=1}^{\card{U}+\card{I}}
+\MY_{i,:}\in\R^{1\times d},</script>
+
+    <p>and the covariance matrix $\MSigma$ is obtained via</p>
+
+    <script type="math/tex; mode=display">\MSigma
+=
+\frac{1}{\card{U}+\card{I}}
+\sum_{i=1}^{\card{U}+\card{I}}
+\left(\MY_{i,:}-\vmu\right)^\T
+\left(\MY_{i,:}-\vmu\right)\in\R^{d\times d}.</script>
+  </li>
+  <li>
+    <p>The optimization constraint $\norm{\vx_{*}}\leq 1$ forces all user and
+item embeddings $\vx_{*}$ to stay within a unit-sphere in order to easily
+apply locality sensitive hashing (LSH) <a class="citation" href="#lsh1">[16]</a> later. L2-regularization is
+intentionally avoided, as this would just pull the embeddings towards the
+origin. The authors argue that in the metric space the origin does not have
+any specific meaning.</p>
+  </li>
+</ul>
+
+<p>One great advantage of CML is that it can the recommendations can be easily 
+performed on massive datasets. Since CML uses the Euclidean distance to 
+represent the relevances, it can be used with off-the-shelf LSH. In contrast, matrix 
+factorization approaches would have to use approximate Maximum Inner Product Search 
+(MIPS), which is considered to be a much harder problem than LSH <a class="citation" href="#mips">[15]</a>. A disadvantage of CML might be that the distance function itself might not be 
+expressive enough to represent the complex user-item relevance relationships,
+which might be modeled through arbitrary non-linear interaction functions as
+suggested in some approaches that follow later.</p>
+
+<p>Still, the example of CML clearly illustrated the benefits obtained through
+<em>similarity propagation</em> when learning a distance metric to predict the
+relevances. This also motivates the next recommender system approaches, which also
+learn distance metrics in hyperbolic space to predict rankings.</p>
+
+<h2 id="hyperbolic-recommender-systems">Hyperbolic Recommender Systems</h2>
+
+<p>So far, three approaches <a class="citation" href="#hrs">[35, 36, 37]</a> harnessing 
+hyperbolic geometry for recommender systems have been published. Both approaches represent users and
+items in hyperbolic geometry and predict the relevance between users and items as</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\hat{x}_{ui}=\alpha d(\vx_u,\vx_i),\quad\text{with }\alpha<0, %]]></script>
+
+<p>where $\vx_u$ and $\vx_i$ are the trained user and item-embeddings, lying in
+hyperbolic geometry, and $d$ is the geodesic distance function in hyperbolic
+geometry.</p>
+
+<p>Since all approaches use distance
+metrics to represent the relevance relationships between users and items they all 
+fall under the category of <em>metric learning approaches</em>, just as the aforementioned
+CML. Therefore, they also benefit from the <em>similarity propagation</em> phenomenon, as
+the hyperbolic geodesic distance also has to respect the triangle inequality.</p>
+
+<p>The approaches of <a class="citation" href="#hrs">[35, 36, 37]</a> train their embeddings via 
+the BPR loss <a class="citation" href="#rendle2009bpr">[32]</a>, yielding the optimization objective</p>
+
+<script type="math/tex; mode=display">\cL(\vtheta)
+=
+\sum_{(u,i,j)}
+-\log\left(\sigma\left(
+\alpha\left(
+d(\vx_u,\vx_i)-d(\vx_u,\vx_j)
+\right)\right)\right),</script>
+
+<p>where the parameters $\vtheta$ consist of the user embeddings $\MX_U$, the item
+embeddings $\MX_I$ and the scalar $\alpha$. In some of their experiments 
+<a class="citation" href="#shrs">[36]</a> also use the WMBR <a class="citation" href="#liu2017wmrb">[38]</a> 
+loss. The embeddings are trained via the Riemannian optimization used with hyperbolic spaces. 
+An illustration of the architecture of the <em>pairwise learning approach</em> is given in the figure 
+below.</p>
+
+<div class="figure-with-caption">
+<img src="/img/2019-10-30-An-Overview-of-Collaborative-Filtering-Algorithms/hrs.png?v=1" alt="Pairwise Learning in Hyperbolic Recommender System" width="100%" />
+<div class="figure-caption">
+Illustration of the pairwise learning approach with hyperbolic recommender systems
+by <a class="citation" href="#hrs">[35]</a>.
+</div>
+</div>
+
+<p>Even though Vinh et al. <a class="citation" href="#hrs">[35]</a> use the Poincaré ball, and
+Chamberlain et al. <a class="citation" href="#shrs">[36]</a> use the hyperboloid as their model for
+hyperbolic geometry, the two approaches can be considered as practically
+equivalent. The only real difference is that Chamberlain et al. further apply
+some L2-regularization on the user and item embeddings.</p>
+
+<p>Chamberlain et al. <a class="citation" href="#shrs">[36]</a> further explored the 
+possibilities of expressing users as the Einstein midpoint $\vmu$ (corresponding to a mean) 
+of their positively interacted items in order to reduce the amount of learned parameters:</p>
+
+<script type="math/tex; mode=display">\vx_u:=\vmu(\dset{i\in I}{u \text{ has positively interacted with }i}).</script>
+
+<p>In their experiments, Chamberlain et al. showed that expressing the users as the
+midpoint of their interacted items can speed-up the training, due to the
+reduced amount of parameters, without sacrificing the model’s recommendation
+performance. Such an approach is particularly useful for <em>asymmetric</em> datasets that contain
+much more users than items ($\card{U}\gg\card{I}$).</p>
+
+<p>The third hyperbolic recommender system approach of Schmeier et al. <a class="citation" href="#bhrs">[37]</a> embedded their entities using a different loss</p>
+
+<script type="math/tex; mode=display">\cL(\vtheta)
+=
+-
+\sum_{(u,i)\in\cD}
+\log\left(
+\frac{
+e^{\hat{x}_{ui}}
+}{
+e^{\hat{x}_{ui}}
++
+\sum_{(u,j)\in\cD'}
+e^{\hat{x}_{uj}}
+}
+\right),</script>
+
+<p>where $\cD$ is the dataset of positive interactions and $\cD’$ is a set of $K$
+negative interactions for user $u$, obtained through negative sampling. This loss 
+also encourages that relevant user-item paris are closeby, and irrelevant 
+user-item pairs are farther apart. Also, this is exactly the same loss that was used 
+by Nickel &amp; Kiela <a class="citation" href="#nickel2017poincare">[39]</a> to train a 
+graph-embedding for the representation of hypernymy relations in hyperbolic space.</p>
+
+<p>To conclude, let’s discuss the advantages and disadvantages of these hyperbolic 
+recommender models. The advantages of these metric learning approaches are the same as
+the ones of CML: the most important one being that they all profit from similarity 
+propagation and thus simultaneously learn user-user and item-item similarity. 
+Furthermore, as revealed in the experiments of three approaches, the choice of a 
+hyperbolic geometry turned out to provide a good bias for the representations.
+One can also imagine that one could perform fast nearest-neighbour search for massive 
+datasets through a generalization of LSH to hyperbolic space. Similarly as to CML,
+these approaches have the disadvantage that the distance function might not be 
+powerful enough to express the user-item relevance relationships entirely. It might be
+that this relationship is even better modeled through a non-linear interaction function as 
+suggested in the next approach.</p>
+
+<h2 id="neural-collaborative-filtering-ncf">Neural Collaborative Filtering (NCF)</h2>
+
+<p>In contrast to the bi-linear prediction function used with matrix factorization, or
+a rigid distance function as used with the metric learning approaches, 
+<em>Neural Collaborative Filtering (NCF)</em>, introduced by He et al. 
+<a class="citation" href="#ncf">[33]</a>, aims to learn a <em>non-linear interaction function</em> 
+acting on trained user and item embeddings to predict the relevances. The non-linear 
+interaction function is implemented through two models that are trained jointly:</p>
+
+<ul>
+  <li>
+    <p><strong>Generalized Matrix Factorization (GMF):</strong>
+  representing a generalization of the inner-product, where the products in
+  the inner product are further scaled by individual factors.</p>
+  </li>
+  <li>
+    <p><strong>Multi-Layer Perceptron (MLP):</strong> a pyramidal 3-layer perceptron
+  with ReLU activations.</p>
+  </li>
+</ul>
+
+<p>The ranking $\hat{x}_{ui}$, representing the relevance of item $i\in I$ for
+a user $u\in U$ is computed as follows:</p>
+
+<ul>
+  <li>
+    <p>First, the user and item embeddings, that are also learned, are retrieved 
+for each of the two joint models:</p>
+
+    <script type="math/tex; mode=display">\vx_u^{GMF}, \vx_i^{GMF},\qquad \vx_u^{MLP}, \vx_i^{MLP}.</script>
+  </li>
+  <li>
+    <p>Then, the interaction for GMF is computed by building the
+element-wise product of the corresponding user and item embedding vectors.
+Then a weighted sum of the product’s coefficients is computed through a 
+parameter $\vh$ and also a bias is added:</p>
+
+    <script type="math/tex; mode=display">\hat{x}_{ui}^{GMF}=\vh^T\left(\vx_u^{GMF}\odot \vx_i^{GMF}\right) +
+b^{GMF}.</script>
+
+    <p>Note how for $\vh=(1,\ldots,1)^\T$ and $b^{GMF}=0$ the GMF model
+recovers the usual dot-product that is used in matrix-factorization.</p>
+  </li>
+  <li>
+    <p>Then, the interaction for the MLP is computed by concatenating the
+corresponding user and item embeddings and passing them
+through the pyramidal 3-layer perceptron with ReLU activations. Also,
+a bias is added:</p>
+
+    <script type="math/tex; mode=display">\hat{x}_{ui}^{MLP}=\text{MLP}(\vx_{u}^{MLP}, \vx_{i}^{MLP}) + b^{MLP}.</script>
+  </li>
+  <li>
+    <p>In order to weigh the importance of both models, the results of GMF
+and the 3-MLP may be scaled by factors $\alpha$ and $(1-\alpha)$, where
+$\alpha\in(0,1)$. In their proposed architecture He et al. fixed
+$\alpha=0.5$. Finally, the ranking $\hat{x}_{ij}$ is obtained by building a
+convex combination of the activations $\hat{x}_{ui}^{GMF}$ and
+$\hat{x}_{ui}^{MLP}$, and then and passing the result through the sigmoid
+function:</p>
+
+    <script type="math/tex; mode=display">\hat{x}_{ui}=\sigma\left(
+\alpha \hat{x}_{ui}^{GMF} + (1-\alpha)\hat{x}_{ui}^{MLP}
+\right).</script>
+  </li>
+</ul>
+
+<p>An illustration of the architecture of NCF is given in the figure below. The
+models GMF and MLP can also be instantiated on their own, while the sigmoid
+output function is maintained.</p>
+
+<div class="figure-with-caption">
+<img src="/img/2019-10-30-An-Overview-of-Collaborative-Filtering-Algorithms/ncf.png?v=1" alt="Neural Collaborative Filtering (NCF)" width="100%" />
+<div class="figure-caption" style="text-align:center">
+Architecture of NCF illustrated by <a class="citation" href="#ncf">[33]</a>
+</div>
+</div>
+
+<p>In their experiments He et al. trained NCF using the binary cross-entropy loss
+with negative sampling. One could also use the pair-wise BPR loss to train the
+model’s parameters, however, in their experiments He et al. observed better 
+performance metrics with the binary cross-entropy loss and negative sampling:</p>
+
+<script type="math/tex; mode=display">\cL(\vtheta)=-\sum_{(u,i)\in\cD}
+\left[x_{ui}\log(\hat{x}_{ui}) + (1-x_{ui})\log(1-\hat{x}_{ui})\right],</script>
+
+<p>where the training instances $(u,i)\in\cD$ consist of positive and
+negative interactions. The negative interactions are oversampled according to a
+negative sampling factor of $K$, where $K=5$ turned out to work well for both
+datasets (Movielens-1M and Pinterest) for the datasets used in the experiments of He et al.</p>
+
+<p>While the models GMF and MLP can be instantiated each on their own, the
+experiments of the He et al. <a class="citation" href="#ncf">[33]</a> revealed that the joint model
+outperformed the individual models in every case. For the datasets
+Movielens-1M and Pinterest, their proposed architecture outperformed a state-of-the-art 
+matrix-factorization baseline eALS <a class="citation" href="#eals">[22]</a> (alternating 
+least-squares MF). Thus, one can argue that modeling the interaction as a non-linear 
+function, instead of a bi-linear function, is advantageous for the accurate prediction 
+of rankings.</p>
+
+<p>The disadvantages of NCF are that, in contrast to the metric learning
+approaches, NCF lacks interpretability and NCF does not automatically learn
+user-user and item-item similarities via similarity propagation. 
+Also, the rank prediction is rather computationally expensive and does not scale 
+well to predictions over the the full set of items if one should desire to do so.
+Also, techniques like LSH and MIPS cannot be applied to its embeddings or latent 
+representations to get fast nearest-neighbour search.  However, for massive datasets it 
+may still be used in conjunction with a retrieval system.</p>
+
+<h2 id="autoencoders-for-collaborative-filtering">Autoencoders for Collaborative Filtering</h2>
+
+<p>Recently, autoencoders have gained momentum in the field of recommender systems.
+The important connection to be noticed here is that a 1-layer autoencoder with
+linear activation functions reduces to the problem of <em>matrix factorization</em></p>
+
+<script type="math/tex; mode=display">\cL(\vtheta)=\norm{\MX-\MD\MC\MX}_2^2,</script>
+
+<p>where the original interaction matrix $\MX$ is approximated through a
+low-dimensional approximation of the original interaction matrix $\MX$.</p>
+
+<p>So, in some sense, general autoencoder approaches can be seen as
+<em>non-linear matrix factorization</em>, where the interaction matrix is
+approximated through non-linear encoder and decoder functions, $C$ and $D$,
+that are learned through optimizing the objective</p>
+
+<script type="math/tex; mode=display">\cL(\vtheta)=\norm{\MX-D(C(\MX))}_2^2.</script>
+
+<p>One important advantage of these autoencoder approaches, assuming that they are
+trained on user-interaction vectors, is that they can achieve <em>strong</em>
+generalization (as explained the work of <a class="citation" href="#liang2018variational">[40]</a>),
+since they may do predictions for a user or item interaction vector that was not
+observed at training time, whereas all the approaches that we have seen so far
+always relied on having a pre-trained embedding vector for each user and item.</p>
+
+<p>Similarly as with matrix factorization, the major challenge in these autoencoder 
+approaches is that for typical recommender system datasets the input vectors are 
+<em>extremely sparse</em>, inhibiting to get informative gradients 
+<a class="citation" href="#strub2015collaborative">[41]</a>. One of the first papers 
+applying autoencoders to collaborative filtering was the one by Sedhain et al., 
+proposing the architecture Autorec<a class="citation" href="#sedhain2015autorec">[42]</a>. 
+Autorec computes the reconstruction of an input
+$\vx\in\R^d$, that can be either a user- or an item-interaction vector, via a
+shallow autoencoder</p>
+
+<script type="math/tex; mode=display">h(\vx;\vtheta)
+=
+f(\MW g(\MV\vx +\vmu)+\vb),</script>
+
+<p>where $f$ and $g$ are element-wise activation functions. The objective trained
+to optimize Autorec’s parameters $\vtheta$ is</p>
+
+<script type="math/tex; mode=display">\min_{\vtheta}\sum_{\vx\in\cS}^n\norm{\vx-h(\vx;\vtheta)}_{\cO}^2
++\frac{\lambda}{2}
+(\norm{\MW}_F^2+\norm{\MV}_F^2),
+\quad
+\lambda >0,</script>
+
+<p>where $\norm{\argdot}_{\cO}$ means that gradient-updates are only computed 
+to parameters that are connected to the <em>observed</em> entries of the interaction 
+vector $\vx$. So, actually there exist two versions of Autorec: $U$-Autorec
+and $I$-Autorec. They differ by the training examples that they consider:
+$U$-Autorec uses user-interaction vectors $\cS_U=\set{\vx_u}_{u\in\U}$ and
+$I$-Autorec uses item-interaction vectors $\cS_I=\set{\vx_i}_{i\in I}$. The
+training/validation/test-split was done by doing a random 80%/10%/10%-split
+of the interactions. In the case of $I$-Autorec, the prediction of the
+relevance of item $i$ for a a user $u$ is done through</p>
+
+<script type="math/tex; mode=display">\hat{x}_{ui}=(h(\vx_i))_u.</script>
+
+<p>The architecture and gradient-updates with $I$-Autorec are illustrated in
+the following picture.</p>
+
+<div class="figure-with-caption">
+<img src="/img/2019-10-30-An-Overview-of-Collaborative-Filtering-Algorithms/autorec.png?v=1" alt="Architecture of Autorec" width="100%" />
+<div class="figure-caption">
+Illustration of the item-based architecture of $I$-Autorec. The edges (parameters)
+that are connected to unknown interactions are not updated due to the masking of the loss
+(affected edges marked in gray).
+</div>
+</div>
+
+<p>In their experiments, Sedhain et al. noticed that $I$-Autorec performed better
+than $U$-Autorec and argued that this had to do with the fact that, in their
+considered datasets, the item-interaction vectors were denser than the
+user-interaction vectors, leading to more reliable predictions. While they do
+not state this explicitly, one may also believe that using the denser
+item-interaction vectors also leaded to more and better gradients, since more
+inputs are non-zero. In Sedhain et al.’s experiments Autorec outperformed
+classical matrix factorization methods, motivating the use of autoencoders.
+Preliminary experiments also revealed that deeper autoencoders perform better.</p>
+
+<p>The paper from Strub &amp; Mary <a class="citation" href="#strub2015collaborative">[41]</a> then was one of the
+first autoencoder approaches for collaborative filtering to explicitly state the
+sparsity problem and to concretely tackle it with an approach. Strub &amp; Mary
+also trained a loss similar to the masked squared reconstruction loss as Sedhain
+et al., with two important differences:</p>
+
+<ul>
+  <li>
+    <p>They did not just consider the reconstruction error, but the
+<em>prediction</em> error for a held-out item, therefore changing the
+reconstruction target by the additional target item entry.</p>
+  </li>
+  <li>
+    <p>They applied masking noise to the input interaction vectors to
+have the autoencoder learn to reconstruct interactions.</p>
+  </li>
+</ul>
+
+<p>In their experiments, Strub &amp; Mary also showed that autoencoders can
+outperform state-of-the-art recommender baselines.</p>
+
+<p>Inspired by $I$-Autorec <a class="citation" href="#sedhain2015autorec">[42]</a> and the approach of Strub &amp;
+Mary <a class="citation" href="#strub2015collaborative">[41]</a>, Kuchaiev &amp; Ginsburg
+<a class="citation" href="#kuchaiev2017training">[43]</a> from NVIDIA came along with further improvements and
+another solution to tackle the sparsity problem. Kuchaiev &amp; Ginsburg used a
+technique called <em>dense re-feeding</em> to deal with the the natural sparsity
+of the interaction vectors.
+With dense re-feeding the output $h(\vx)$, that is considered to be denser since
+it is a probability-distribution, is re-fed to the autoencoder as an input, and
+is just re-considered as a new training example with the same original target. Their
+argument for using $h(\vx)$ again
+as an input is that $h(\vx)$ should represent a <em>fixed-point</em> of the
+autoencoder: $h(h(\vx))=h(\vx)$. Kuchaiev &amp; Ginsburg mention that the dense
+re-feeding could be repeated several times, but they only applied it once.
+A further improvement that Kuchaiev &amp; Ginsburg did, is to use a time-based
+training/validation/test-split, motivated by the fact that the recommender
+system should predict future ratings from past ones, rather than randomly
+missing ratings (as opposed to the splits used in
+<a class="citation" href="#sedhain2015autorec">[42, 41]</a>).
+In their experiments, Kuchaiev &amp; Ginsburg observed that deeper autoencoders
+with SELU activation functions and a high dropout-rate (e.g., 0.8), where dropout
+is only used on the latent representation, trained together with dense
+re-feeding performed the best. An important remark here is that one should not
+apply dropout on the initial layer, as happening with the masking noise of Strub
+&amp; Mary, if one does not want the recommender system to learn to predict
+<em>any</em> random missing rating (e.g., correlations between items), but rather
+a <em>future</em> rating.</p>
+
+<p>Recently, Liang et al. from Netflix <a class="citation" href="#liang2018variational">[40]</a> came along and
+extended variational autencoders (VAEs) to collaborative filtering. Their
+generative model uses a multinomial likelihood, with the motivation that is
+better-suited for modeling implicit feedback data, since it is a closer proxy to
+the ranking loss compared to the more popular likelihood functions such as the
+multivariate Gaussian (induced by squared loss) and logistic loss.</p>
+
+<p>The entire VAE architecture is then given by the encoder $g_{\phi}$ and decoder $f_{\theta}$ as</p>
+
+<script type="math/tex; mode=display">\vx_u
+\stackrel{g_{\phi}}{\mapsto}
+(\mu_{\phi}(\vx_u),\sigma_{\phi}(\vx_u))
+\stackrel{\epsilon\sim\cN(\vo,\MI)}{\mapsto}
+\vz_u=\vmu_{\phi}(\vx_u)+\epsilon\odot\vsigma_{\phi}(\vx_u)
+\stackrel{f_{\theta}}{\mapsto}
+\hat{\vx}_u,</script>
+
+<script type="math/tex; mode=display">\pi(\vz_u)\propto\exp(f_{\theta}(\vz_u)),
+\quad
+\hat{\vx}_u\sim Mult(N_{u},\pi(\vz_{u})),</script>
+
+<script type="math/tex; mode=display">\log\left(\cDist{p_{\theta}}{\hat{\vx}_{u}}{\vz_u}\right)
+=
+\sum_{i=1}^{\card{I}}x_{ui}\log(\pi_i(\vz_u)).</script>
+
+<p>The VAE is trained by annealing the evidence lower bound (ELBO)</p>
+
+<script type="math/tex; mode=display">\cL_{\beta}(\theta,\phi)
+=
+\sum_{\vx_u}\left[
+\Exp[
+\cDist{q_{\phi}}{\vz_u}{\vx_u}
+]{\log\left(
+\cDist{p_{\theta}}{\hat{\vx}_u}{\vz_u}
+\right)}
+-\beta
+KL\left(
+\cDist{q_{\phi}}{\vz_u}{\vx_u}
+||
+p(\vz_u)
+\right)
+\right],</script>
+
+<p>where $\beta$ is chosen to be $\beta&lt;1$, relaxing the prior constraint
+that</p>
+
+<script type="math/tex; mode=display">\frac{1}{\card{U}}\sum_{u\in
+U} \cDist{q_{\phi}}{\vz_u}{\vx_u} \approx p(\vz)=\cN(\vz;\vo,\MI)</script>
+
+<p>and sacrificing the ability to good ancestral sampling. Anyways, Kuchaiev &amp;
+Ginsburg argue that ancestral sampling is not needed in collaborative filtering.
+Therefore, the prediction is simply performed by using the mean
+$\mu_{\phi}(\vx_u)$ in the forward propagation, without any sampling of
+$\epsilon$, giving</p>
+
+<script type="math/tex; mode=display">\hat{\vx}_u=f_{\theta}(\vmu_{\phi}(\vx_u)).</script>
+
+<p>In their experiments Liang et al. showed that the Multinomial likelihood yields
+slightly better results than the Gaussian and the logistic likelihood. Further,
+they showed that their architecture outperforms several state-of-the-art
+baselines.</p>
+
+<p>Let us conclude the presentation of autoencoders for collaborative filtering
+with two properties that all autoencoder approaches have in common: One
+advantage of all autoencoder approaches is that they do not need any negative
+sampling. One major disadvantage of all the autoencoder approaches is that,
+inherently, depending on whether they are item-based or user-based, they either
+predict the relevance of all $\card{I}$ items for a user, or the relevance
+to all $\card{U}$ users of an item. This means that the input/output dimensions of
+the autoencoders are always at least $\min(\card{U},\card{I})$. Thus, they do
+not scale to datasets with a massive amount of users and items. Also,
+their latent representations are hard to interpret and it’s not clear how
+to perform efficient nearest-neighbour searches as one could do with LSH.</p>
+
+<h2 id="summary-of-presented-collaborative-filtering-approaches">Summary of Presented Collaborative Filtering Approaches</h2>
+
+<p>Let’s recap on a high-level what the various recommender system approaches do in
+order to generalize to recommendations on unseen interactions:</p>
+
+<ul>
+  <li>
+    <p><strong>Item Popularity:</strong> recommends items based on their popularity. The hope is
+that the prediction through the popularity of items generalizes to the relevances of unseen 
+user-item pairs.</p>
+  </li>
+  <li>
+    <p><strong>Matrix Factorization:</strong> learns embeddings that are fed through a <em>bi-linear</em> interaction 
+function, the dot product, to predict the rankings. The hope is that the dot-product of 
+embedding vectors of unseen user-item pairs generalizes to the true relevances.</p>
+  </li>
+  <li><strong>Metric Learning Approaches:</strong> learn user and item embeddings in a metric spaces such 
+that the distance is correlated with the relevance between users and items. Using a distance
+metric allows to exploit the phenomenon of <em>similarity propagation</em>. The hope is that 
+the distances between the learned embeddings generalize to the true distances between unseen 
+user-item pairs.
+    <ul style="margin-top:5px; margin-bottom: 5px">
+  <li><b>Collaborative Metric Learning:</b> uses Euclidean metric space</li>
+  <li><b>Hyperbolic Recommender Systems:</b> use hyperbolic metric spaces</li>
+</ul>
+  </li>
+  <li>
+    <p><strong>Neural Collaborative Filtering:</strong> learns embeddings and the parameters of a <em>non-linear</em> 
+interaction function, that is a joint model of a shallow generalized matrix factorization and a 
+pyramidal MLP, to predict the rankings. The hope is that the predictions of rankings through this 
+non-linear interaction function with the learned embeddings generalize well for
+unseen user-item pairs.</p>
+  </li>
+  <li><strong>Autoencoder Approaches:</strong> can be seen as <em>non-linear</em> matrix factorization. They learn a 
+<em>non-linear</em> mapping from user (or item) interaction vectors to a latent representation, or
+distribution, from which other relevant items will be predicted through a <em>non-linear</em>
+decoding function that gives the relevances of, or a relevance-distribution
+over, the items (or users for an item). The hope is that the encoding and decoding of (unseen)
+interaction vectors gives the right relevance predictions for the yet unobserved entries.</li>
+</ul>
+
+<h2 id="references">References</h2>
+<ol class="bibliography"><li><span id="mckinsey">“How retailers can keep up with consumers.” https://www.mckinsey.com/industries/retail/our-insights/how-retailers-can-keep-up-with-consumers.</span></li>
+<li><span id="goodwatercap">“Understanding Spotify: Making Music Through Innovation.” https://www.goodwatercap.com/thesis/understanding-spotify, 2018.</span></li>
+<li><span id="bennett2007netflix">J. Bennett, S. Lanning, and others, “The netflix prize,” in <i>Proceedings of KDD cup and workshop</i>, 2007, vol. 2007, p. 35.</span></li>
+<li><span id="gomez2016netflix">C. A. Gomez-Uribe and N. Hunt, “The netflix recommender system: Algorithms, business value, and innovation,” <i>ACM Transactions on Management Information Systems (TMIS)</i>, vol. 6, no. 4, p. 13, 2016.</span></li>
+<li><span id="koren2009matrix">Y. Koren, R. Bell, and C. Volinsky, “Matrix factorization techniques for recommender systems,” <i>Computer</i>, no. 8, pp. 30–37, 2009.</span></li>
+<li><span id="koren2009bellkor">Y. Koren, “The bellkor solution to the netflix grand prize,” <i>Netflix prize documentation</i>, vol. 81, no. 2009, pp. 1–10, 2009.</span></li>
+<li><span id="netflixblog">“Netflix Recommendations: Beyond the 5 stars (Part 1).” https://medium.com/netflix-techblog/netflix-recommendations-beyond-the-5-stars-part-1-55838468f429, 2012.</span></li>
+<li><span id="hu2008collaborative">Y. Hu, Y. Koren, and C. Volinsky, “Collaborative filtering for implicit feedback datasets,” in <i>2008 Eighth IEEE International Conference on Data Mining</i>, 2008, pp. 263–272.</span></li>
+<li><span id="cml">C.-K. Hsieh, L. Yang, Y. Cui, T.-Y. Lin, S. Belongie, and D. Estrin, “Collaborative metric learning,” in <i>Proceedings of the 26th international conference on world wide web</i>, 2017, pp. 193–201.</span></li>
+<li><span id="adomavicius2011context">G. Adomavicius and A. Tuzhilin, “Context-aware recommender systems,” in <i>Recommender systems handbook</i>, Springer, 2011, pp. 217–253.</span></li>
+<li><span id="oard1998implicit">D. W. Oard, J. Kim, and others, “Implicit feedback for recommender systems,” in <i>Proceedings of the AAAI workshop on recommender systems</i>, 1998, vol. 83.</span></li>
+<li><span id="davidson2010youtube">J. Davidson <i>et al.</i>, “The YouTube video recommendation system,” in <i>Proceedings of the fourth ACM conference on Recommender systems</i>, 2010, pp. 293–296.</span></li>
+<li><span id="cheng2016wide">H.-T. Cheng <i>et al.</i>, “Wide &amp; deep learning for recommender systems,” in <i>Proceedings of the 1st workshop on deep learning for recommender systems</i>, 2016, pp. 7–10.</span></li>
+<li><span id="kdtrees">J. L. Bentley, “K-d trees for semidynamic point sets,” in <i>Proceedings of the sixth annual symposium on Computational geometry</i>, 1990, pp. 187–197.</span></li>
+<li><span id="mips">A. Shrivastava and P. Li, “Asymmetric LSH (ALSH) for sublinear time maximum inner product search (MIPS),” in <i>Advances in Neural Information Processing Systems</i>, 2014, pp. 2321–2329.</span></li>
+<li><span id="lsh1">A. Gionis, P. Indyk, R. Motwani, and others, “Similarity search in high dimensions via hashing,” in <i>Vldb</i>, 1999, vol. 99, no. 6, pp. 518–529.</span></li>
+<li><span id="lsh2">S. Har-Peled, P. Indyk, and R. Motwani, “Approximate nearest neighbor: Towards removing the curse of dimensionality,” <i>Theory of computing</i>, vol. 8, no. 1, pp. 321–350, 2012.</span></li>
+<li><span id="lsh3">M. Bawa, T. Condie, and P. Ganesan, “LSH forest: self-tuning indexes for similarity search,” in <i>Proceedings of the 14th international conference on World Wide Web</i>, 2005, pp. 651–660.</span></li>
+<li><span id="sarwar2000application">B. Sarwar, G. Karypis, J. Konstan, and J. Riedl, “Application of dimensionality reduction in recommender system-a case study,” Minnesota Univ Minneapolis Dept of Computer Science, 2000.</span></li>
+<li><span id="koren2008factorization">Y. Koren, “Factorization meets the neighborhood: a multifaceted collaborative filtering model,” in <i>Proceedings of the 14th ACM SIGKDD international conference on Knowledge discovery and data mining</i>, 2008, pp. 426–434.</span></li>
+<li><span id="pan2008one">R. Pan <i>et al.</i>, “One-class collaborative filtering,” in <i>2008 Eighth IEEE International Conference on Data Mining</i>, 2008, pp. 502–511.</span></li>
+<li><span id="eals">X. He, H. Zhang, M.-Y. Kan, and T.-S. Chua, “Fast matrix factorization for online recommendation with implicit feedback,” in <i>Proceedings of the 39th International ACM SIGIR conference on Research and Development in Information Retrieval</i>, 2016, pp. 549–558.</span></li>
+<li><span id="mnih2008probabilistic">A. Mnih and R. R. Salakhutdinov, “Probabilistic matrix factorization,” in <i>Advances in neural information processing systems</i>, 2008, pp. 1257–1264.</span></li>
+<li><span id="alswr">Y. Zhou, D. Wilkinson, R. Schreiber, and R. Pan, “Large-scale parallel collaborative filtering for the netflix prize,” in <i>International conference on algorithmic applications in management</i>, 2008, pp. 337–348.</span></li>
+<li><span id="koren2009collaborative">Y. Koren, “Collaborative filtering with temporal dynamics,” in <i>Proceedings of the 15th ACM SIGKDD international conference on Knowledge discovery and data mining</i>, 2009, pp. 447–456.</span></li>
+<li><span id="xiong2010temporal">L. Xiong, X. Chen, T.-K. Huang, J. Schneider, and J. G. Carbonell, “Temporal collaborative filtering with bayesian probabilistic tensor factorization,” in <i>Proceedings of the 2010 SIAM international conference on data mining</i>, 2010, pp. 211–222.</span></li>
+<li><span id="luo2014efficient">X. Luo, M. Zhou, Y. Xia, and Q. Zhu, “An efficient non-negative matrix-factorization-based approach to collaborative filtering for recommender systems,” <i>IEEE Transactions on Industrial Informatics</i>, vol. 10, no. 2, pp. 1273–1284, 2014.</span></li>
+<li><span id="gu2010collaborative">Q. Gu, J. Zhou, and C. Ding, “Collaborative filtering: Weighted nonnegative matrix factorization incorporating user and item graphs,” in <i>Proceedings of the 2010 SIAM international conference on data mining</i>, 2010, pp. 199–210.</span></li>
+<li><span id="mairal2010online">J. Mairal, F. Bach, J. Ponce, and G. Sapiro, “Online learning for matrix factorization and sparse coding,” <i>Journal of Machine Learning Research</i>, vol. 11, no. Jan, pp. 19–60, 2010.</span></li>
+<li><span id="dadkhahi2018alternating">H. Dadkhahi and S. Negahban, “Alternating Linear Bandits for Online Matrix-Factorization Recommendation,” <i>arXiv preprint arXiv:1810.09401</i>, 2018.</span></li>
+<li><span id="wang2017factorization">H. Wang, Q. Wu, and H. Wang, “Factorization bandits for interactive recommendation,” in <i>Thirty-First AAAI Conference on Artificial Intelligence</i>, 2017.</span></li>
+<li><span id="rendle2009bpr">S. Rendle, C. Freudenthaler, Z. Gantner, and L. Schmidt-Thieme, “BPR: Bayesian personalized ranking from implicit feedback,” in <i>Proceedings of the twenty-fifth conference on uncertainty in artificial intelligence</i>, 2009, pp. 452–461.</span></li>
+<li><span id="ncf">X. He, L. Liao, H. Zhang, L. Nie, X. Hu, and T.-S. Chua, “Neural collaborative filtering,” in <i>Proceedings of the 26th international conference on world wide web</i>, 2017, pp. 173–182.</span></li>
+<li><span id="cogswell2015reducing">M. Cogswell, F. Ahmed, R. Girshick, L. Zitnick, and D. Batra, “Reducing overfitting in deep networks by decorrelating representations,” <i>arXiv preprint arXiv:1511.06068</i>, 2015.</span></li>
+<li><span id="hrs">T. D. Q. Vinh, Y. Tay, S. Zhang, G. Cong, and X.-L. Li, “Hyperbolic recommender systems,” <i>arXiv preprint arXiv:1809.01703</i>, 2018.</span></li>
+<li><span id="shrs">B. P. Chamberlain, S. R. Hardwick, D. R. Wardrope, F. Dzogang, F. Daolio, and S. Vargas, “Scalable Hyperbolic Recommender Systems,” <i>arXiv preprint arXiv:1902.08648</i>, 2019.</span></li>
+<li><span id="bhrs">T. Schmeier, J. Chisari, S. Garrett, and B. Vintch, “Music recommendations in hyperbolic space: an application of empirical bayes and hierarchical poincaré embeddings,” in <i>Proceedings of the 13th ACM Conference on Recommender Systems</i>, 2019, pp. 437–441.</span></li>
+<li><span id="liu2017wmrb">K. Liu and P. Natarajan, “WMRB: Learning to Rank in a Scalable Batch Training Approach,” <i>arXiv preprint arXiv:1711.04015</i>, 2017.</span></li>
+<li><span id="nickel2017poincare">M. Nickel and D. Kiela, “Poincaré embeddings for learning hierarchical representations,” in <i>Advances in neural information processing systems</i>, 2017, pp. 6338–6347.</span></li>
+<li><span id="liang2018variational">D. Liang, R. G. Krishnan, M. D. Hoffman, and T. Jebara, “Variational autoencoders for collaborative filtering,” in <i>Proceedings of the 2018 World Wide Web Conference</i>, 2018, pp. 689–698.</span></li>
+<li><span id="strub2015collaborative">F. Strub and J. Mary, “Collaborative filtering with stacked denoising autoencoders and sparse inputs,” 2015.</span></li>
+<li><span id="sedhain2015autorec">S. Sedhain, A. K. Menon, S. Sanner, and L. Xie, “Autorec: Autoencoders meet collaborative filtering,” in <i>Proceedings of the 24th International Conference on World Wide Web</i>, 2015, pp. 111–112.</span></li>
+<li><span id="kuchaiev2017training">O. Kuchaiev and B. Ginsburg, “Training deep autoencoders for collaborative filtering,” <i>arXiv preprint arXiv:1708.01715</i>, 2017.</span></li></ol>
+
+        </div>
+
+        <hr>
+
+        <!-- Pager for previous and next articles -->
+        <ul class="pager">
+          
+          <li class="previous">
+            <a href="/K-Stereographic-Model/" data-toggle="tooltip" data-placement="top" title="A Universal Model for Hyperbolic, Euclidean and Spherical Geometries">&larr; Previous Post</a>
+          </li>
+          
+          
+        </ul>
+
+        <hr>
+
+        <!-- Disqus Forum -->
+        
+
+<div id="disqus_thread"></div>
+<script>
+
+	/**
+	 *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+	 *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+	/*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+	(function() { // DON'T EDIT BELOW THIS LINE
+		var d = document, s = d.createElement('script');
+		s.src = 'https://andbloch-github-io.disqus.com/embed.js';
+		s.setAttribute('data-timestamp', +new Date());
+		(d.head || d.body).appendChild(s);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+      </div>
+    </div>
+  </div>
+</article>
+
+<hr>
+  <!-- Footer -->
+<footer>
+    <hr style="margin-bottom:40px">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+<li>
+    <a href="/feed.xml">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+        </span>
+    </a>
+</li>
+
+
+
+<li>
+    <a href="mailto:andreas.d.bloch@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+        </span>
+    </a>
+</li>
+
+
+
+
+<li>
+    <a href="https://github.com/andbloch">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+    </a>
+</li>
+
+
+
+<li>
+    <a href="https://www.linkedin.com/in/andreas-bloch">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+    </a>
+</li>
+
+
+
+
+
+
+                </ul>
+                <p class="copyright text-muted">Copyright &copy; Andreas Bloch 2019</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/clean-blog.min.js"></script>
+
+<!-- MathJax -->
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      processEscapes: true
+    }
+  });
+</script>
+
+</body>
+</html>

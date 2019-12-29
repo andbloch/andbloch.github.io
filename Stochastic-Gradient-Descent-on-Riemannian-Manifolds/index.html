@@ -1,0 +1,1835 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stochastic Gradient Descent on Riemannian Manifolds – Andreas Bloch</title>
+
+    <meta charset="utf-8" />
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+    
+    <meta name="description" content="Stochastic Gradient Descent (SGD) is the default workhorse for most of today's machine learning algorithms. While the majority of SGD applications is concerned with Euclidean spaces, recent advances also harnessed the potential of Riemannian manifolds. This blogpost explains how the concept of SGD is generalized to Riemannian manifolds." />
+    <meta property="og:description" content="Stochastic Gradient Descent (SGD) is the default workhorse for most of today's machine learning algorithms. While the majority of SGD applications is concerned with Euclidean spaces, recent advances also harnessed the potential of Riemannian manifolds. This blogpost explains how the concept of SGD is generalized to Riemannian manifolds." />
+    
+
+    <meta name="author" content="Andreas Bloch" />
+
+    
+    <meta property="og:title" content="Stochastic Gradient Descent on Riemannian Manifolds" />
+    <meta property="twitter:title" content="Stochastic Gradient Descent on Riemannian Manifolds" />
+    
+
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-151200114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-151200114-1');
+    </script>
+    
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <link rel="alternate" type="application/rss+xml" title="Andreas Bloch - " href="/feed.xml" />
+
+    <link rel="canonical" href="http://localhost:4000/Stochastic-Gradient-Descent-on-Riemannian-Manifolds/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.css?1577644687475076000">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/clean-blog.css?1577644687475076000">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css?1577644687475076000">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- MathJax Shortcuts -->
+    <p style="display: none">
+$$
+% ASYMPTOTIC NOTATIONS
+\newcommand{\BigO}{\mathcal{O}}
+
+% NUMBER SYSTEMS
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\B}{\mathbb{B}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\D}{\mathbb{D}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\G}{\mathbb{G}}
+%\newcommand{\bbH}{\mathbb{H}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\J}{\mathbb{J}}
+\newcommand{\K}{\mathbb{K}}
+%\newcommand{\bbL}{\mathbb{L}}
+\newcommand{\M}{\mathbb{M}}
+\newcommand{\N}{\mathbb{N}}
+%\newcommand{\bbO}{\mathbb{O}}
+%\newcommand{\bbP}{\mathbb{P}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+%\newcommand{\bbS}{\mathbb{S}}
+%\newcommand{\bbT}{\mathbb{T}}
+\newcommand{\U}{\mathbb{U}}
+\newcommand{\V}{\mathbb{V}}
+\newcommand{\W}{\mathbb{W}}
+\newcommand{\X}{\mathbb{X}}
+\newcommand{\Y}{\mathbb{Y}}
+\newcommand{\Z}{\mathbb{Z}}
+
+\newcommand{\bbA}{\mathbb{A}}
+\newcommand{\bbB}{\mathbb{B}}
+\newcommand{\bbC}{\mathbb{C}}
+\newcommand{\bbD}{\mathbb{D}}
+\newcommand{\bbE}{\mathbb{E}}
+\newcommand{\bbF}{\mathbb{F}}
+\newcommand{\bbG}{\mathbb{G}}
+\newcommand{\bbH}{\mathbb{H}}
+\newcommand{\bbI}{\mathbb{I}}
+\newcommand{\bbJ}{\mathbb{J}}
+\newcommand{\bbK}{\mathbb{K}}
+\newcommand{\bbL}{\mathbb{L}}
+\newcommand{\bbM}{\mathbb{M}}
+\newcommand{\bbN}{\mathbb{N}}
+\newcommand{\bbO}{\mathbb{O}}
+\newcommand{\bbP}{\mathbb{P}}
+\newcommand{\bbQ}{\mathbb{Q}}
+\newcommand{\bbR}{\mathbb{R}}
+\newcommand{\bbS}{\mathbb{S}}
+\newcommand{\bbT}{\mathbb{T}}
+\newcommand{\bbU}{\mathbb{U}}
+\newcommand{\bbV}{\mathbb{V}}
+\newcommand{\bbW}{\mathbb{W}}
+\newcommand{\bbX}{\mathbb{X}}
+\newcommand{\bbY}{\mathbb{Y}}
+\newcommand{\bbZ}{\mathbb{Z}}
+
+% CALLICGRAPHIC SHORTCUTS
+\newcommand{\cA}{\mathcal{A}}
+\newcommand{\cB}{\mathcal{B}}
+\newcommand{\cC}{\mathcal{C}}
+\newcommand{\cD}{\mathcal{D}}
+\newcommand{\cE}{\mathcal{E}}
+\newcommand{\cF}{\mathcal{F}}
+\newcommand{\cG}{\mathcal{G}}
+\newcommand{\cH}{\mathcal{H}}
+\newcommand{\cI}{\mathcal{I}}
+\newcommand{\cJ}{\mathcal{J}}
+\newcommand{\cK}{\mathcal{K}}
+\newcommand{\cL}{\mathcal{L}}
+\newcommand{\cM}{\mathcal{M}}
+\newcommand{\cN}{\mathcal{N}}
+\newcommand{\cO}{\mathcal{O}}
+\newcommand{\cP}{\mathcal{P}}
+\newcommand{\cQ}{\mathcal{Q}}
+\newcommand{\cR}{\mathcal{R}}
+\newcommand{\cS}{\mathcal{S}}
+\newcommand{\cT}{\mathcal{T}}
+\newcommand{\cU}{\mathcal{U}}
+\newcommand{\cV}{\mathcal{V}}
+\newcommand{\cW}{\mathcal{W}}
+\newcommand{\cX}{\mathcal{X}}
+\newcommand{\cY}{\mathcal{Y}}
+\newcommand{\cZ}{\mathcal{Z}}
+
+% BRACES
+\newcommand{\set}[1]{\left\{ #1 \right\}}
+\newcommand{\dset}[2]{\left\{ #1 \ \middle| \ #2 \right\}}
+\newcommand{\alg}[1]{\left\langle #1 \right\rangle}
+\newcommand{\card}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\length}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\renewcommand{\mag}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\scprod}[1]{\left\langle #1 \right\rangle}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\linsys}[2]{\left[\ #1 \ \middle| \ #2 \ \right]}
+\newcommand{\Sim}[1]{\text{Sim}\left( #1 \right)}
+\newcommand{\Tr}[1]{\mathsf{Tr}\left( #1 \right)}
+\newcommand{\bra}[1]{\left\langle #1 \right\rvert}
+\newcommand{\ket}[1]{\left\lvert #1 \right\rangle}
+\newcommand{\bracket}[2]{\left\langle #1 \ \middle| \ #2 \right\rangle}
+
+% BRACES SMALL (no adjusting)
+\newcommand{\sset}[1]{\{ #1 \}}
+\newcommand{\sdset}[2]{\{ #1 \ | \ #2 \}}
+\newcommand{\salg}[1]{\langle #1 \rangle}
+\newcommand{\scard}[1]{\lvert #1 \rvert}
+\newcommand{\slength}[1]{\lvert #1 \rvert}
+\newcommand{\sabs}[1]{\lvert #1 \rvert}
+\newcommand{\smag}[1]{\lvert #1 \rvert}
+\newcommand{\snorm}[1]{\lVert #1 \rVert}
+\newcommand{\sscprod}[1]{\langle #1 \rangle}
+\newcommand{\sceil}[1]{\lceil #1 \rceil}
+\newcommand{\sfloor}[1]{\lfloor #1 \rfloor}
+\newcommand{\slinsys}[2]{[\ #1 \ | \ #2 \ ]}
+\newcommand{\sSim}[1]{\text{Sim}( #1 )}
+\newcommand{\sTr}[1]{\mathsf{Tr}( #1 )}
+\newcommand{\sbra}[1]{\langle #1 \rvert}
+\newcommand{\sket}[1]{\lvert #1 \rangle}
+\newcommand{\sbracket}[2]{\langle #1 \ | \ #2 \rangle}
+
+% OPERATORS
+\newcommand{\conv}{*}
+
+\newcommand{\proj}{\text{proj}}
+
+% EMPTY SET
+\let\oldemptyset\emptyset
+\let\emptyset\varnothing
+
+% NOT IN SHORTCUT
+\newcommand{\nin}{\not\in}
+
+% CUSTOM STATISTICS AND PROBABILITY
+\newcommand{\Prob}[2][]{P_{#1}\left( #2 \right)}
+\newcommand{\cProb}[3][]{P_{#1}\left( #2 \,\middle|\, #3 \right)}
+\newcommand{\Dist}[2]{#1\left( #2 \right)}
+\newcommand{\cDist}[3]{#1\left( #2 \,\middle|\, #3 \right)}
+\newcommand{\hProb}[2][]{\hat{P}_{#1}\left( #2 \right)}
+\newcommand{\chProb}[2]{\hat{P}\left( #1 \,\middle|\, #2 \right)}
+\newcommand{\Var}[2][]{\operatorname{Var}_{#1}\left[ #2 \right]}
+\newcommand{\sd}[1]{\operatorname{sd}\left( #1 \right)}
+\newcommand{\Exp}[2][]{\mathbb{E}_{#1}\left[ #2 \right]}
+\newcommand{\cExp}[3][]{\mathbb{E}_{#1}\left[ #2 \,\middle|\, #3 \right]}
+\newcommand{\hExp}[2][]{\mathbb{\hat{E}_{#1}}\left[ #2 \right]}
+\newcommand{\chExp}[3][]{\mathbb{\hat{E}}_{#1}\left[ #2 \,\middle|\, #3 \right]}
+\newcommand{\Corr}[1]{\operatorname{Corr}\left[ #1 \right]}
+\newcommand{\Cov}[1]{\operatorname{Cov}\left(#1 \right)}
+\newcommand{\MSE}[2][]{\operatorname{MSE}_{#1}\left[ #2 \right]}
+\newcommand{\riid}{\stackrel{\text{i.i.d.}}{\sim}}
+\newcommand{\approxsim}{\stackrel{\text{approx.}}{\sim}}
+\newcommand{\ind}[1]{\mathbb{1}_{\set{#1}}}
+\newcommand{\eqiid}{\stackrel{\text{\tiny i.i.d.}}{=}}
+\newcommand{\eqind}{\stackrel{\text{\tiny ind.}}{=}}
+
+% BAYESIAN NETWORKS
+\newcommand{\indep}{\perp}
+\newcommand{\given}{\,\,|\,\,}
+\newcommand{\Pa}{\mathbf{Pa}}
+\newcommand{\dsep}[2]{\operatorname{d-sep}\left( #1 \,\middle|\, #2 \right)}
+
+% RANDOM VARIABLES
+\newcommand{\rA}{A}
+\newcommand{\rB}{B}
+\newcommand{\rC}{C}
+\newcommand{\rD}{D}
+\newcommand{\rE}{E}
+\newcommand{\rF}{F}
+\newcommand{\rG}{G}
+\newcommand{\rH}{H}
+\newcommand{\rI}{I}
+\newcommand{\rJ}{J}
+\newcommand{\rK}{K}
+\newcommand{\rL}{L}
+\newcommand{\rM}{M}
+\newcommand{\rN}{N}
+\newcommand{\rO}{O}
+\newcommand{\rP}{P}
+\newcommand{\rQ}{Q}
+\newcommand{\rR}{R}
+\newcommand{\rS}{S}
+\newcommand{\rT}{T}
+\newcommand{\rU}{U}
+\newcommand{\rV}{V}
+\newcommand{\rW}{W}
+\newcommand{\rX}{X}
+\newcommand{\rY}{Y}
+\newcommand{\rZ}{Z}
+
+% RANDOM VECTORS
+% declares a custom italic bold alphabet for random vectors
+\DeclareMathAlphabet{\mathbfit}{OML}{cmm}{b}{it}
+\newcommand{\rvA}{\mathbfit{A}}
+\newcommand{\rvB}{\mathbfit{B}}
+\newcommand{\rvC}{\mathbfit{C}}
+\newcommand{\rvD}{\mathbfit{D}}
+\newcommand{\rvE}{\mathbfit{E}}
+\newcommand{\rvF}{\mathbfit{F}}
+\newcommand{\rvG}{\mathbfit{G}}
+\newcommand{\rvH}{\mathbfit{H}}
+\newcommand{\rvI}{\mathbfit{I}}
+\newcommand{\rvJ}{\mathbfit{J}}
+\newcommand{\rvK}{\mathbfit{K}}
+\newcommand{\rvL}{\mathbfit{L}}
+\newcommand{\rvM}{\mathbfit{M}}
+\newcommand{\rvN}{\mathbfit{N}}
+\newcommand{\rvO}{\mathbfit{O}}
+\newcommand{\rvP}{\mathbfit{P}}
+\newcommand{\rvQ}{\mathbfit{Q}}
+\newcommand{\rvR}{\mathbfit{R}}
+\newcommand{\rvS}{\mathbfit{S}}
+\newcommand{\rvT}{\mathbfit{T}}
+\newcommand{\rvU}{\mathbfit{U}}
+\newcommand{\rvV}{\mathbfit{V}}
+\newcommand{\rvW}{\mathbfit{W}}
+\newcommand{\rvX}{\mathbfit{X}}
+\newcommand{\rvY}{\mathbfit{Y}}
+\newcommand{\rvZ}{\mathbfit{Z}}
+
+% MACHINE LEARNING
+\newcommand{\Risk}[1]{R\left(#1\right)}
+\newcommand{\empRisk}[1]{\widehat{R}\left(#1\right)}
+
+% RECOMMENDER SYSTEMS
+\newcommand{\RHR}[1]{\text{HR@}#1}
+\newcommand{\RDCG}[1]{\text{DCG@}#1}
+\newcommand{\RNDCG}[1]{\text{NDCG@}#1}
+\newcommand{\RHM}[1]{\text{HM@}#1}
+
+% ACCENTS
+% TODO: fix this, make spacing nice
+\newcommand{\Hm}{\mathsf{H}}
+\newcommand{\T}{\mathsf{T}}
+\newcommand{\Rev}{\mathsf{R}}
+\newcommand{\conj}[1]{\overline{ #1 }}
+
+% CUSTOM ALPHABETS
+\renewcommand{\S}{\Sigma}
+\newcommand{\Ss}{\Sigma^*}
+\newcommand{\Sp}{\Sigma^+}
+\newcommand{\Sbool}{\Sigma_{\text{bool}}}
+\newcommand{\Ssbool}{(\Sigma_{\text{bool}})^*}
+\newcommand{\Slogic}{\Sigma_{\text{logic}}}
+\newcommand{\Sslogic}{(\Sigma_{\text{logic}})^*}
+\newcommand{\Slat}{\Sigma_{\text{lat}}}
+\newcommand{\Sslat}{(\Sigma_{\text{lat}})^*}
+\newcommand{\Stastatur}{\Sigma_{\text{Tastatur}}}
+\newcommand{\Sstastatur}{(\Sigma_{\text{Tastatur}})^*}
+\newcommand{\Sm}{\Sigma_{m}}
+\newcommand{\Ssm}{\Sigma_{m}^*}
+\newcommand{\ZO}{\{0,1\}}
+\newcommand{\ZOs}{\{0,1\}^*}
+\newcommand{\hdelta}{\hat\delta}
+
+% OPERATORS
+% TODO: Should I design these as braces?
+\DeclareMathOperator{\id}{\text{id}}
+\DeclareMathOperator{\Kon}{\text{Kon}}
+\DeclareMathOperator{\cost}{\text{cost}}
+\DeclareMathOperator{\goal}{\text{goal}}
+\DeclareMathOperator{\Opt}{\text{Opt}}
+\DeclareMathOperator{\Bin}{\text{Bin}}
+\DeclareMathOperator{\Nummer}{\text{Nummer}}
+\DeclareMathOperator{\Prim}{\text{Prim}}
+\DeclareMathOperator{\Kl}{\text{Kl}}
+\DeclareMathOperator{\lcm}{lcm}
+\DeclareMathOperator{\glb}{glb}
+\DeclareMathOperator{\lub}{lub}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\spn}{span}
+\DeclareMathOperator{\Cost}{Cost}
+\DeclareMathOperator{\order}{order}
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\cond}{cond}
+\DeclareMathOperator{\nnz}{nnz}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Count}{Count}
+\DeclareMathOperator{\Spur}{Spur}
+\DeclareMathOperator{\triu}{triu}
+\DeclareMathOperator{\cumsum}{cumsum}
+\DeclareMathOperator{\vectorize}{vectorize}
+\DeclareMathOperator{\matrixfy}{matrixfy}
+\DeclareMathOperator{\circul}{circul}
+\DeclareMathOperator{\dft}{dft}
+\DeclareMathOperator{\invdft}{invdft}
+\DeclareMathOperator{\ones}{ones}
+\DeclareMathOperator{\arcsinh}{arcsinh}
+\DeclareMathOperator{\arccosh}{arccosh}
+\DeclareMathOperator{\arctanh}{arctanh}
+\let\division\div
+\renewcommand\div{\operatorname{div}}
+\DeclareMathOperator{\rot}{rot}
+\DeclareMathOperator{\cis}{cis}
+\DeclareMathOperator{\grad}{grad}
+\DeclareMathOperator{\Hess}{Hess}
+\newcommand{\laplace}{\Delta}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator{\odd}{odd}
+\DeclareMathOperator{\even}{even}
+\DeclareMathOperator{\Proj}{Proj}
+\DeclareMathOperator{\softmax}{\text{softmax}}
+\DeclareMathOperator{\ReLU}{\text{ReLU}}
+\DeclareMathOperator{\pmi}{\text{pmi}}
+
+% TODO: fix these operator braces
+% TODO: think about which ones should have braces
+% and which one shouldn't. E.g., a function might need derivatives '
+% or it might be used without argument, just in compositions \circ
+\newcommand{\diag}{\text{diag}}
+
+% CRYPTOGRAPHY
+\DeclareMathOperator{\concat}{ || }
+\DeclareMathOperator{\Enc}{Enc}
+\DeclareMathOperator{\Dec}{Dec}
+\DeclareMathOperator{\Gen}{Gen}
+\DeclareMathOperator{\Tag}{Tag}
+\DeclareMathOperator{\Vrfy}{Vrfy}
+\DeclareMathOperator{\MAC}{\text{MAC}}
+\newcommand{\AdvPRG}[2][]{\text{Adv}_{\text{PRG}}\left[ #2 \right]}
+\newcommand{\yes}{\text{yes}}
+\newcommand{\no}{\text{no}}
+\newcommand{\forallPPTTM}{\underset{\mathclap{\substack{\text{\tiny prob. poly-}\\\text{\tiny time TM}}}}{\forall}}
+\newcommand{\forallPTAdv}{\underset{\mathclap{\substack{\text{\tiny poly-time}\\\text{\tiny Adversaries}}}}{\forall}}
+
+% OPERATORS (OVERRIDDEN)
+\renewcommand\Re{\operatorname{Re}}
+\renewcommand\Im{\operatorname{Im}}
+
+% RELATIONS
+\newcommand{\mbeq}{\stackrel{!}{=}}
+\newcommand{\xor}{\mathrel{\text{xor}}}
+\newcommand{\relid}{\mathrel{\id}}
+\newcommand{\relrho}{\mathrel{\rho}}
+\newcommand{\relsigma}{\mathrel{\sigma}}
+\newcommand{\reltheta}{\mathrel{\theta}}
+\newcommand{\relsim}{\mathrel{\sim}}
+\newcommand{\relf}{\mathrel{f}}
+
+% RELATIONS (INVERSES)
+\newcommand{\invrelid}{\mathrel{\widehat{\id}}}
+\newcommand{\invrelrho}{\mathrel{\widehat{\rho}}}
+\newcommand{\invrelsigma}{\mathrel{\widehat{\sigma}}}
+\newcommand{\invreltheta}{\mathrel{\widehat{\theta}}}
+\newcommand{\invrelsim}{\mathrel{\widehat{\sim}}}
+\newcommand{\invrelf}{\mathrel{\widehat{f}}}
+
+% LINEAR TEMPORAL LOGIC (LTL)
+\newcommand{\until}{\texttt{\,\hstretch{0.7}{\boldsymbol{\cup}}\,}}
+\newcommand{\next}{\Circle}
+\newcommand{\eventually}{\Diamond}
+\newcommand{\always}{\square}
+
+% GLOBAL MATRICES AND VECTOR SETTINGS
+\newcommand{\boldm}[1] {\mathversion{bold}#1\mathversion{normal}}
+\newcommand{\mat}[1]{\mathbf{#1}}
+\renewcommand{\vec}[1]{\mathbf{#1}}
+
+% VECTORS (LATIN)
+\newcommand{\va}{\vec{a}}
+\newcommand{\vb}{\vec{b}}
+\newcommand{\vc}{\vec{c}}
+\newcommand{\vd}{\vec{d}}
+\newcommand{\ve}{\vec{e}}
+\newcommand{\vf}{\vec{f}}
+\newcommand{\vg}{\vec{g}}
+\newcommand{\vh}{\vec{h}}
+\newcommand{\vi}{\vec{i}}
+\newcommand{\vj}{\vec{j}}
+\newcommand{\vk}{\vec{k}}
+\newcommand{\vl}{\vec{l}}
+\newcommand{\vm}{\vec{m}}
+\newcommand{\vn}{\vec{n}}
+\newcommand{\vo}{\vec{o}}
+\newcommand{\vp}{\vec{p}}
+\newcommand{\vq}{\vec{q}}
+\newcommand{\vr}{\vec{r}}
+\newcommand{\vs}{\vec{s}}
+\newcommand{\vt}{\vec{t}}
+\newcommand{\vu}{\vec{u}}
+\newcommand{\vv}{\vec{v}}
+\newcommand{\vw}{\vec{w}}
+\newcommand{\vx}{\vec{x}}
+\newcommand{\vy}{\vec{y}}
+\newcommand{\vz}{\vec{z}}
+
+% VECTORS (LATIN) WITH TILDE ACCENT
+\newcommand{\vta}{\widetilde{\vec{a}}}
+\newcommand{\vtb}{\widetilde{\vec{b}}}
+\newcommand{\vtc}{\widetilde{\vec{c}}}
+\newcommand{\vtd}{\widetilde{\vec{d}}}
+\newcommand{\vte}{\widetilde{\vec{e}}}
+\newcommand{\vtf}{\widetilde{\vec{f}}}
+\newcommand{\vtg}{\widetilde{\vec{g}}}
+\newcommand{\vth}{\widetilde{\vec{h}}}
+\newcommand{\vti}{\widetilde{\vec{i}}}
+\newcommand{\vtj}{\widetilde{\vec{j}}}
+\newcommand{\vtk}{\widetilde{\vec{k}}}
+\newcommand{\vtl}{\widetilde{\vec{l}}}
+\newcommand{\vtm}{\widetilde{\vec{m}}}
+\newcommand{\vtn}{\widetilde{\vec{n}}}
+\newcommand{\vto}{\widetilde{\vec{o}}}
+\newcommand{\vtp}{\widetilde{\vec{p}}}
+\newcommand{\vtq}{\widetilde{\vec{q}}}
+\newcommand{\vtr}{\widetilde{\vec{r}}}
+\newcommand{\vts}{\widetilde{\vec{s}}}
+\newcommand{\vtt}{\widetilde{\vec{t}}}
+\newcommand{\vtu}{\widetilde{\vec{u}}}
+\newcommand{\vtv}{\widetilde{\vec{v}}}
+\newcommand{\vtw}{\widetilde{\vec{w}}}
+\newcommand{\vtx}{\widetilde{\vec{x}}}
+\newcommand{\vty}{\widetilde{\vec{y}}}
+\newcommand{\vtz}{\widetilde{\vec{z}}}
+
+% VECTORS (LATIN) WITH HAT ACCENT
+\newcommand{\vha}{\widehat{\vec{a}}}
+\newcommand{\vhb}{\widehat{\vec{b}}}
+\newcommand{\vhc}{\widehat{\vec{c}}}
+\newcommand{\vhd}{\widehat{\vec{d}}}
+\newcommand{\vhe}{\widehat{\vec{e}}}
+\newcommand{\vhf}{\widehat{\vec{f}}}
+\newcommand{\vhg}{\widehat{\vec{g}}}
+\newcommand{\vhh}{\widehat{\vec{h}}}
+\newcommand{\vhi}{\widehat{\vec{i}}}
+\newcommand{\vhj}{\widehat{\vec{j}}}
+\newcommand{\vhk}{\widehat{\vec{k}}}
+\newcommand{\vhl}{\widehat{\vec{l}}}
+\newcommand{\vhm}{\widehat{\vec{m}}}
+\newcommand{\vhn}{\widehat{\vec{n}}}
+\newcommand{\vho}{\widehat{\vec{o}}}
+\newcommand{\vhp}{\widehat{\vec{p}}}
+\newcommand{\vhq}{\widehat{\vec{q}}}
+\newcommand{\vhr}{\widehat{\vec{r}}}
+\newcommand{\vhs}{\widehat{\vec{s}}}
+\newcommand{\vht}{\widehat{\vec{t}}}
+\newcommand{\vhu}{\widehat{\vec{u}}}
+\newcommand{\vhv}{\widehat{\vec{v}}}
+\newcommand{\vhw}{\widehat{\vec{w}}}
+\newcommand{\vhx}{\widehat{\vec{x}}}
+\newcommand{\vhy}{\widehat{\vec{y}}}
+\newcommand{\vhz}{\widehat{\vec{z}}}
+
+% VECTORS (GREEK)
+\newcommand{\valpha}{\boldsymbol{\alpha}}
+\newcommand{\vbeta}{\boldsymbol{\beta}}
+\newcommand{\vgamma}{\boldsymbol{\gamma}}
+\newcommand{\vdelta}{\boldsymbol{\delta}}
+\newcommand{\vepsilon}{\boldsymbol{\epsilon}}
+\newcommand{\vvarepsilon}{\boldsymbol{\varepsilon}}
+\newcommand{\vzeta}{\boldsymbol{\zeta}}
+\newcommand{\veta}{\boldsymbol{\eta}}
+\newcommand{\vtheta}{\boldsymbol{\theta}}
+\newcommand{\viota}{\boldsymbol{\iota}}
+\newcommand{\vkappa}{\boldsymbol{\kappa}}
+\newcommand{\vlambda}{\boldsymbol{\lambda}}
+\newcommand{\vmu}{\boldsymbol{\mu}}
+\newcommand{\vnu}{\boldsymbol{\nu}}
+\newcommand{\vxi}{\boldsymbol{\xi}}
+% omikron is just latin 'o'
+\newcommand{\vpi}{\boldsymbol{\pi}}
+\newcommand{\vrho}{\boldsymbol{\rho}}
+\newcommand{\vsigma}{\boldsymbol{\sigma}}
+\newcommand{\vtau}{\boldsymbol{\tau}}
+\newcommand{\vupsilon}{\boldsymbol{\upsilon}}
+\newcommand{\vphi}{\boldsymbol{\phi}}
+\newcommand{\vvarphi}{\boldsymbol{\varphi}}
+\newcommand{\vchi}{\boldsymbol{\chi}}
+\newcommand{\vpsi}{\boldsymbol{\psi}}
+\newcommand{\vomega}{\boldsymbol{\omega}}
+
+% VECTORS (GREEK) WITH TILDE ACCENT
+\newcommand{\vtalpha}{\widetilde{\valpha}}
+\newcommand{\vtbeta}{\widetilde{\vbeta}}
+\newcommand{\vtgamma}{\widetilde{\vgamma}}
+\newcommand{\vtdelta}{\widetilde{\vdelta}}
+\newcommand{\vtepsilon}{\widetilde{\vepsilon}}
+\newcommand{\vtvarepsilon}{\widetilde{\vvarepsilon}}
+\newcommand{\vtzeta}{\widetilde{\vzeta}}
+\newcommand{\vteta}{\widetilde{\veta}}
+\newcommand{\vttheta}{\widetilde{\vtheta}}
+\newcommand{\vtiota}{\widetilde{\viota}}
+\newcommand{\vtkappa}{\widetilde{\vkappa}}
+\newcommand{\vtlambda}{\widetilde{\vlambda}}
+\newcommand{\vtmu}{\widetilde{\vmu}}
+\newcommand{\vtnu}{\widetilde{\vnu}}
+\newcommand{\vtxi}{\widetilde{\vxi}}
+% omikron is just latin 'o'
+\newcommand{\vtpi}{\widetilde{\vpi}}
+\newcommand{\vtrho}{\widetilde{\vrho}}
+\newcommand{\vtsigma}{\widetilde{\vsigma}}
+\newcommand{\vttau}{\widetilde{\vtau}}
+\newcommand{\vtupsilon}{\widetilde{\vupsilon}}
+\newcommand{\vtphi}{\widetilde{\vphi}}
+\newcommand{\vtvarphi}{\widetilde{\vvarphi}}
+\newcommand{\vtchi}{\widetilde{\vchi}}
+\newcommand{\vtpsi}{\widetilde{\vpsi}}
+\newcommand{\vtomega}{\widetilde{\vomega}}
+
+% VECTORS (GREEK) WITH HAT ACCENT
+\newcommand{\vhalpha}{\widehat{\valpha}}
+\newcommand{\vhbeta}{\widehat{\vbeta}}
+\newcommand{\vhgamma}{\widehat{\vgamma}}
+\newcommand{\vhdelta}{\widehat{\vdelta}}
+\newcommand{\vhepsilon}{\widehat{\vepsilon}}
+\newcommand{\vhvarepsilon}{\widehat{\vvarepsilon}}
+\newcommand{\vhzeta}{\widehat{\vzeta}}
+\newcommand{\vheta}{\widehat{\veta}}
+\newcommand{\vhtheta}{\widehat{\vtheta}}
+\newcommand{\vhiota}{\widehat{\viota}}
+\newcommand{\vhkappa}{\widehat{\vkappa}}
+\newcommand{\vhlambda}{\widehat{\vlambda}}
+\newcommand{\vhmu}{\widehat{\vmu}}
+\newcommand{\vhnu}{\widehat{\vnu}}
+\newcommand{\vhxi}{\widehat{\vxi}}
+% omikron is just latin 'o'
+\newcommand{\vhpi}{\widehat{\vpi}}
+\newcommand{\vhrho}{\widehat{\vrho}}
+\newcommand{\vhsigma}{\widehat{\vsigma}}
+\newcommand{\vhtau}{\widehat{\vthau}}
+\newcommand{\vhupsilon}{\widehat{\vupsilon}}
+\newcommand{\vhphi}{\widehat{\vphi}}
+\newcommand{\vhvarphi}{\widehat{\vvarphi}}
+\newcommand{\vhchi}{\widehat{\vchi}}
+\newcommand{\vhpsi}{\widehat{\vpsi}}
+\newcommand{\vhomega}{\widehat{\vomega}}
+
+% MATRICES (LATIN)
+\newcommand{\MA}{\mat{A}}
+\newcommand{\MB}{\mat{B}}
+\newcommand{\MC}{\mat{C}}
+\newcommand{\MD}{\mat{D}}
+\newcommand{\ME}{\mat{E}}
+\newcommand{\MF}{\mat{F}}
+\newcommand{\MG}{\mat{G}}
+\newcommand{\MH}{\mat{H}}
+\newcommand{\MI}{\mat{I}}
+\newcommand{\MJ}{\mat{J}}
+\newcommand{\MK}{\mat{K}}
+\newcommand{\ML}{\mat{L}}
+\newcommand{\MM}{\mat{M}}
+\newcommand{\MN}{\mat{N}}
+\newcommand{\MO}{\mat{0}}
+\newcommand{\MP}{\mat{P}}
+\newcommand{\MQ}{\mat{Q}}
+\newcommand{\MR}{\mat{R}}
+\newcommand{\MS}{\mat{S}}
+\newcommand{\MT}{\mat{T}}
+\newcommand{\MU}{\mat{U}}
+\newcommand{\MV}{\mat{V}}
+\newcommand{\MW}{\mat{W}}
+\newcommand{\MX}{\mat{X}}
+\newcommand{\MY}{\mat{Y}}
+\newcommand{\MZ}{\mat{Z}}
+
+% MATRICES (LATIN) TILDE
+\newcommand{\MtA}{\widetilde{\mat{A}}}
+\newcommand{\MtB}{\widetilde{\mat{B}}}
+\newcommand{\MtC}{\widetilde{\mat{C}}}
+\newcommand{\MtD}{\widetilde{\mat{D}}}
+\newcommand{\MtE}{\widetilde{\mat{E}}}
+\newcommand{\MtF}{\widetilde{\mat{F}}}
+\newcommand{\MtG}{\widetilde{\mat{G}}}
+\newcommand{\MtH}{\widetilde{\mat{H}}}
+\newcommand{\MtI}{\widetilde{\mat{I}}}
+\newcommand{\MtJ}{\widetilde{\mat{J}}}
+\newcommand{\MtK}{\widetilde{\mat{K}}}
+\newcommand{\MtL}{\widetilde{\mat{L}}}
+\newcommand{\MtM}{\widetilde{\mat{M}}}
+\newcommand{\MtN}{\widetilde{\mat{N}}}
+\newcommand{\MtO}{\widetilde{\mat{0}}}
+\newcommand{\MtP}{\widetilde{\mat{P}}}
+\newcommand{\MtQ}{\widetilde{\mat{Q}}}
+\newcommand{\MtR}{\widetilde{\mat{R}}}
+\newcommand{\MtS}{\widetilde{\mat{S}}}
+\newcommand{\MtT}{\widetilde{\mat{T}}}
+\newcommand{\MtU}{\widetilde{\mat{U}}}
+\newcommand{\MtV}{\widetilde{\mat{V}}}
+\newcommand{\MtW}{\widetilde{\mat{W}}}
+\newcommand{\MtX}{\widetilde{\mat{X}}}
+\newcommand{\MtY}{\widetilde{\mat{Y}}}
+\newcommand{\MtZ}{\widetilde{\mat{Z}}}
+
+% MATRICES (LATIN) HAT
+\newcommand{\MhA}{\widehat{\mat{A}}}
+\newcommand{\MhB}{\widehat{\mat{B}}}
+\newcommand{\MhC}{\widehat{\mat{C}}}
+\newcommand{\MhD}{\widehat{\mat{D}}}
+\newcommand{\MhE}{\widehat{\mat{E}}}
+\newcommand{\MhF}{\widehat{\mat{F}}}
+\newcommand{\MhG}{\widehat{\mat{G}}}
+\newcommand{\MhH}{\widehat{\mat{H}}}
+\newcommand{\MhI}{\widehat{\mat{I}}}
+\newcommand{\MhJ}{\widehat{\mat{J}}}
+\newcommand{\MhK}{\widehat{\mat{K}}}
+\newcommand{\MhL}{\widehat{\mat{L}}}
+\newcommand{\MhM}{\widehat{\mat{M}}}
+\newcommand{\MhN}{\widehat{\mat{N}}}
+\newcommand{\MhO}{\widehat{\mat{0}}}
+\newcommand{\MhP}{\widehat{\mat{P}}}
+\newcommand{\MhQ}{\widehat{\mat{Q}}}
+\newcommand{\MhR}{\widehat{\mat{R}}}
+\newcommand{\MhS}{\widehat{\mat{S}}}
+\newcommand{\MhT}{\widehat{\mat{T}}}
+\newcommand{\MhU}{\widehat{\mat{U}}}
+\newcommand{\MhV}{\widehat{\mat{V}}}
+\newcommand{\MhW}{\widehat{\mat{W}}}
+\newcommand{\MhX}{\widehat{\mat{X}}}
+\newcommand{\MhY}{\widehat{\mat{Y}}}
+\newcommand{\MhZ}{\widehat{\mat{Z}}}
+
+% MATRICES (GREEK)
+\newcommand{\MGamma}{\mat{\Gamma}}
+\newcommand{\MDelta}{\mat{\Delta}}
+\newcommand{\MTheta}{\mat{\Theta}}
+\newcommand{\MLambda}{\mat{\Lambda}}
+\newcommand{\MXi}{\mat{\Xi}}
+\newcommand{\MPi}{\mat{\Pi}}
+\newcommand{\MSigma}{\mat{\Sigma}}
+\newcommand{\MUpsilon}{\mat{\Upsilon}}
+\newcommand{\MPhi}{\mat{\Phi}}
+\newcommand{\MPsi}{\mat{\Psi}}
+\newcommand{\MOmega}{\mat{\Omega}}
+
+% MATRICES (GREEK) TILDE
+\newcommand{\MtGamma}{\widetilde{\MGamma}}
+\newcommand{\MtDelta}{\widetilde{\MDelta}}
+\newcommand{\MtTheta}{\widetilde{\MTheta}}
+\newcommand{\MtLambda}{\widetilde{\MLambda}}
+\newcommand{\MtXi}{\widetilde{\MXi}}
+\newcommand{\MtPi}{\widetilde{\MPi}}
+\newcommand{\MtSigma}{\widetilde{\MSigma}}
+\newcommand{\MtUpsilon}{\widetilde{\MUpsilon}}
+\newcommand{\MtPhi}{\widetilde{\MPhi}}
+\newcommand{\MtPsi}{\widetilde{\MPsi}}
+\newcommand{\MtOmega}{\widetilde{\MOmega}}
+
+% MATRICES (GREEK) HAT
+\newcommand{\MhGamma}{\widehat{\MGamma}}
+\newcommand{\MhDelta}{\widehat{\MDelta}}
+\newcommand{\MhTheta}{\widehat{\MTheta}}
+\newcommand{\MhLambda}{\widehat{\MLambda}}
+\newcommand{\MhXi}{\widehat{\MXi}}
+\newcommand{\MhPi}{\widehat{\MPi}}
+\newcommand{\MhSigma}{\widehat{\MSigma}}
+\newcommand{\MhUpsilon}{\widehat{\MUpsilon}}
+\newcommand{\MhPhi}{\widehat{\MPhi}}
+\newcommand{\MhPsi}{\widehat{\MPsi}}
+\newcommand{\MhOmega}{\widehat{\MOmega}}
+
+% TENSORS (LATIN)
+\DeclareMathAlphabet{\mathsfit}{\encodingdefault}{\sfdefault}{m}{sl}
+\SetMathAlphabet{\mathsfit}{bold}{\encodingdefault}{\sfdefault}{bx}{n}
+\newcommand{\tens}[1]{\bm{\mathsfit{#1}}}
+\newcommand{\TA}{\tens{A}}
+\newcommand{\TB}{\tens{B}}
+\newcommand{\TC}{\tens{C}}
+\newcommand{\TD}{\tens{D}}
+\newcommand{\TE}{\tens{E}}
+\newcommand{\TF}{\tens{F}}
+\newcommand{\TG}{\tens{G}}
+\renewcommand{\TH}{\tens{H}}
+\newcommand{\TI}{\tens{I}}
+\newcommand{\TJ}{\tens{J}}
+\newcommand{\TK}{\tens{K}}
+\newcommand{\TL}{\tens{L}}
+\newcommand{\TM}{\tens{M}}
+\newcommand{\TN}{\tens{N}}
+\newcommand{\TO}{\tens{O}}
+\newcommand{\TP}{\tens{P}}
+\newcommand{\TQ}{\tens{Q}}
+\newcommand{\TR}{\tens{R}}
+\newcommand{\TS}{\tens{S}}
+\newcommand{\TT}{\tens{T}}
+\newcommand{\TU}{\tens{U}}
+\newcommand{\TV}{\tens{V}}
+\newcommand{\TW}{\tens{W}}
+\newcommand{\TX}{\tens{X}}
+\newcommand{\TY}{\tens{Y}}
+\newcommand{\TZ}{\tens{Z}}
+
+% MATRIX SPACING BARS (for representing row/column-vectors)
+\newcommand{\vertbar}{\rule[-1ex]{0.5pt}{4ex}}
+\newcommand{\horzbar}{\rule[.5ex]{4ex}{0.5pt}}
+\newcommand{\svertbar}{\rule[-0.5ex]{0.5pt}{2ex}}
+\newcommand{\veclines}[1]{
+\begin{matrix}
+\svertbar\\
+\displaystyle #1\\
+\svertbar\\
+\end{matrix}
+}
+
+% CUSTOM NUMERICS
+\newcommand{\EPS}{\text{EPS}}
+\DeclareMathOperator{\rd}{rd}
+\newcommand{\op}{\mathbin{\text{op}}}
+\newcommand{\mop}{\mathbin{\widetilde{\text{op}}}}
+
+% CUSTOM CALCULUS
+\newcommand{\evalat}[2]{\left. #1 \right|_{#2}}
+\newcommand{\evalint}[3]{\left. #1 \right|_{#2}^{#3}}
+\newcommand{\fpartial}[2]{\frac{\partial #1}{\partial #2}}
+
+% TILDE CHARACTERS
+\newcommand{\wta}{\widetilde{a}}
+\newcommand{\wtb}{\widetilde{b}}
+\newcommand{\wtc}{\widetilde{c}}
+\newcommand{\wtd}{\widetilde{d}}
+\newcommand{\wte}{\widetilde{e}}
+\newcommand{\wtf}{\widetilde{f}}
+\newcommand{\wtg}{\widetilde{g}}
+\newcommand{\wth}{\widetilde{h}}
+\newcommand{\wti}{\widetilde{i}}
+\newcommand{\wtj}{\widetilde{j}}
+\newcommand{\wtk}{\widetilde{k}}
+\newcommand{\wtl}{\widetilde{l}}
+\newcommand{\wtm}{\widetilde{m}}
+\newcommand{\wtn}{\widetilde{n}}
+\newcommand{\wto}{\widetilde{o}}
+\newcommand{\wtp}{\widetilde{p}}
+\newcommand{\wtq}{\widetilde{q}}
+\newcommand{\wtr}{\widetilde{r}}
+\newcommand{\wts}{\widetilde{s}}
+\newcommand{\wtt}{\widetilde{t}}
+\newcommand{\wtu}{\widetilde{u}}
+\newcommand{\wtv}{\widetilde{v}}
+\newcommand{\wtw}{\widetilde{w}}
+\newcommand{\wtx}{\widetilde{x}}
+\newcommand{\wty}{\widetilde{y}}
+\newcommand{\wtz}{\widetilde{z}}
+\newcommand{\wtA}{\widetilde{A}}
+\newcommand{\wtB}{\widetilde{B}}
+\newcommand{\wtC}{\widetilde{C}}
+\newcommand{\wtD}{\widetilde{D}}
+\newcommand{\wtE}{\widetilde{E}}
+\newcommand{\wtF}{\widetilde{F}}
+\newcommand{\wtG}{\widetilde{G}}
+\newcommand{\wtH}{\widetilde{H}}
+\newcommand{\wtI}{\widetilde{I}}
+\newcommand{\wtJ}{\widetilde{J}}
+\newcommand{\wtK}{\widetilde{K}}
+\newcommand{\wtL}{\widetilde{L}}
+\newcommand{\wtM}{\widetilde{M}}
+\newcommand{\wtN}{\widetilde{N}}
+\newcommand{\wtO}{\widetilde{O}}
+\newcommand{\wtP}{\widetilde{P}}
+\newcommand{\wtQ}{\widetilde{Q}}
+\newcommand{\wtR}{\widetilde{R}}
+\newcommand{\wtS}{\widetilde{S}}
+\newcommand{\wtT}{\widetilde{T}}
+\newcommand{\wtU}{\widetilde{U}}
+\newcommand{\wtV}{\widetilde{V}}
+\newcommand{\wtW}{\widetilde{W}}
+\newcommand{\wtX}{\widetilde{X}}
+\newcommand{\wtY}{\widetilde{Y}}
+\newcommand{\wtZ}{\widetilde{Z}}
+
+% HAT CHARACTERS
+\newcommand{\wha}{\widehat{a}}
+\newcommand{\whb}{\widehat{b}}
+\newcommand{\whc}{\widehat{c}}
+\newcommand{\whd}{\widehat{d}}
+\newcommand{\whe}{\widehat{e}}
+\newcommand{\whf}{\widehat{f}}
+\newcommand{\whg}{\widehat{g}}
+\newcommand{\whh}{\widehat{h}}
+\newcommand{\whi}{\widehat{i}}
+\newcommand{\whj}{\widehat{j}}
+\newcommand{\whk}{\widehat{k}}
+\newcommand{\whl}{\widehat{l}}
+\newcommand{\whm}{\widehat{m}}
+\newcommand{\whn}{\widehat{n}}
+\newcommand{\who}{\widehat{o}}
+\newcommand{\whp}{\widehat{p}}
+\newcommand{\whq}{\widehat{q}}
+\newcommand{\whr}{\widehat{r}}
+\newcommand{\whs}{\widehat{s}}
+\newcommand{\wht}{\widehat{t}}
+\newcommand{\whu}{\widehat{u}}
+\newcommand{\whv}{\widehat{v}}
+\newcommand{\whw}{\widehat{w}}
+\newcommand{\whx}{\widehat{x}}
+\newcommand{\why}{\widehat{y}}
+\newcommand{\whz}{\widehat{z}}
+\newcommand{\whA}{\widehat{A}}
+\newcommand{\whB}{\widehat{B}}
+\newcommand{\whC}{\widehat{C}}
+\newcommand{\whD}{\widehat{D}}
+\newcommand{\whE}{\widehat{E}}
+\newcommand{\whF}{\widehat{F}}
+\newcommand{\whG}{\widehat{G}}
+\newcommand{\whH}{\widehat{H}}
+\newcommand{\whI}{\widehat{I}}
+\newcommand{\whJ}{\widehat{J}}
+\newcommand{\whK}{\widehat{K}}
+\newcommand{\whL}{\widehat{L}}
+\newcommand{\whM}{\widehat{M}}
+\newcommand{\whN}{\widehat{N}}
+\newcommand{\whO}{\widehat{O}}
+\newcommand{\whP}{\widehat{P}}
+\newcommand{\whQ}{\widehat{Q}}
+\newcommand{\whR}{\widehat{R}}
+\newcommand{\whS}{\widehat{S}}
+\newcommand{\whT}{\widehat{T}}
+\newcommand{\whU}{\widehat{U}}
+\newcommand{\whV}{\widehat{V}}
+\newcommand{\whW}{\widehat{W}}
+\newcommand{\whX}{\widehat{X}}
+\newcommand{\whY}{\widehat{Y}}
+\newcommand{\whZ}{\widehat{Z}}
+
+% ARGUMENT DOT
+\newcommand{\argdot}{\,\cdot\,}
+
+% QUANTUM MECHANICS
+\newcommand{\gates}[1]{\stackrel{#1}{\longrightarrow}}
+\newcommand{\sbell}{\ket{\psi_{\text{Bell}}}}
+
+% GYROSPACES
+\newcommand{\vzero}{\mathbf{0}}
+\newcommand{\gyr}{\operatorname{gyr}}
+
+% ABSTRACT ALGEBRA
+\newcommand{\Aut}{\operatorname{Aut}}
+$$
+</p>
+
+</head>
+<body>
+  <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top" style="background: black; border: none;">
+    <div class="container-fluid">
+
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <!-- Logo -->
+            <!-- <a class="navbar-brand mr-0 mr-md-2" href="/" aria-label="Bootstrap" style="margin-top: -8px;"><img src="/img/A-circle.png" style="width: 36px;"></a> -->
+            <a class="navbar-brand" href="/">Andreas Bloch</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+            
+            
+                
+                
+                    <li><a href="/">ML Blog</a></li>
+                
+                
+            
+                
+                
+                    <li><a href="/summaries/">Summaries</a></li>
+                
+                
+            
+                
+                
+                    <li><a href="/about/">About Me & CV</a></li>
+                
+                
+            
+                
+            
+                
+            
+                
+                
+                
+            
+            </ul>
+        </div>
+    </div>
+</nav>
+  <!-- Post Header -->
+<!--
+<header class="intro-header" style="position: relative; background-image: url('//img/2019-10-15-Stochastic-Gradient-Descent-on-Riemannian-Manifolds/rsgd-preview.svg');">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>Stochastic Gradient Descent on Riemannian Manifolds</h1>
+                    
+                    <span class="meta">Posted by Andreas Bloch under the assistance of Octavian Ganea and Gary Bécigneul on October 15, 2019</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+-->
+
+<!-- Post Content -->
+<article style="padding-top: 125px;">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post">
+          <h1 style="text-align: center; font-size: 36px; padding-bottom: 1em;">Stochastic Gradient Descent on Riemannian Manifolds</h1>
+          <div class="post-author">Posted by Andreas Bloch under the assistance of Octavian Ganea and Gary Bécigneul on October 15, 2019</div>
+          <!-- The .md content of the post-->
+          <p>In this blogpost I’ll explain how Stochastic Gradient Descent (SGD) is generalized to the 
+optimization of loss functions on Riemannian manifolds. 
+First, I’ll give an overview of the kind of problems that are suited for Riemannian 
+optimization. Then, I’ll explain how <em>Riemannian Stochastic Gradient Descent (RSGD)</em> works 
+in detail and I’ll also show how RSGD is performed in the case where the Riemannian manifold of 
+interest is a product space of several Riemannian manifolds. If you’re already experienced 
+with SGD and you’re just about getting started with Riemannian optimization this blogpost is 
+exactly what you were looking for.</p>
+
+<h2 id="typical-riemannian-optimization-problems">Typical Riemannian Optimization Problems</h2>
+
+<p>Let’s first consider the properties of optimization problems that we’d
+typically want to solve through Riemannian optimization. Riemannian optimization 
+is particularly well-suited for problems where we want to optimize a loss function</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align*}
+\cL\colon\cM&\to\R
+\\
+\vtheta&\mapsto\cL(\vtheta)
+\end{align*} %]]></script>
+
+<p>that is defined on a <em>Riemannian manifold</em> $(\cM,g)$. This means that
+the optimization problem <em>requires</em> that the optimized parameters $\vtheta\in\cM$ 
+lie on the “smooth surface” of a Riemannian manifold $(\cM,g)$. One can easily
+think of constrained optimization problems where the constraint can be described through
+points lying on a Riemannian manifold (e.g., the parameters must lie on a sphere, the parameters
+must be a rotation matrix, …). Riemannian optimization then gives us the possibilty
+of turning a constrained optimization problem into an unconstrained one that 
+can be naturally solved via Riemannian optimization.</p>
+
+<p>So, in Riemannian optimization we’re interested in finding an optimal solution $\vtheta^*$ for our 
+parameters</p>
+
+<script type="math/tex; mode=display">\vtheta^*\in\argmin_{\vtheta} \cL(\vtheta)</script>
+
+<p>that lie on a Riemannian manifold. The following two figures illustrate the heatmaps 
+of some non-convex loss functions, that are defined on an Euclidean and spherical 
+Riemannian manifold.</p>
+
+<div class="figure-with-caption">
+<img src="/img/2019-10-15-Stochastic-Gradient-Descent-on-Riemannian-Manifolds/heatmap-plane.png?v=1" alt="Heatmap of loss function defined on the Euclidean plane" width="70%" />
+<div class="figure-caption" style="text-align:center">
+Heatmap of a loss function $\cL$ defined on the Euclidean plane
+</div>
+</div>
+
+<div class="figure-with-caption">
+<img src="/img/2019-10-15-Stochastic-Gradient-Descent-on-Riemannian-Manifolds/heatmap-sphere.png?v=1" alt="Heatmap of loss function a spherical manifold" width="40%" />
+<div class="figure-caption" style="text-align:center">
+Heatmap of a loss function $\cL$ defined on a spherical manifold
+</div>
+</div>
+
+<p>Similarly as with SGD in Euclidean vector spaces, in Riemannian optimization we want
+to perform a gradient-based descent on the surface of the manifold. The gradient steps should 
+also be based on the gradients of the loss fuction $\cL$, such that we finally find some
+parameters $\vtheta^*$ that hopefully lie at a global minimum of the loss.</p>
+
+<h2 id="whats-different-with-sgd-on-riemannian-manifolds">What’s Different with SGD on Riemannian Manifolds</h2>
+
+<p>Let’s first look at what makes RSGD different from the usual SGD in the 
+Euclidean vector spaces. Actually, RSGD just works like SGD when applied to our well-known
+Euclidean vector spaces, because RSGD is just a generalization of SGD to arbitrary 
+Riemannian manifolds.</p>
+
+<p>Indeed, the Euclidean vector space $\R^n$ can be interpreted as a Riemannian 
+manifold $(\R^n, g_{ij})$, known as the <em>Euclidean manifold</em>, with the 
+metric $g_{ij}=\delta_{ij}$. When using our usual SGD to optimize a loss function defined over 
+the Euclidean manifold $\R^n$, we iteratively compute the following gradients and 
+gradient updates on minibatches in order to hopefully converge to an optimal solution:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align*}
+\nabla_{\vtheta}\cL(\vtheta)&=\left(\fpartial{\cL(\theta)}{\theta_i}\right)_{i=1}^d,
+\\
+\vtheta^{(t+1)}&\gets\vtheta^{(t)}-\eta_t\nabla_{\vtheta}\cL(\vtheta^{(t)}).
+\end{align*} %]]></script>
+
+<p>Now, in some optimization problems the solution space, or solution manifold $\cM$, 
+might have a structure that is different from the Euclidean manifold. Let’s consider 
+two examples of optimization problems that can be captured as Riemannian optimization
+problems and let’s have a look at the challenges that arise in the gradient updates:</p>
+
+<ol>
+  <li>
+    <p><strong>Points on a Sphere:</strong> The optimization problem may require that the 
+parameters $\vtheta=(x,y,z)$ lie on a 2D-spherical manifold of radius 1 that 
+is embedded in 3D ambient space. The corresponding Riemannian manifold $(\cM,g)$ would 
+then be</p>
+
+    <script type="math/tex; mode=display">% <![CDATA[
+\begin{align*}
+\cM&=\sdset{\vtheta\in\R^{3}}{\norm{\vtheta}_2=1},
+\\
+g&=\MI.
+\end{align*} %]]></script>
+
+    <p>In this case we have a loss function $\cL\colon\cM\to\R$ that gives 
+us the loss for any point (or parameter) $\vtheta$ on the sphere $\cM$. 
+Our machine learning framework might then automatically provide us with the 
+derivatives of the loss</p>
+
+    <script type="math/tex; mode=display">\vh(\vtheta^{(t)})
+=
+\left(
+\fpartial{\cL(\vtheta^{(t)})}{x},
+\fpartial{\cL(\vtheta^{(t)})}{y},
+\fpartial{\cL(\vtheta^{(t)})}{z}
+\right)</script>
+
+    <p>evaluated at our current parameters $\vtheta^{(t)}$. But now, how are we going about 
+updating the parameters $\vtheta^{(t)}$ with $\vh(\vtheta^{(t)})$? We can’t 
+just use our well-known update-rule of SGD for Euclidean vector spaces, since 
+we’re not guaranteed that the update rule</p>
+
+    <script type="math/tex; mode=display">\vtheta^{(t+1)}\gets\vtheta^{(t)}-\eta_t\vh(\vtheta^{(t)})</script>
+
+    <p>yields a valid update $\vtheta^{(t+1)}$ that lies on the surface of spherical 
+manifold $\cM$. Before seeing how this can be solved through Riemannian optimization,
+let’s first consider another example where we encounter a similar issue.</p>
+  </li>
+  <li>
+    <p><strong>Doubly-Stochastic Matrices:</strong> One may also think of a more complicated
+optimization problem, where the parameters $\vtheta$ must be a square matrix with positive 
+coefficients such that the coefficients of every row and column sum up to 1.
+It turns out that this solution space $\cM$ also represents a Riemannian manifold,
+having thus a smooth “surface” and a metric $g_{\MX}$ that smoothly varies with $\MX$.
+This Riemannian manifold $(\cM,g_{\MX})$ is the manifold of so-called <em>doubly-stochastic 
+matrices</em> <a class="citation" href="#douik2018manifold">[1]</a>, given by:</p>
+
+    <script type="math/tex; mode=display">% <![CDATA[
+\begin{align*}
+\cM&=\dset{\MX\in\R^{d\times d}}{
+\begin{array}{rl}
+\forall i,j\in\set{1,\ldots,d}\colon 
+&X_{ij}\geq 0,
+\\
+\forall i\in\set{1,\ldots,d}\colon 
+&\sum_{k=1}^d X_{ik}=\sum_{k=1}^d X_{ki} = 1.
+\end{array}
+},
+\\
+g_{\MX}&=\Tr{(\MA\oslash\MX)\MB^\T}.
+\end{align*} %]]></script>
+
+    <p>Again, our machine learning framework may give us the derivatives of the 
+loss w.r.t. each of the parameter matrix’ coefficients and evaluate it at our 
+current parameters $\vtheta^{(t)}$:</p>
+
+    <script type="math/tex; mode=display">\MH(\vtheta^{(t)})
+=
+\left(
+\fpartial{\cL(\vtheta)}{X_{ij}}
+\right)_{i,j=1}^{d}.</script>
+
+    <p>Again, the simple gradient-update rule of SGD for parameters in Euclidean 
+vector spaces</p>
+
+    <script type="math/tex; mode=display">\vtheta^{(t+1)}\gets\vtheta^{(t)}-\eta_t\MH(\vtheta^{(t)})</script>
+
+    <p>would not guarantee us that the update always yields a matrix $\vtheta^{(t+1)}$ with 
+nonnegative coefficients whose rows and columns sum up to 1.</p>
+  </li>
+</ol>
+
+<p>In both examples we saw that the simple SGD update-rule for Euclidean vector spaces is 
+insufficient to guarantee the validity of the updated parameters. So now the question is, 
+how can we perform valid gradient updates to parameters that are defined on arbitrary 
+Riemannian manifolds? – That’s exactly where Riemannian optimization comes in, which we’ll
+look at next!</p>
+
+<h2 id="performing-gradient-steps-on-riemannian-manifolds">Performing Gradient Steps on Riemannian Manifolds</h2>
+
+<p>In the “curved” spaces of Riemannian manifolds the gradient updates 
+ideally should follow the “curved” geodesics instead of just following straight 
+lines as done in SGD for parameters on our familiar Euclidean manifold $\bbR^n$. 
+To this end, the seminal work of Bonnabel <a class="citation" href="#bonnabel">[2]</a> introduced 
+<em>Riemannian Stochastic Gradient Descent (RSGD)</em> that generalizes SGD to Riemannian manifolds.
+In what follows I’ll explain and illustrate how this technique works.</p>
+
+<p>Let’s now assume that we have a typical Riemannian optimization problem, e.g., one of the
+two mentioned previously, where the solution space is given by an arbitrary 
+$d$-dimensional Riemannian manifold $(\cM, g)$ and we’re interested in finding an optimal solution 
+of a loss function $\cL\colon\cM\to\cR$, that is defined for any parameters $\vtheta$ on the 
+Riemannian manifold. Let $\vtheta^{(t)}\in\cM$ denote our current set of parameters at
+timestep $t$. A gradient-step is then performed through the application of the following three 
+steps:</p>
+
+<ol>
+  <li>
+    <p>Evaluate the gradient of $\cL$ w.r.t. the parameters $\vtheta$ at $\vtheta^{(t)}$.</p>
+  </li>
+  <li>
+    <p>Orthogonally project the gradient onto the tangent space $\cT_{\vtheta^{(t)}}\cM$ to get
+the tangent vector $\vv$, pointing in the direction of steepest ascent of $\cL$.</p>
+  </li>
+  <li>
+    <p>Perform a gradient-step on the surface of the manifold in the negative direction of the tangent 
+vector $\vv$, to get the updated parameters.</p>
+  </li>
+</ol>
+
+<p>We’ll now look at these steps in more detail in what follows.</p>
+
+<h3 id="computation-of-gradient-wrt-current-parameters">Computation of Gradient w.r.t. Current Parameters</h3>
+
+<p>In order to minimize our loss function $\cL$, we first have to determine
+the gradient. The gradient w.r.t. our parameters $\vtheta$, evaluated
+at our current parameters $\vtheta^{(t)}$, is computed as follows:</p>
+
+<script type="math/tex; mode=display">\vh:=
+\nabla_{\vtheta}\cL(\vtheta^{(t)}) 
+= 
+\vg^{-1}_{\vtheta^{(t)}}
+\fpartial{\cL(\vtheta^{(t)})}{\vtheta}.</script>
+
+<p>The computation and evaluation of the derivatives $\fpartial{\cL(\vtheta^{(t)})}{\vtheta}$ is 
+usually just performed automatically through the auto-differentiation functionality of our 
+machine learning framework of choice. However, the multiplication with the 
+inverse metric $\vg^{-1}_{\vtheta^{(t)}}$ usually has to be done manually in order to 
+obtain the correct quantity for the gradient $\nabla_{\vtheta}\cL(\vtheta^{(t)})$.</p>
+
+<p>If that should be new to you that we have to multiply the partial derivatives
+by the inverse of the metric tensor $\vg^{-1}_{\vtheta^{(t)}}$ to obtain the
+gradient then don’t worry too much about that now. Let me just tell you
+that, actually, that’s how the gradient is defined in general. The reason you 
+might have never come across this multiplication by the inverse metric tensor 
+is that for the usual Euclidean vector space, with the usual Cartesian coordinate 
+system, the inverse metric tensor $\vg^{-1}$ just simplifies to the identity matrix $\MI$, 
+and is therefore usually omitted for convenience.</p>
+
+<p>The reason behind the multiplication by the inverse metric tensor is that
+we want the gradient to be a vector that is <em>invariant</em> under the choice
+of a specific coordinate system. Furthermore, it should satisfy 
+the following two properties that we already know from the gradient in Euclidean 
+vector spaces:</p>
+
+<ul>
+  <li>
+    <p>The gradient evaluated at $\vtheta^{(t)}$ points into the direction of
+steepest ascent of $\cL$ at $\vtheta^{(t)}$.</p>
+  </li>
+  <li>
+    <p>The norm of the gradient at $\vtheta^{(t)}$ is equal to the
+value of the directional derivative in a unit vector of the gradient’s direction.</p>
+  </li>
+</ul>
+
+<p>Explaining the reasons behind the multiplication with $\vg^{-1}_{\vtheta^{(t)}}$ in more detail
+would explode the scope of this blogbost. However, in case you should want to learn more about 
+this, I highly recommend that you have a look  at 
+<a href="https://www.youtube.com/watch?v=e0eJXttPRZI&amp;list=PLlXfTHzgMRULkodlIEqfgTS-H1AY_bNtq&amp;index=1">
+Pavel Grinfield’s valuable lectures on tensor calculus</a> (until 
+Lesson 5a for the gradient), where you can learn the reasons behind the 
+multiplication with the inverse metric tensor in a matter of a few hours.</p>
+
+<h3 id="orthogonal-projection-of-gradient-onto-tangent-space">Orthogonal Projection of Gradient onto Tangent Space</h3>
+
+<p>Since the previously computed gradient $\vh=\nabla_{\vtheta}\cL(\vtheta^{(t)})$ may be lying 
+just somewhere in ambient space, we first have to determine the component of $\vh$ that lies in 
+the tangent space at $\vtheta^{(t)}$. The situation is illustrated in the figure below, where 
+we can see our manifold $\cM$, the gradient $\vh$ lying in the ambient space, and the tangent 
+space $\cT_{\vtheta^{(t)}}\cM$, which represents a first-order approximation of the manifold’s 
+surface around our current parameters $\vtheta^{(t)}$.</p>
+
+<div class="figure-with-caption">
+<img src="/img/2019-10-15-Stochastic-Gradient-Descent-on-Riemannian-Manifolds/rsgd-steps/orthogonal-projection-of-gradient-onto-tangent-space.png?v=1" alt="Orthogonal Projection of Gradient onto Tangent Space" width="70%" />
+<div class="figure-caption" style="text-align:center">
+Orthogonal Projection of Gradient $\vh=\nabla_{\vtheta}\cL(\vtheta^{(t)})$ 
+onto Tangent Space $\cT_{\vtheta^{(t)}}\cM$
+</div>
+</div>
+
+<p>The component of $\vh$ that lies in $\cT_{\vtheta^{(t)}}\cM$ is determined through
+the orthogonal projection of $\vh$ from the ambient space onto the tangent space 
+$\cT_{\vtheta^{(t)}}\cM$:</p>
+
+<script type="math/tex; mode=display">\vv=\proj_{\cT_{\vtheta^{(t)}}\cM}(\vh).</script>
+
+<p>Depending on the chosen representation for the manifold $\cM$ it might even be that 
+the orthogonal projection is not even necessary, e.g., in the case where any tangent 
+space is always equal to the ambient space.</p>
+
+<h3 id="gradient-step-from-tangent-vector">Gradient Step from Tangent Vector</h3>
+
+<p>Having determined the direction of steepest increase $\vv$ of $\cL$ in the tangent space
+$\cT_{\vtheta^{(t)}}\cM$ we can now use it to perform a gradient step. As with 
+the usual SGD, we want to take a step in the <em>negative</em> gradient direction in order
+to hopefully <em>decrease</em> the loss. Thus, in the tangent space, we take a step in the 
+direction of $-\eta_t\vv$, where $\eta_t$ is our learning rate, and obtain
+the point $-\eta_t\vv$ in the tangent space $\cT_{\vtheta^{(t)}}$.</p>
+
+<p>Recall, that the tangent space $\cT_{\vtheta^{(t)}}$ represents a first-order 
+approximation of the manifold’s smooth surface at the point $\vtheta^{(t)}$. Hence,
+the vector $-\eta_t\vv\in\cT_{\vtheta^{(t)}}$ is in a direct correspondence with the 
+point $\vtheta^{(t+1)}\in\cM$ that we’d like to reach through our gradient update. The mapping 
+which maps tangent vectors to their corresponding points on the manifold is exactly the 
+exponential map. Thus, we may just map $-\eta_t\vv$ to $\vtheta^{(t+1)}$ via the exponential map
+to perform our gradient update:</p>
+
+<script type="math/tex; mode=display">\vtheta^{(t+1)}
+=
+\exp_{\vtheta^{(t)}}(-\eta_t\vv).</script>
+
+<p>The gradient-step is illustrated in the figure below. As one can observe, the exponential 
+map is exactly what makes the parameters stay on the surface and also what forces 
+gradient updates to follow the curved geodesics of the manifold.</p>
+
+<div class="figure-with-caption">
+<img src="/img/2019-10-15-Stochastic-Gradient-Descent-on-Riemannian-Manifolds/rsgd-steps/gradient-step-via-expmap.png?v=1" alt="Orthogonal Projection of Gradient onto Tangent Space" width="70%" />
+<div class="figure-caption" style="text-align:center">
+Gradient Step via Exponential Map
+</div>
+</div>
+
+<p>Another equivalent way of seeing the gradient update is the following: The mapping 
+which moves the point $\vtheta^{(t)}\in\cM$ in the initial direction $-\vv$
+along a geodesic of length $\norm{\eta_t\vv}_{\vtheta^{(t)}}$ is exactly the 
+exponential map $\exp_{\vtheta^{(t)}}(\argdot)$.</p>
+
+<p>Sometimes, as mentioned by Bonnabel in <a class="citation" href="#bonnabel">[2]</a>, for computational 
+efficiency reasons or when it’s hard to solve the differential equations to obtain the 
+exponential map, the gradient step is also approximated through the retraction $\cR_{\vx}(\vv)$:</p>
+
+<script type="math/tex; mode=display">\cR_{\vx}(\vv):=\proj_{\cM}(\vx+\vv),</script>
+
+<p>where the function $\proj_\cM$ is the orthogonal projection from the ambient space (that
+includes the tangent space) onto the manifold $\cM$. Hence, the retraction represents a 
+first-order approximation of the exponential map. The possible differences between parameter 
+updates through the exponential map and the retraction are illustrated in the figure below:</p>
+
+<div class="figure-with-caption">
+<img src="/img/2019-10-15-Stochastic-Gradient-Descent-on-Riemannian-Manifolds/rsgd-steps/expmap-vs-retraction.png?v=2" alt="Exponential Map VS Retraction" width="70%" />
+<div class="figure-caption" style="text-align:center">
+Exponential Map VS Retraction
+</div>
+</div>
+
+<p>As one can see the retraction first follows a straight line in the tangent space and then 
+orthogonally projects the point in the tangent space onto the manifold. The exponential map 
+instead performs exact updates along to the manifold’s curved geodesics with a geodesic length
+that corresponds to the tangent space norm of the tangent vector $-\eta_t\vv$. Therefore, the 
+different update methods may lead to different parameter updates. Which one is better to use depends on the 
+specific manifold, the computational cost of the exponential map, the size of the gradient-steps 
+and the behaviour of the loss function.</p>
+
+<p>To summarize, all we need to perform RSGD is 1) the inverse of the metric tensor, 2) 
+the formula for the orthogonal projection onto tangent spaces, and 3) the exponential map
+or the retraction to map tangent vectors to corresponding points on the manifold.
+The formulas for the steps 1)-3) vary from manifold to manifold and can usually
+be found in papers or other online resources. Here are few resources, that give the concrete 
+formulas for some useful manifolds:</p>
+
+<ul>
+  <li>
+    <p><strong>Poincaré Ball:</strong>
+<a href="https://papers.nips.cc/paper/7213-poincare-embeddings-for-learning-hierarchical-representations.pdf">
+Nickel, Maximillian, and Douwe Kiela. “Poincaré embeddings for learning hierarchical 
+representations.” Advances in neural information processing systems. 2017.
+</a></p>
+  </li>
+  <li>
+    <p><strong>Sphere &amp; Hyperboloid:</strong> 
+<a href="http://eprints.whiterose.ac.uk/78407/1/SphericalFinal.pdf">
+Wilson, Richard C., et al. “Spherical and hyperbolic embeddings of data.” IEEE transactions on 
+pattern analysis and machine intelligence 36.11 (2014): 2255-2269.
+</a></p>
+  </li>
+  <li>
+    <p><strong>Birkhoff Polytope:</strong>
+<a href="http://openaccess.thecvf.com/content_CVPR_2019/papers/Birdal_Probabilistic_Permutation_Synchronization_Using_the_Riemannian_Structure_of_the_Birkhoff_CVPR_2019_paper.pdf">
+Birdal, Tolga, and Umut Simsekli. “Probabilistic Permutation Synchronization using the 
+Riemannian Structure of the Birkhoff Polytope.” Proceedings of the IEEE Conference on Computer 
+Vision and Pattern Recognition. 2019.
+</a></p>
+  </li>
+  <li>
+    <p><strong>Grassmannian Manifold:</strong>
+<a href="https://arxiv.org/pdf/1808.02229.pdf">
+Zhang, Jiayao, et al. “Grassmannian learning: Embedding geometry awareness in shallow and deep 
+learning.” arXiv preprint arXiv:1808.02229 (2018).
+</a></p>
+  </li>
+  <li>
+    <p><strong>Several other Matrix Manifolds:</strong>
+<a href="https://www.researchgate.net/profile/Rodolphe_Sepulchre/publication/220693013_Optimization_Algorithms_on_Matrix_Manifolds/links/09e4150b8678c0da06000000/Optimization-Algorithms-on-Matrix-Manifolds.pdf">
+Absil, P-A., Robert Mahony, and Rodolphe Sepulchre. Optimization algorithms on matrix manifolds. 
+Princeton University Press, 2009.
+</a></p>
+  </li>
+</ul>
+
+<h2 id="riemannian-sgd-on-products-of-riemannian-manifolds">Riemannian SGD on Products of Riemannian Manifolds</h2>
+
+<p>Since Cartesian products of Riemannian manifolds are again Riemannian manifolds, RSGD can also
+be applied in these product spaces. In this case, let $(\cP,\vg)$ be a product of $n$ Riemannian 
+manifolds $(\cM_i,\vg_i)_{i=1}^n$, and let $\vg$ be the induced product metric:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\cP:=\cM_1\times\cdots\times\cM_n,
+\qquad
+\vg:=\begin{pmatrix}
+\vg_1 & & \\
+& \ddots & \\
+& & \vg_n
+\end{pmatrix}. %]]></script>
+
+<p>Furthermore, let the optimization problem on $\cP$ be</p>
+
+<script type="math/tex; mode=display">\vtheta^*=\argmin_{\vtheta\in\cP}\cL(\vtheta).</script>
+
+<p>Then, the nice thing with product spaces is that the exponential map in the product 
+space $\cP$ simply decomposes into the concatenation of the exponential maps of the 
+individual factors $\cM_i$. Similarly, the orthogonal projection and the gradient 
+computations also decompose into the corresponding individual operations on the 
+product’s factors. Hence, RSGD on products of Riemannian manifolds is simply achieved 
+by performing the aforementioned gradient-step procedure separately for each of the manifold’s 
+factors. A concrete algorithm for product spaces is given in the algorithm below:</p>
+
+<p><img src="/img/2019-10-15-Stochastic-Gradient-Descent-on-Riemannian-Manifolds/rsgd-algo.svg?v=5" alt="RSGD Algorithm" width="100%" style="margin-top:40px;margin-bottom:40px;" /></p>
+
+<h2 id="riemannian-adaptive-optimization-methods">Riemannian Adaptive Optimization Methods</h2>
+
+<p>The successful applications of Riemannian manifolds in machine learning impelled Gary 
+Bécigneul and Octavian Ganea to further generalize adaptive optimization algorithms such 
+as ADAM, ADAGRAD and AMSGRAD to products of Riemannian manifolds. For the details of the adaptive
+optimization methods I refer you to their paper <a class="citation" href="#riemannianadaptive">[3]</a>. A ready-to-use pytorch implementation of their proposed optimization algorithms, along with 
+the implementation of several manifolds, has been published on github by Maxim Kochurov in his 
+geometric optimization library called geoopt:</p>
+
+<ul>
+  <li>
+    <p><a href="https://github.com/geoopt/geoopt/blob/master/geoopt/optim/rsgd.py">Riemannian SGD</a></p>
+  </li>
+  <li>
+    <p><a href="https://github.com/geoopt/geoopt/blob/master/geoopt/optim/radam.py">Riemannian ADAM</a></p>
+  </li>
+</ul>
+
+<p>We’ll use the Riemannian ADAM (RADAM) in the code-example that follows in order to see
+how to perform Riemannian optimization in product spaces with geoopt.</p>
+
+<h2 id="code-example-for-riemannian-optimization-in-product-spaces">Code Example for Riemannian Optimization in Product Spaces</h2>
+
+<p>Here’s a simple code example that shows how to perform Riemannian optimization in
+a product space. In this example, we’ll optimize the embedding of a graph $G$
+that is a <em>cycle</em> of $n=20$ nodes such that their original graph-distances $d_G(x_i,x_j)$ are 
+preserved as well as possible in the geodesic distances $d_{\cP}(x_i,x_j)$ of the arrangement of 
+the embeddings in the product space $\cP$. The product space that we’ll choose in our example is
+a torus (product of two circles). And the loss that we’ll optimize is just the squared loss of 
+the graph and product space distances:</p>
+
+<script type="math/tex; mode=display">\cL(\vtheta)=\sum_{i,j} \left(d_G(x_i,x_j)-d_{\cP}(x_i,x_j)\right)^2.</script>
+
+<p>The following plot shows how the positions of the embeddings evolve over time and finally 
+arrange in a setting that approximates the original graph distances of the cycle graph.</p>
+
+<div class="figure-with-caption">
+<img src="/img/2019-10-15-Stochastic-Gradient-Descent-on-Riemannian-Manifolds/graph-embedding.gif?v=2" alt="Evolution of Graph Embedding in Product Space" width="70%" />
+<div class="figure-caption" style="text-align:center">
+Evolution of Graph Embedding in Product Space
+</div>
+</div>
+
+<p>Here’s the code that shows how the optimization of this graph embedding is performed:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">geoopt</span> <span class="kn">import</span> <span class="n">ManifoldTensor</span><span class="p">,</span> <span class="n">ManifoldParameter</span>
+<span class="kn">from</span> <span class="nn">geoopt.manifolds</span> <span class="kn">import</span> <span class="n">SphereExact</span><span class="p">,</span> <span class="n">Scaled</span><span class="p">,</span> <span class="n">ProductManifold</span>
+<span class="kn">from</span> <span class="nn">geoopt.optim</span> <span class="kn">import</span> <span class="n">RiemannianAdam</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">pi</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span>
+<span class="kn">from</span> <span class="nn">mayavi</span> <span class="kn">import</span> <span class="n">mlab</span>
+<span class="kn">import</span> <span class="nn">imageio</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="c1"># CREATE CYCLE GRAPH ###########################################################
+</span>
+
+<span class="c1"># Here we prepare a graph that is a cycle of n nodes. We then compute all pair-
+</span>
+<span class="c1"># wise graph distances because we'll want to learn an embedding that embeds the
+</span>
+<span class="c1"># vertices of the graph on the surface of a torus, such that the distances of
+</span>
+<span class="c1"># the induced discrete metric space of the graph are preserved as well as
+</span>
+<span class="c1"># possible through the positioning of the embeddings on the torus.
+</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="mi">20</span>
+
+<span class="n">training_examples</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="c1"># only consider pair-wise distances below diagonal of distance matrix
+</span>    
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+        <span class="c1"># determine distance between vertice i and j
+</span>        
+        <span class="n">d</span> <span class="o">=</span> <span class="n">i</span><span class="o">-</span><span class="n">j</span>
+        <span class="k">if</span> <span class="n">d</span> <span class="o">&gt;</span> <span class="n">n</span><span class="o">//</span><span class="mi">2</span><span class="p">:</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">n</span><span class="o">-</span><span class="n">d</span>
+        <span class="c1"># scale down distance
+</span>        
+        <span class="n">d</span> <span class="o">=</span> <span class="n">d</span> <span class="o">*</span> <span class="p">((</span><span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="mf">0.3</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+        <span class="c1"># add edge and weight to training examples
+</span>        
+        <span class="n">training_examples</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">d</span><span class="p">))</span>
+
+<span class="c1"># the training_examples now consist of a list of triplets (v1, v2, d)
+</span>
+<span class="c1"># where v1, v2 are vertices, and d is their (scaled) graph distance
+</span>
+
+<span class="c1"># CREATION OF PRODUCT SPACE (TORUS) ############################################
+</span>
+
+<span class="c1"># create first sphere manifold of radius 1 (default)
+</span>
+<span class="c1"># (the Exact version uses the exponential map instead of the retraction)
+</span>
+<span class="n">r1</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">sphere1</span> <span class="o">=</span> <span class="n">SphereExact</span><span class="p">()</span>
+
+<span class="c1"># create second sphere manifold of radius 0.3
+</span>
+<span class="n">r2</span> <span class="o">=</span> <span class="mf">0.3</span>
+<span class="n">sphere2</span> <span class="o">=</span> <span class="n">Scaled</span><span class="p">(</span><span class="n">SphereExact</span><span class="p">(),</span> <span class="n">scale</span><span class="o">=</span><span class="n">r2</span><span class="p">)</span>
+
+<span class="c1"># create torus manifold through product of two 1-dimensional spheres (actually
+</span>
+<span class="c1"># circles) which are each embedded in a 2D ambient space
+</span>
+<span class="n">torus</span> <span class="o">=</span> <span class="n">ProductManifold</span><span class="p">((</span><span class="n">sphere1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="n">sphere2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+
+<span class="c1"># INITIALIZATION OF EMBEDDINGS #################################################
+</span>
+
+<span class="c1"># init embeddings. sidenote: this initialization was mostly chosen for
+</span>
+<span class="c1"># illustration purposes. you may want to consider better initialization
+</span>
+<span class="c1"># strategies for the product space that you'll consider.
+</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="nb">abs</span><span class="p">()</span><span class="o">*</span><span class="mf">0.5</span>
+
+<span class="c1"># augment embeddings tensor to a manifold tensor with a reference to the product
+</span>
+<span class="c1"># manifold that they belong to such that the optimizer can determine how to
+</span>
+<span class="c1"># convert the the derivatives of pytorch to the correct Riemannian gradients
+</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">ManifoldTensor</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">manifold</span><span class="o">=</span><span class="n">torus</span><span class="p">)</span>
+
+<span class="c1"># project the embeddings onto the spheres' surfaces (in-place) according to the
+</span>
+<span class="c1"># orthogonal projection from ambient space onto the sphere's surface for each
+</span>
+<span class="c1"># spherical factor
+</span>
+<span class="n">X</span><span class="o">.</span><span class="n">proj_</span><span class="p">()</span>
+
+<span class="c1"># declare the embeddings as trainable manifold parameters
+</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">ManifoldParameter</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="c1"># PLOTTING FUNCTIONALITY #######################################################
+</span>
+
+<span class="c1"># array storing screenshots
+</span>
+<span class="n">screenshots</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># torus surface
+</span>
+<span class="n">phi</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="mf">0.0</span><span class="p">:</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">pi</span><span class="p">:</span><span class="mf">100j</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">:</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">pi</span><span class="p">:</span><span class="mf">100j</span><span class="p">]</span>
+<span class="n">torus_x</span> <span class="o">=</span> <span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">r1</span> <span class="o">+</span> <span class="n">r2</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span>
+<span class="n">torus_y</span> <span class="o">=</span> <span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">r1</span> <span class="o">+</span> <span class="n">r2</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span>
+<span class="n">torus_z</span> <span class="o">=</span> <span class="n">r2</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+
+<span class="c1"># embedding point surface
+</span>
+<span class="n">ball_size</span> <span class="o">=</span> <span class="mf">0.035</span>
+<span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">ball_x</span> <span class="o">=</span> <span class="n">ball_size</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">cos</span><span class="p">(</span><span class="n">u</span><span class="p">),</span> <span class="n">sin</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+<span class="n">ball_y</span> <span class="o">=</span> <span class="n">ball_size</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">sin</span><span class="p">(</span><span class="n">u</span><span class="p">),</span> <span class="n">sin</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+<span class="n">ball_z</span> <span class="o">=</span> <span class="n">ball_size</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">u</span><span class="p">)),</span> <span class="n">cos</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">plot_point</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+    <span class="n">point_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="o">/</span><span class="mi">255</span><span class="p">,</span> <span class="mi">62</span><span class="o">/</span><span class="mi">255</span><span class="p">,</span> <span class="mi">160</span><span class="o">/</span><span class="mi">255</span><span class="p">)</span>
+    <span class="n">mlab</span><span class="o">.</span><span class="n">mesh</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">ball_x</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">ball_y</span><span class="p">,</span> <span class="n">z</span> <span class="o">+</span> <span class="n">ball_z</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">point_color</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">update_plot</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+
+    <span class="c1"># transform embedding (2D X 2D)-coordinates to 3D coordinates on torus
+</span>    
+    <span class="n">cos_phi</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">r1</span>
+    <span class="n">sin_phi</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">r1</span>
+    <span class="n">xx</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">cos_phi</span> <span class="o">*</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">r2</span>
+    <span class="n">yy</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">sin_phi</span> <span class="o">*</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">r2</span>
+    <span class="n">zz</span> <span class="o">=</span> <span class="n">r2</span> <span class="o">*</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">3</span><span class="p">]</span>
+
+    <span class="c1"># create figure
+</span>    
+    <span class="n">mlab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">700</span><span class="p">,</span> <span class="mi">500</span><span class="p">),</span> <span class="n">bgcolor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="c1"># plot torus surface
+</span>    
+    <span class="n">torus_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="o">/</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="o">/</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="o">/</span><span class="mi">255</span><span class="p">)</span>
+    <span class="n">mlab</span><span class="o">.</span><span class="n">mesh</span><span class="p">(</span><span class="n">torus_x</span><span class="p">,</span> <span class="n">torus_y</span><span class="p">,</span> <span class="n">torus_z</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">torus_color</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+    <span class="c1"># plot embedding points on torus surface
+</span>    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">plot_point</span><span class="p">(</span><span class="n">xx</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">yy</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">zz</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+    <span class="c1"># save screenshot
+</span>    
+    <span class="n">mlab</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">azimuth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">elevation</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">distance</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">focalpoint</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.2</span><span class="p">))</span>
+    <span class="n">mlab</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">_lift</span><span class="p">()</span>
+    <span class="n">screenshots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mlab</span><span class="o">.</span><span class="n">screenshot</span><span class="p">(</span><span class="n">antialiased</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span>
+    <span class="n">mlab</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="c1"># TRAINING OF EMBEDDINGS IN PRODUCT SPACE ######################################
+</span>
+
+<span class="c1"># build RADAM optimizer and specify the embeddings as parameters.
+</span>
+<span class="c1"># note that the RADAM can also optimize parameters which are not attached to a
+</span>
+<span class="c1"># manifold. then it just behaves like the usual ADAM for the Euclidean vector
+</span>
+<span class="c1"># space. we stabilize the embedding every 1 steps, which rthogonally projects
+</span>
+<span class="c1"># the embedding points onto the manifold's surface after the gradient-updates to
+</span>
+<span class="c1"># ensure that they lie precisely on the surface of the manifold. this is needed
+</span>
+<span class="c1"># because the parameters may get slightly off the manifold's surface for
+</span>
+<span class="c1"># numerical reasons. Not stabilizing may introduce small errors that accumulate
+</span>
+<span class="c1"># over time.
+</span>
+<span class="n">riemannian_adam</span> <span class="o">=</span> <span class="n">RiemannianAdam</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="p">[</span><span class="n">X</span><span class="p">],</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">,</span> <span class="n">stabilize</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># we'll just use this as a random examples sampler to get some stochasticity
+</span>
+<span class="c1"># in our gradient descent
+</span>
+<span class="n">num_training_examples</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">training_examples</span><span class="p">)</span>
+<span class="n">training_example_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">num_training_examples</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">get_subset_of_examples</span><span class="p">():</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">training_example_indices</span><span class="p">,</span>
+                                 <span class="n">size</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">num_training_examples</span><span class="o">/</span><span class="mi">4</span><span class="p">),</span>
+                                 <span class="n">replace</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span>
+
+<span class="c1"># training loop to optimize the positions of embeddings such that the
+</span>
+<span class="c1"># distances between them become as close as possible to the true graph distances
+</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">)):</span>
+
+    <span class="c1"># zero-out the gradients
+</span>    
+    <span class="n">riemannian_adam</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+
+    <span class="c1"># compute loss for next batch
+</span>    
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">indices_batch</span> <span class="o">=</span> <span class="n">get_subset_of_examples</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">indices_batch</span><span class="p">:</span>
+        <span class="n">v_i</span><span class="p">,</span> <span class="n">v_j</span><span class="p">,</span> <span class="n">target_distance</span> <span class="o">=</span> <span class="n">training_examples</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="c1"># compute the current distances between the embeddings in the product
+</span>        
+        <span class="c1"># space (torus)
+</span>        
+        <span class="n">current_distance</span> <span class="o">=</span> <span class="n">torus</span><span class="o">.</span><span class="n">dist</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">v_i</span><span class="p">,:],</span> <span class="n">X</span><span class="p">[</span><span class="n">v_j</span><span class="p">,:])</span>
+        <span class="c1"># add squared loss of current and target distance to the loss
+</span>        
+        <span class="n">loss</span> <span class="o">+=</span> <span class="p">(</span><span class="n">current_distance</span> <span class="o">-</span> <span class="n">target_distance</span><span class="p">)</span><span class="o">.</span><span class="nb">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># compute derivative of loss w.r.t. parameters
+</span>    
+    <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+
+    <span class="c1"># let RADAM compute the gradients and do the gradient step
+</span>    
+    <span class="n">riemannian_adam</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+    <span class="c1"># plot current embeddings
+</span>    
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="n">update_plot</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+
+<span class="c1"># CREATE ANIMATED GIF ##########################################################
+</span>
+
+<span class="n">imageio</span><span class="o">.</span><span class="n">mimsave</span><span class="p">(</span><span class="n">f</span><span class="s">'training.gif'</span><span class="p">,</span> <span class="n">screenshots</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="mi">24</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<p>Of course, one might choose better geometries to embed a cycle graph. Also,
+a better embedding could have been achieved if the embeddings had wrapped
+around the curved tube of the torus. This example was mostly chosen to have an illustrative 
+minimal working example in order to get you started Riemannian optimization in product spaces. A 
+paper that extensively studies the suitability of products of spaces of constant curvature to learn 
+distance-preserving embeddings of real-world graphs is the work of Gu et al. 
+<a class="citation" href="#productspaces">[4]</a>.</p>
+
+<p>That’s all for now, I hope that my motivation and explanation of RSGD was helpful 
+to you and that you are now ready to get started with Riemannian optimization.</p>
+
+<h2 id="references">References</h2>
+<ol class="bibliography"><li><span id="douik2018manifold">A. Douik and B. Hassibi, “Manifold Optimization Over the Set of Doubly Stochastic Matrices: A Second-Order Geometry,” <i>arXiv preprint arXiv:1802.02628</i>, 2018.</span></li>
+<li><span id="bonnabel">S. Bonnabel, “Stochastic gradient descent on Riemannian manifolds,” <i>IEEE Transactions on Automatic Control</i>, vol. 58, no. 9, pp. 2217–2229, 2013.</span></li>
+<li><span id="riemannianadaptive">G. Bécigneul and O.-E. Ganea, “Riemannian adaptive optimization methods,” <i>arXiv preprint arXiv:1810.00760</i>, 2018.</span></li>
+<li><span id="productspaces">A. Gu, F. Sala, B. Gunel, and C. Ré, “Learning Mixed-Curvature Representations in Product Spaces,” 2018.</span></li></ol>
+
+        </div>
+
+        <hr>
+
+        <!-- Pager for previous and next articles -->
+        <ul class="pager">
+          
+          
+          <li class="next">
+            <a href="/K-Stereographic-Model/" data-toggle="tooltip" data-placement="top" title="A Universal Model for Hyperbolic, Euclidean and Spherical Geometries">Next Post &rarr;</a>
+          </li>
+          
+        </ul>
+
+        <hr>
+
+        <!-- Disqus Forum -->
+        
+
+<div id="disqus_thread"></div>
+<script>
+
+	/**
+	 *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+	 *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+	/*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+	(function() { // DON'T EDIT BELOW THIS LINE
+		var d = document, s = d.createElement('script');
+		s.src = 'https://andbloch-github-io.disqus.com/embed.js';
+		s.setAttribute('data-timestamp', +new Date());
+		(d.head || d.body).appendChild(s);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+      </div>
+    </div>
+  </div>
+</article>
+
+<hr>
+  <!-- Footer -->
+<footer>
+    <hr style="margin-bottom:40px">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+<li>
+    <a href="/feed.xml">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+        </span>
+    </a>
+</li>
+
+
+
+<li>
+    <a href="mailto:andreas.d.bloch@gmail.com">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+        </span>
+    </a>
+</li>
+
+
+
+
+<li>
+    <a href="https://github.com/andbloch">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+    </a>
+</li>
+
+
+
+<li>
+    <a href="https://www.linkedin.com/in/andreas-bloch">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+    </a>
+</li>
+
+
+
+
+
+
+                </ul>
+                <p class="copyright text-muted">Copyright &copy; Andreas Bloch 2019</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/clean-blog.min.js"></script>
+
+<!-- MathJax -->
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      processEscapes: true
+    }
+  });
+</script>
+
+</body>
+</html>
