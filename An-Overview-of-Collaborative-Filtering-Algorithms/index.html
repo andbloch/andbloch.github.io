@@ -42,13 +42,13 @@
     <link rel="canonical" href="http://localhost:4000/An-Overview-of-Collaborative-Filtering-Algorithms/">
 
     <!-- Bootstrap Core CSS -->
-    <link rel="stylesheet" href="/css/bootstrap.css?1577644687475076000">
+    <link rel="stylesheet" href="/css/bootstrap.css?1577646008785478000">
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/clean-blog.css?1577644687475076000">
+    <link rel="stylesheet" href="/css/clean-blog.css?1577646008785478000">
 
     <!-- Pygments Github CSS -->
-    <link rel="stylesheet" href="/css/syntax.css?1577644687475076000">
+    <link rel="stylesheet" href="/css/syntax.css?1577646008785478000">
 
     <!-- Custom Fonts -->
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -952,7 +952,7 @@ $$
 </nav>
   <!-- Post Header -->
 <!--
-<header class="intro-header" style="position: relative; background-image: url('/img/2019-10-30-An-Overview-of-Collaborative-Filtering-Algorithms/bipartite-graph.svg');">
+<header class="intro-header" style="position: relative; background-image: url('/img/2019-12-16-An-Overview-of-Collaborative-Filtering-Algorithms/bipartite-graph.svg');">
     <div class="overlay"></div>
     <div class="container">
         <div class="row">
@@ -991,7 +991,7 @@ of the different approaches is given. A slide deck accompanying the article
 can be found here:</p>
 
 <p><a href="/files/collaborative-filtering-algorithms-for-implicit-feedback-data.pdf" target="_blank">
-<img src="/img/2019-10-30-An-Overview-of-Collaborative-Filtering-Algorithms/slide-deck.png?v=1" alt="Slide Deck" width="60%" />
+<img src="/img/2019-12-16-An-Overview-of-Collaborative-Filtering-Algorithms/slide-deck.png?v=1" alt="Slide Deck" width="60%" />
 </a></p>
 
 <h2 id="background-on-recommender-systems">Background on Recommender Systems</h2>
@@ -1148,7 +1148,7 @@ the retrieval system strongly affects the performance metrics of the entire
 recommender service.</p>
 
 <div class="figure-with-caption">
-<img src="/img/2019-10-30-An-Overview-of-Collaborative-Filtering-Algorithms/retrieval-and-ranking-system.png?v=1" alt="Interplay of Retrieval and Ranking System" width="100%" />
+<img src="/img/2019-12-16-An-Overview-of-Collaborative-Filtering-Algorithms/retrieval-and-ranking-system.png?v=1" alt="Interplay of Retrieval and Ranking System" width="100%" />
 <div class="figure-caption">
 The illustration by <a class="citation" href="#cheng2016wide">[13]</a> shows the 
 typical structuring of a recommender service into a retrieval system and a 
@@ -1192,7 +1192,7 @@ power-law for the <a href="https://grouplens.org/datasets/movielens/20m/">Moviel
 dataset.</p>
 
 <div class="figure-with-caption">
-<img src="/img/2019-10-30-An-Overview-of-Collaborative-Filtering-Algorithms/movielens-20M-item-popularity.png?v=1" alt="MovieLens-20M Item Popularity" width="100%" />
+<img src="/img/2019-12-16-An-Overview-of-Collaborative-Filtering-Algorithms/movielens-20M-item-popularity.png?v=1" alt="MovieLens-20M Item Popularity" width="100%" />
 <div class="figure-caption">
 The plot shows the number of ratings per movie in descending order for
 the MovieLens-20M dataset. One can clearly observe the power-law nature of the
@@ -1221,7 +1221,7 @@ concepts of users and items, e.g., “male” or “female” for users, or “s
 “escapist” for movies as illustrated below from the work of <a class="citation" href="#koren2009matrix">[5]</a>.</p>
 
 <div class="figure-with-caption">
-<img src="/img/2019-10-30-An-Overview-of-Collaborative-Filtering-Algorithms/mf-latent-factors-interpretation.png?v=1" alt="Concepts captured in latent factor space" width="100%" />
+<img src="/img/2019-12-16-An-Overview-of-Collaborative-Filtering-Algorithms/mf-latent-factors-interpretation.png?v=1" alt="Concepts captured in latent factor space" width="100%" />
 <div class="figure-caption">
 The illustration by <a class="citation" href="#koren2009matrix">[5]</a> shows
 how the latent factor dimensions tend to capture concepts about users or items.
@@ -1390,7 +1390,7 @@ An illustration of how the inner-product fails at propagating similarities
 even for a simple interaction matrix is given below:</p>
 
 <div class="figure-with-caption">
-<img src="/img/2019-10-30-An-Overview-of-Collaborative-Filtering-Algorithms/cml-similarity-propagation-illustration.png?v=1" alt="CML Similarity Propagation Illustration" width="100%" />
+<img src="/img/2019-12-16-An-Overview-of-Collaborative-Filtering-Algorithms/cml-similarity-propagation-illustration.png?v=1" alt="CML Similarity Propagation Illustration" width="100%" />
 <div class="figure-caption">
 Illustration by <a class="citation" href="#cml">[9]</a> showing how the inner-product
 fails at propagating similarities. In the example $U_3$ likes both, $v_1$ and
@@ -1466,7 +1466,7 @@ by the WARP loss for a user $u$ and its positive and negative items are
 illustrated in the figure below.</p>
 
     <div class="figure-with-caption">
-<img src="/img/2019-10-30-An-Overview-of-Collaborative-Filtering-Algorithms/cml-positive-and-negative-item-gradients.png?v=1" alt="CML Gradients" width="100%" />
+<img src="/img/2019-12-16-An-Overview-of-Collaborative-Filtering-Algorithms/cml-positive-and-negative-item-gradients.png?v=1" alt="CML Gradients" width="100%" />
 <div class="figure-caption">
 The figure by <a class="citation" href="#cml">[9]</a> shows the gradients created by the WARP loss
 in CML. For the positive items of a user, gradients are created to pull them closer
@@ -1576,7 +1576,7 @@ An illustration of the architecture of the <em>pairwise learning approach</em> i
 below.</p>
 
 <div class="figure-with-caption">
-<img src="/img/2019-10-30-An-Overview-of-Collaborative-Filtering-Algorithms/hrs.png?v=1" alt="Pairwise Learning in Hyperbolic Recommender System" width="100%" />
+<img src="/img/2019-12-16-An-Overview-of-Collaborative-Filtering-Algorithms/hrs.png?v=1" alt="Pairwise Learning in Hyperbolic Recommender System" width="100%" />
 <div class="figure-caption">
 Illustration of the pairwise learning approach with hyperbolic recommender systems
 by <a class="citation" href="#hrs">[35]</a>.
@@ -1709,7 +1709,7 @@ models GMF and MLP can also be instantiated on their own, while the sigmoid
 output function is maintained.</p>
 
 <div class="figure-with-caption">
-<img src="/img/2019-10-30-An-Overview-of-Collaborative-Filtering-Algorithms/ncf.png?v=1" alt="Neural Collaborative Filtering (NCF)" width="100%" />
+<img src="/img/2019-12-16-An-Overview-of-Collaborative-Filtering-Algorithms/ncf.png?v=1" alt="Neural Collaborative Filtering (NCF)" width="100%" />
 <div class="figure-caption" style="text-align:center">
 Architecture of NCF illustrated by <a class="citation" href="#ncf">[33]</a>
 </div>
@@ -1810,7 +1810,7 @@ relevance of item $i$ for a a user $u$ is done through</p>
 the following picture.</p>
 
 <div class="figure-with-caption">
-<img src="/img/2019-10-30-An-Overview-of-Collaborative-Filtering-Algorithms/autorec.png?v=1" alt="Architecture of Autorec" width="100%" />
+<img src="/img/2019-12-16-An-Overview-of-Collaborative-Filtering-Algorithms/autorec.png?v=1" alt="Architecture of Autorec" width="100%" />
 <div class="figure-caption">
 Illustration of the item-based architecture of $I$-Autorec. The edges (parameters)
 that are connected to unknown interactions are not updated due to the masking of the loss
