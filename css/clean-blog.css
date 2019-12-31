@@ -747,9 +747,11 @@ div.eq-mobile {
     display: none;
 }
 
+/* Breaks footer (but the equations should be fine)
 .container {
     overflow-x: hidden;
 }
+*/
 
 @media only screen and (max-width : 768px) {
 
