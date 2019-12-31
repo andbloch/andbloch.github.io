@@ -378,7 +378,10 @@ hr.small {
     margin-right:auto;
     color: #777777;
     padding-bottom: 30px;
-    hyphens: manual;
+    -webkit-hyphens: manual; /* Saf 5.1+ */
+    -moz-hyphens: manual; /* Fx 6.0+ */
+    -ms-hyphens: manual; /* IE 10+ */
+    hyphens: manual; /* None yet */
 }
 
 
@@ -695,10 +698,18 @@ p.post-excerpt {
     hyphens: auto; /* None yet */
     text-align: justify;
 }
-div.post h1 {
-    hyphens: manual;
+div.post h1,
+div.post h2,
+div.post h3 {
+    -webkit-hyphens: manual; /* Saf 5.1+ */
+    -moz-hyphens: manual; /* Fx 6.0+ */
+    -ms-hyphens: manual; /* IE 10+ */
+    hyphens: manual; /* None yet */
 }
 
+article {
+    padding-top: 125px;
+}
 
 /* About me */
 @media only screen and (max-width: 768px) {
@@ -729,6 +740,10 @@ footer{
 
 /*** Mobile ******************************************/
 
+div.eq-mobile {
+    display: none;
+}
+
 .container {
     overflow-x: hidden;
 }
@@ -737,6 +752,10 @@ footer{
 
     .navbar {
         position: fixed;
+    }
+
+    article {
+
     }
 
     ul, ol {
@@ -752,5 +771,16 @@ footer{
         margin-right: 0px;
         padding-left: 10px;
         padding-right: 10px;
+    }
+
+    div.eq-desktop {
+        display: none;
+    }
+    div.eq-mobile {
+        display: block;
+    }
+
+    pre.highlight {
+        font-size: 8px;
     }
 }
