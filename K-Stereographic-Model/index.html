@@ -4,9 +4,11 @@
     <title>A Universal Model for Hyperbolic, Euclidean and Spherical Geometries – Andreas Bloch</title>
 
     <meta charset="utf-8" />
-    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type' />
+    <meta http-equiv="language" content="EN" />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+    <meta name='viewport'
+          content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
 
     
     <meta name="description" content="This blogpost presents a geometric model that harnesses the formalism gyrovector spaces in order to capture all three geometries of constant curvature at once. Furthermore, the presented model allows to smoothly interpolate between the geometries of constant curvature in order to learn the curvature of spaces jointly with the embeddings." />
@@ -32,27 +34,40 @@
     
 
     <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="manifest" href="/site.webmanifest">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
 
-    <link rel="alternate" type="application/rss+xml" title="Andreas Bloch - " href="/feed.xml" />
+    <link rel="alternate"
+          type="application/rss+xml"
+          title="Andreas Bloch - "
+          href="/feed.xml" />
 
-    <link rel="canonical" href="http://localhost:4000/K-Stereographic-Model/">
+    <link rel="canonical"
+          href="http://localhost:4000/K-Stereographic-Model/" />
 
     <!-- Bootstrap Core CSS -->
-    <link rel="stylesheet" href="/css/bootstrap.css?1577649041094698000">
+    <link rel="stylesheet"
+          href="/css/bootstrap.css?1577807791128718000"/>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/clean-blog.css?1577649041094698000">
+    <link rel="stylesheet"
+          type="text/css"
+          href="/css/clean-blog.css?1577807791128718000" />
 
     <!-- Pygments Github CSS -->
-    <link rel="stylesheet" href="/css/syntax.css?1577649041094698000">
+    <link rel="stylesheet"
+          type="text/css"
+          href="/css/syntax.css?1577807791128718000" />
 
     <!-- Custom Fonts -->
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet"
+          type="text/css"
+          href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+    <link rel='stylesheet'
+          type='text/css'
+          href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' />
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -60,9 +75,10 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
-    <!-- MathJax Shortcuts -->
-    <p style="display: none">
+</head>
+<body>
+  <!-- MathJax Shortcuts -->
+  <p style="display: none">
 $$
 % ASYMPTOTIC NOTATIONS
 \newcommand{\BigO}{\mathcal{O}}
@@ -895,9 +911,6 @@ $$
 \newcommand{\Aut}{\operatorname{Aut}}
 $$
 </p>
-
-</head>
-<body>
   <!-- Navigation -->
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top" style="background: black; border: none;">
     <div class="container-fluid">
@@ -922,7 +935,7 @@ $$
             
                 
                 
-                    <li><a href="/">ML Blog</a></li>
+                    <li><a href="/">Machine Learning Blog</a></li>
                 
                 
             
@@ -992,9 +1005,10 @@ geometries of constant curvature and thus provides a way to learn the curvature 
 spaces jointly with the embeddings.</p>
 
 <p>The $\kappa$-stereographic model has been elaborated within the scope of the B.Sc. and M.Sc. 
-theses of Andreas Bloch, Gregor Bachmann and Ondrej Skopek at the Data Analytics Lab of the 
-ETH Zürich under the assistance of Octavian Ganea and Gary Bécigneul. Two papers
-that apply the $\kappa$-stereographic model are:</p>
+theses of Andreas Bloch, Gregor Bachmann and Ondrej Skopek at 
+the Data Analytics Lab of the ETH Zürich under the assistance of Octavian Ganea and Gary Bécigneul.
+All of the theses were related to learning representations in products of spaces of
+constant curvature. Two papers that apply the $\kappa$-stereographic model are:</p>
 
 <ul>
   <li>

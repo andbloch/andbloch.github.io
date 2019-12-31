@@ -683,10 +683,16 @@ html {
 
 /* Hyphenization in Posts */
 div.post {
-    hyphens: auto;
+    -webkit-hyphens: auto; /* Saf 5.1+ */
+    -moz-hyphens: auto; /* Fx 6.0+ */
+    -ms-hyphens: auto; /* IE 10+ */
+    hyphens: auto; /* None yet */
 }
 p.post-excerpt {
-    hyphens: auto;
+    -webkit-hyphens: auto; /* Saf 5.1+ */
+    -moz-hyphens: auto; /* Fx 6.0+ */
+    -ms-hyphens: auto; /* IE 10+ */
+    hyphens: auto; /* None yet */
     text-align: justify;
 }
 div.post h1 {
@@ -703,26 +709,7 @@ div.post h1 {
 
 }
 
-.curly-quotes:before, .curly-quotes:after {
-    display: inline-block;
-    vertical-align: top;
-    height: 10px;
-    line-height: 48px;
-    font-size: 30px;
-}
-
-.curly-quotes:before {
-    content: '\201C';
-    margin-right: 0px;
-    margin-left: -2px;
-}
-
-.curly-quotes:after {
-    content: '\201D';
-    margin-left: 0px;
-    margin-right: -2px;
-}
-
+/*** Footer ******************************************/
 
 /* Footer always below on page */
 html, body{ height:100%; margin:0; }
@@ -740,11 +727,30 @@ footer{
     margin-bottom: 30px;
 }
 
-/* Mobile Resolution Fix */
-@media only screen and (max-width: 768px) {
+/*** Mobile ******************************************/
 
-    body {
-        zoom: 100%;
+.container {
+    overflow-x: hidden;
+}
+
+@media only screen and (max-width : 768px) {
+
+    .navbar {
+        position: fixed;
     }
 
+    ul, ol {
+        padding-left: 20px;
+    }
+
+    .post-preview img {
+        max-height: none;
+    }
+
+    div.figure-with-caption {
+        margin-left: 0px;
+        margin-right: 0px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
 }
