@@ -49,17 +49,17 @@
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet"
-          href="/css/bootstrap.css?1577810755227839000"/>
+          href="/css/bootstrap.css?1577811816521089000"/>
 
     <!-- Custom CSS -->
     <link rel="stylesheet"
           type="text/css"
-          href="/css/clean-blog.css?1577810755227839000" />
+          href="/css/clean-blog.css?1577811816521089000" />
 
     <!-- Pygments Github CSS -->
     <link rel="stylesheet"
           type="text/css"
-          href="/css/syntax.css?1577810755227839000" />
+          href="/css/syntax.css?1577811816521089000" />
 
     <!-- Custom Fonts -->
     <link rel="stylesheet"
@@ -1049,7 +1049,7 @@ to perform a gradient-based descent on the surface of the manifold. The gradient
 also be based on the gradients of the loss fuction $\cL$, such that we finally find some
 parameters $\vtheta^*$ that hopefully lie at a global minimum of the loss.</p>
 
-<h2 id="whats-different-with-sgd-on-riemannian-manifolds">What’s Different with SGD on Riemannian Manifolds</h2>
+<h2 id="whats-different-with-sgd-on-riemannian-manifolds">What’s Different with SGD on Riemannian Manifolds?</h2>
 
 <p>Let’s first look at what makes RSGD different from the usual SGD in the 
 Euclidean vector spaces. Actually, RSGD just works like SGD when applied to our well-known
@@ -1121,20 +1121,42 @@ having thus a smooth “surface” and a metric $g_{\MX}$ that smoothly varies w
 This Riemannian manifold $(\cM,g_{\MX})$ is the manifold of so-called <em>doubly-stochastic 
 matrices</em> <a class="citation" href="#douik2018manifold">[1]</a>, given by:</p>
 
-    <script type="math/tex; mode=display">% <![CDATA[
+    <div class="eq-desktop">
+$$
 \begin{align*}
-\cM&=\dset{\MX\in\R^{d\times d}}{
+\cM&amp;=\dset{\MX\in\R^{d\times d}}{
 \begin{array}{rl}
 \forall i,j\in\set{1,\ldots,d}\colon 
-&X_{ij}\geq 0,
+&amp;X_{ij}\geq 0,
 \\
 \forall i\in\set{1,\ldots,d}\colon 
-&\sum_{k=1}^d X_{ik}=\sum_{k=1}^d X_{ki} = 1.
+&amp;\sum_{k=1}^d X_{ik}=\sum_{k=1}^d X_{ki} = 1.
 \end{array}
 },
 \\
-g_{\MX}&=\Tr{(\MA\oslash\MX)\MB^\T}.
-\end{align*} %]]></script>
+g_{\MX}&amp;=\Tr{(\MA\oslash\MX)\MB^\T}.
+\end{align*}
+$$
+</div>
+    <div class="eq-mobile">
+$$
+\begin{align*}
+\cM&amp;=\dset{\MX\in\R^{d\times d}}{
+\begin{array}{c}
+\forall i,j\in\set{1,\ldots,d}\colon 
+\\
+X_{ij}\geq 0,
+\\
+\sum_{k=1}^d X_{ik}=1,
+\\
+\sum_{k=1}^d X_{ki}=1.
+\end{array}
+},
+\\
+g_{\MX}&amp;=\Tr{(\MA\oslash\MX)\MB^\T}.
+\end{align*}
+$$
+</div>
 
     <p>Again, our machine learning framework may give us the derivatives of the 
 loss w.r.t. each of the parameter matrix’ coefficients and evaluate it at our 
@@ -1389,14 +1411,29 @@ Princeton University Press, 2009.
 be applied in these product spaces. In this case, let $(\cP,\vg)$ be a product of $n$ Riemannian 
 manifolds $(\cM_i,\vg_i)_{i=1}^n$, and let $\vg$ be the induced product metric:</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
+<div class="eq-desktop">
+$$
 \cP:=\cM_1\times\cdots\times\cM_n,
 \qquad
 \vg:=\begin{pmatrix}
-\vg_1 & & \\
-& \ddots & \\
-& & \vg_n
-\end{pmatrix}. %]]></script>
+\vg_1 &amp; &amp; \\
+&amp; \ddots &amp; \\
+&amp; &amp; \vg_n
+\end{pmatrix}.
+$$
+</div>
+<div class="eq-mobile">
+$$
+\cP:=\cM_1\times\cdots\times\cM_n,
+$$
+$$
+\vg:=\begin{pmatrix}
+\vg_1 &amp; &amp; \\
+&amp; \ddots &amp; \\
+&amp; &amp; \vg_n
+\end{pmatrix}.
+$$
+</div>
 
 <p>Furthermore, let the optimization problem on $\cP$ be</p>
 

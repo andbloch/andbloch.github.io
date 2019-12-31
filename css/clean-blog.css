@@ -698,14 +698,17 @@ p.post-excerpt {
     hyphens: auto; /* None yet */
     text-align: justify;
 }
+
+/*
 div.post h1,
 div.post h2,
 div.post h3 {
-    -webkit-hyphens: manual; /* Saf 5.1+ */
-    -moz-hyphens: manual; /* Fx 6.0+ */
-    -ms-hyphens: manual; /* IE 10+ */
-    hyphens: manual; /* None yet */
+    -webkit-hyphens: manual;
+    -moz-hyphens: manual;
+    -ms-hyphens: manual;
+    hyphens: manual;
 }
+*/
 
 article {
     padding-top: 125px;
@@ -755,7 +758,7 @@ div.eq-mobile {
     }
 
     article {
-
+        padding-top: 80px;
     }
 
     ul, ol {

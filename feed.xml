@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-12-31T17:45:55+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Andreas Bloch</title><entry><title type="html">An Overview of Collaborative Filtering Algorithms for Implicit Feedback Data</title><link href="http://localhost:4000/An-Overview-of-Collaborative-Filtering-Algorithms/" rel="alternate" type="text/html" title="An Overview of Collaborative Filtering Algorithms for Implicit Feedback Data" /><published>2019-12-16T08:00:00+01:00</published><updated>2019-12-16T08:00:00+01:00</updated><id>http://localhost:4000/An-Overview-of-Collaborative-Filtering-Algorithms</id><content type="html" xml:base="http://localhost:4000/An-Overview-of-Collaborative-Filtering-Algorithms/">&lt;p&gt;This blogpost gives an overview of today’s most predominant types of 
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-12-31T18:03:36+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Andreas Bloch</title><entry><title type="html">An Overview of Collaborative Filtering Algorithms for Implicit Feedback Data</title><link href="http://localhost:4000/An-Overview-of-Collaborative-Filtering-Algorithms/" rel="alternate" type="text/html" title="An Overview of Collaborative Filtering Algorithms for Implicit Feedback Data" /><published>2019-12-16T08:00:00+01:00</published><updated>2019-12-16T08:00:00+01:00</updated><id>http://localhost:4000/An-Overview-of-Collaborative-Filtering-Algorithms</id><content type="html" xml:base="http://localhost:4000/An-Overview-of-Collaborative-Filtering-Algorithms/">&lt;p&gt;This blogpost gives an overview of today’s most predominant types of 
 recommender systems for collaborative filtering from implicit feedback data. 
 The overview is by no means exhaustive, but it should provide the reader with 
 a good overview about the topic.&lt;/p&gt;
@@ -2607,7 +2607,7 @@ to perform a gradient-based descent on the surface of the manifold. The gradient
 also be based on the gradients of the loss fuction $\cL$, such that we finally find some
 parameters $\vtheta^*$ that hopefully lie at a global minimum of the loss.&lt;/p&gt;
 
-&lt;h2 id=&quot;whats-different-with-sgd-on-riemannian-manifolds&quot;&gt;What’s Different with SGD on Riemannian Manifolds&lt;/h2&gt;
+&lt;h2 id=&quot;whats-different-with-sgd-on-riemannian-manifolds&quot;&gt;What’s Different with SGD on Riemannian Manifolds?&lt;/h2&gt;
 
 &lt;p&gt;Let’s first look at what makes RSGD different from the usual SGD in the 
 Euclidean vector spaces. Actually, RSGD just works like SGD when applied to our well-known
@@ -2679,20 +2679,42 @@ having thus a smooth “surface” and a metric $g_{\MX}$ that smoothly varies w
 This Riemannian manifold $(\cM,g_{\MX})$ is the manifold of so-called &lt;em&gt;doubly-stochastic 
 matrices&lt;/em&gt; &lt;a class=&quot;citation&quot; href=&quot;#douik2018manifold&quot;&gt;[1]&lt;/a&gt;, given by:&lt;/p&gt;
 
-    &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+    &lt;div class=&quot;eq-desktop&quot;&gt;
+$$
 \begin{align*}
-\cM&amp;=\dset{\MX\in\R^{d\times d}}{
+\cM&amp;amp;=\dset{\MX\in\R^{d\times d}}{
 \begin{array}{rl}
 \forall i,j\in\set{1,\ldots,d}\colon 
-&amp;X_{ij}\geq 0,
+&amp;amp;X_{ij}\geq 0,
 \\
 \forall i\in\set{1,\ldots,d}\colon 
-&amp;\sum_{k=1}^d X_{ik}=\sum_{k=1}^d X_{ki} = 1.
+&amp;amp;\sum_{k=1}^d X_{ik}=\sum_{k=1}^d X_{ki} = 1.
 \end{array}
 },
 \\
-g_{\MX}&amp;=\Tr{(\MA\oslash\MX)\MB^\T}.
-\end{align*} %]]&gt;&lt;/script&gt;
+g_{\MX}&amp;amp;=\Tr{(\MA\oslash\MX)\MB^\T}.
+\end{align*}
+$$
+&lt;/div&gt;
+    &lt;div class=&quot;eq-mobile&quot;&gt;
+$$
+\begin{align*}
+\cM&amp;amp;=\dset{\MX\in\R^{d\times d}}{
+\begin{array}{c}
+\forall i,j\in\set{1,\ldots,d}\colon 
+\\
+X_{ij}\geq 0,
+\\
+\sum_{k=1}^d X_{ik}=1,
+\\
+\sum_{k=1}^d X_{ki}=1.
+\end{array}
+},
+\\
+g_{\MX}&amp;amp;=\Tr{(\MA\oslash\MX)\MB^\T}.
+\end{align*}
+$$
+&lt;/div&gt;
 
     &lt;p&gt;Again, our machine learning framework may give us the derivatives of the 
 loss w.r.t. each of the parameter matrix’ coefficients and evaluate it at our 
@@ -2947,14 +2969,29 @@ Princeton University Press, 2009.
 be applied in these product spaces. In this case, let $(\cP,\vg)$ be a product of $n$ Riemannian 
 manifolds $(\cM_i,\vg_i)_{i=1}^n$, and let $\vg$ be the induced product metric:&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+&lt;div class=&quot;eq-desktop&quot;&gt;
+$$
 \cP:=\cM_1\times\cdots\times\cM_n,
 \qquad
 \vg:=\begin{pmatrix}
-\vg_1 &amp; &amp; \\
-&amp; \ddots &amp; \\
-&amp; &amp; \vg_n
-\end{pmatrix}. %]]&gt;&lt;/script&gt;
+\vg_1 &amp;amp; &amp;amp; \\
+&amp;amp; \ddots &amp;amp; \\
+&amp;amp; &amp;amp; \vg_n
+\end{pmatrix}.
+$$
+&lt;/div&gt;
+&lt;div class=&quot;eq-mobile&quot;&gt;
+$$
+\cP:=\cM_1\times\cdots\times\cM_n,
+$$
+$$
+\vg:=\begin{pmatrix}
+\vg_1 &amp;amp; &amp;amp; \\
+&amp;amp; \ddots &amp;amp; \\
+&amp;amp; &amp;amp; \vg_n
+\end{pmatrix}.
+$$
+&lt;/div&gt;
 
 &lt;p&gt;Furthermore, let the optimization problem on $\cP$ be&lt;/p&gt;
 
