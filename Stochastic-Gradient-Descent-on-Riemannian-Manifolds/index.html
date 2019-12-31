@@ -49,17 +49,17 @@
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet"
-          href="/css/bootstrap.css?1577811816521089000"/>
+          href="/css/bootstrap.css?1577816802944427000"/>
 
     <!-- Custom CSS -->
     <link rel="stylesheet"
           type="text/css"
-          href="/css/clean-blog.css?1577811816521089000" />
+          href="/css/clean-blog.css?1577816802944427000" />
 
     <!-- Pygments Github CSS -->
     <link rel="stylesheet"
           type="text/css"
-          href="/css/syntax.css?1577811816521089000" />
+          href="/css/syntax.css?1577816802944427000" />
 
     <!-- Custom Fonts -->
     <link rel="stylesheet"
@@ -1093,13 +1093,28 @@ us the loss for any point (or parameter) $\vtheta$ on the sphere $\cM$.
 Our machine learning framework might then automatically provide us with the 
 derivatives of the loss</p>
 
-    <script type="math/tex; mode=display">\vh(\vtheta^{(t)})
+    <div class="eq-desktop">
+$$
+\vh(\vtheta^{(t)})
 =
 \left(
 \fpartial{\cL(\vtheta^{(t)})}{x},
 \fpartial{\cL(\vtheta^{(t)})}{y},
 \fpartial{\cL(\vtheta^{(t)})}{z}
-\right)</script>
+\right)
+$$
+</div>
+    <div class="eq-mobile">
+$$
+\vh(\vtheta^{(t)})
+=
+\left(
+\tfrac{\partial\cL(\vtheta^{(t)})}{\partial x},
+\tfrac{\partial\cL(\vtheta^{(t)})}{\partial y},
+\tfrac{\partial\cL(\vtheta^{(t)})}{\partial z}
+\right)
+$$
+</div>
 
     <p>evaluated at our current parameters $\vtheta^{(t)}$. But now, how are we going about 
 updating the parameters $\vtheta^{(t)}$ with $\vh(\vtheta^{(t)})$? We can’t 
@@ -1140,8 +1155,7 @@ $$
 </div>
     <div class="eq-mobile">
 $$
-\begin{align*}
-\cM&amp;=\dset{\MX\in\R^{d\times d}}{
+\cM=\dset{\MX\in\R^{d\times d}}{
 \begin{array}{c}
 \forall i,j\in\set{1,\ldots,d}\colon 
 \\
@@ -1152,15 +1166,15 @@ X_{ij}\geq 0,
 \sum_{k=1}^d X_{ki}=1.
 \end{array}
 },
-\\
-g_{\MX}&amp;=\Tr{(\MA\oslash\MX)\MB^\T}.
-\end{align*}
+$$
+$$
+g_{\MX}=\Tr{(\MA\oslash\MX)\MB^\T}.
 $$
 </div>
 
     <p>Again, our machine learning framework may give us the derivatives of the 
 loss w.r.t. each of the parameter matrix’ coefficients and evaluate it at our 
-current parameters $\vtheta^{(t)}$:</p>
+current parameters $\vtheta^{(t)}:$</p>
 
     <script type="math/tex; mode=display">\MH(\vtheta^{(t)})
 =
@@ -1279,7 +1293,7 @@ space $\cT_{\vtheta^{(t)}}\cM$, which represents a first-order approximation of 
 surface around our current parameters $\vtheta^{(t)}$.</p>
 
 <div class="figure-with-caption">
-<img src="/img/2019-10-15-Stochastic-Gradient-Descent-on-Riemannian-Manifolds/rsgd-steps/orthogonal-projection-of-gradient-onto-tangent-space.png?v=1" alt="Orthogonal Projection of Gradient onto Tangent Space" width="70%" />
+<img src="/img/2019-10-15-Stochastic-Gradient-Descent-on-Riemannian-Manifolds/rsgd-steps/orthogonal-projection-of-gradient-onto-tangent-space.png?v=1" alt="Orthogonal Projection of Gradient onto Tangent Space" width="70%" data-desktop-width="70%" data-mobile-width="100%" />
 <div class="figure-caption" style="text-align:center">
 Orthogonal Projection of Gradient $\vh=\nabla_{\vtheta}\cL(\vtheta^{(t)})$ 
 onto Tangent Space $\cT_{\vtheta^{(t)}}\cM$
@@ -1322,7 +1336,7 @@ map is exactly what makes the parameters stay on the surface and also what force
 gradient updates to follow the curved geodesics of the manifold.</p>
 
 <div class="figure-with-caption">
-<img src="/img/2019-10-15-Stochastic-Gradient-Descent-on-Riemannian-Manifolds/rsgd-steps/gradient-step-via-expmap.png?v=1" alt="Orthogonal Projection of Gradient onto Tangent Space" width="70%" />
+<img src="/img/2019-10-15-Stochastic-Gradient-Descent-on-Riemannian-Manifolds/rsgd-steps/gradient-step-via-expmap.png?v=1" alt="Orthogonal Projection of Gradient onto Tangent Space" width="70%" data-desktop-width="70%" data-mobile-width="100%" />
 <div class="figure-caption" style="text-align:center">
 Gradient Step via Exponential Map
 </div>
@@ -1345,7 +1359,7 @@ first-order approximation of the exponential map. The possible differences betwe
 updates through the exponential map and the retraction are illustrated in the figure below:</p>
 
 <div class="figure-with-caption">
-<img src="/img/2019-10-15-Stochastic-Gradient-Descent-on-Riemannian-Manifolds/rsgd-steps/expmap-vs-retraction.png?v=2" alt="Exponential Map VS Retraction" width="70%" />
+<img src="/img/2019-10-15-Stochastic-Gradient-Descent-on-Riemannian-Manifolds/rsgd-steps/expmap-vs-retraction.png?v=2" alt="Exponential Map VS Retraction" width="70%" data-desktop-width="70%" data-mobile-width="100%" />
 <div class="figure-caption" style="text-align:center">
 Exponential Map VS Retraction
 </div>
@@ -1486,7 +1500,7 @@ the graph and product space distances:</p>
 arrange in a setting that approximates the original graph distances of the cycle graph.</p>
 
 <div class="figure-with-caption">
-<img src="/img/2019-10-15-Stochastic-Gradient-Descent-on-Riemannian-Manifolds/graph-embedding.gif?v=2" alt="Evolution of Graph Embedding in Product Space" width="70%" />
+<img src="/img/2019-10-15-Stochastic-Gradient-Descent-on-Riemannian-Manifolds/graph-embedding.gif?v=2" alt="Evolution of Graph Embedding in Product Space" width="70%" data-desktop-width="70%" data-mobile-width="100%" />
 <div class="figure-caption" style="text-align:center">
 Evolution of Graph Embedding in Product Space
 </div>
@@ -1879,6 +1893,40 @@ to you and that you are now ready to get started with Riemannian optimization.</
       processEscapes: true
     }
   });
+</script>
+
+<script type="text/javascript">
+
+AB = {
+
+    config: {
+        mobileWidth: 768,
+    },
+
+    resizeFigures: function() {
+        widthAttr = ''
+        if($(window).width() <= AB.config.mobileWidth) {
+            widthAttr = 'data-mobile-width';
+        } else {
+            widthAttr = 'data-desktop-width';
+        }
+        $('.figure-with-caption img').each(function() {
+            $(this).width($(this).attr(widthAttr));
+        });
+    },
+
+    init: function() {
+        $(document).ready(function() {
+            AB.resizeFigures();
+        });
+        $(window).resize(function() {
+            AB.resizeFigures();
+        })
+    }
+}
+
+AB.init();
+
 </script>
 
 </body>

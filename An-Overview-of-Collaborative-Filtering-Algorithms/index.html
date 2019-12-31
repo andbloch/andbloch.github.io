@@ -49,17 +49,17 @@
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet"
-          href="/css/bootstrap.css?1577811816521089000"/>
+          href="/css/bootstrap.css?1577816802944427000"/>
 
     <!-- Custom CSS -->
     <link rel="stylesheet"
           type="text/css"
-          href="/css/clean-blog.css?1577811816521089000" />
+          href="/css/clean-blog.css?1577816802944427000" />
 
     <!-- Pygments Github CSS -->
     <link rel="stylesheet"
           type="text/css"
-          href="/css/syntax.css?1577811816521089000" />
+          href="/css/syntax.css?1577816802944427000" />
 
     <!-- Custom Fonts -->
     <link rel="stylesheet"
@@ -1224,10 +1224,23 @@ item $i\in I$ for a user $u\in U$ through the dot product</p>
 and item $i$ in a <em>latent factor space</em>. These latent factor representations
 of users and items are the parameters $\vtheta$ that are aimed to be learned:</p>
 
-<script type="math/tex; mode=display">\vtheta=\set{\MX_U,\MX_I},
+<div class="eq-desktop">
+$$
+\vtheta=\set{\MX_U,\MX_I},
 \qquad
 \MX_U\in\R^{\card{U}\times d},\quad
-\MX_I\in\R^{\card{I}\times d}.</script>
+\MX_I\in\R^{\card{I}\times d}.
+$$
+</div>
+<div class="eq-mobile">
+$$
+\vtheta=\set{\MX_U,\MX_I},
+$$
+$$
+\MX_U\in\R^{\card{U}\times d},\quad
+\MX_I\in\R^{\card{I}\times d}.
+$$
+</div>
 
 <p>Several works showed how these latent factor space dimensions tend to capture
 concepts of users and items, e.g., “male” or “female” for users, or “serious” vs
@@ -1245,11 +1258,27 @@ how the latent factor dimensions tend to capture concepts about users or items.
 squared loss over the observed rankings $x_{ui}$ of the interaction matrix 
 $\MX\in\R^{\card{U}\times\card{I}}$, collected as training instances $(u,i)\in\cD$:</p>
 
-<script type="math/tex; mode=display">\cL(\vtheta)
+<div class="eq-desktop">
+$$
+\cL(\vtheta)
 =
 \sum_{(u,i)\in\cD}\left(x_{ui}-\hat{x}_{ui}\right)^2
 =
-\sum_{(u,i)\in\cD}\left(x_{ui}-\scprod{\vx_u,\vx_i}\right)^2.</script>
+\sum_{(u,i)\in\cD}\left(x_{ui}-\scprod{\vx_u,\vx_i}\right)^2.
+$$
+</div>
+<div class="eq-mobile">
+$$
+\begin{align*}
+\cL(\vtheta)
+&amp;=
+\sum_{(u,i)\in\cD}\left(x_{ui}-\hat{x}_{ui}\right)^2
+\\
+&amp;=
+\sum_{(u,i)\in\cD}\left(x_{ui}-\scprod{\vx_u,\vx_i}\right)^2.
+\end{align*}
+$$
+</div>
 
 <p>Some approaches for <em>implicit</em> feedback data, such as
 <a class="citation" href="#sarwar2000application">[19, 20]</a>, rely on
@@ -1307,13 +1336,31 @@ systematic tendencies <a class="citation" href="#koren2009matrix">[5]</a>.</p>
 <p>It is also a common practice to regularize the user- and item-embeddings and the
 means with L2-regularization</p>
 
-<script type="math/tex; mode=display">\Omega(\theta)
+<div class="eq-desktop">
+$$
+\Omega(\theta)
 =
 \norm{\MX_U}_2^2
 +\norm{\MX_I}_2^2
 +\norm{\vmu_U}_2^2
 +\norm{\vmu_I}_2^2
-+\mu^2.</script>
++\mu^2.
+$$
+</div>
+<div class="eq-mobile">
+$$
+\begin{align*}
+\Omega(\theta)
+&amp;=
+\norm{\MX_U}_2^2
++\norm{\MX_I}_2^2
+\\
+&amp;\quad+\norm{\vmu_U}_2^2
++\norm{\vmu_I}_2^2
++\mu^2.
+\end{align*}
+$$
+</div>
 
 <p>This form of regularization can also be motivated from a probabilistic
 perspective where the user- and item-embeddings and the means are assumed to be
@@ -1471,8 +1518,18 @@ is the following:</p>
 by the negative metric space distances $\hat{x}_{ui}=-d(\vx_u,\vx_i)$ and 
 $\hat{x}_{uj}=-d(\vx_u,\vx_j)$:</p>
 
-    <script type="math/tex; mode=display">\cL_m(\vtheta)=\sum_{(i,j)\in\cS}\sum_{(u,k)\nin\cS}
-w_{ij}\left[m+d(\vx_u,\vx_i)^2-d(\vx_u,\vx_j)^2\right]_+.</script>
+    <div class="eq-desktop">
+$$
+\cL_m(\vtheta)=\sum_{(i,j)\in\cS}\sum_{(u,k)\nin\cS}
+w_{ij}\left[m+d(\vx_u,\vx_i)^2-d(\vx_u,\vx_j)^2\right]_+.
+$$
+</div>
+    <div class="eq-mobile" style="font-size:75%">
+$$
+\cL_m(\vtheta)=\sum_{(i,j)\in\cS}\sum_{(u,k)\nin\cS}
+w_{ij}\left[m+d(\vx_u,\vx_i)^2-d(\vx_u,\vx_j)^2\right]_+.
+$$
+</div>
 
     <p>The set $\cS$ is the set of observed positive interactions. The gradients caused
 by the WARP loss for a user $u$ and its positive and negative items are
@@ -1513,19 +1570,45 @@ of the $d$-dimensional user and item-embeddings $\MX_U$ and $\MX_I$:</p>
 
     <p>The mean embedding vector is then computed as</p>
 
-    <script type="math/tex; mode=display">\vmu
+    <div class="eq-desktop">
+$$
+\vmu
 :=
 \frac{1}{\card{U}+\card{I}}\sum_{i=1}^{\card{U}+\card{I}}
-\MY_{i,:}\in\R^{1\times d},</script>
+\MY_{i,:}\in\R^{1\times d},
+$$
+</div>
+    <div class="eq-mobile">
+$$
+\vmu
+:=
+\tfrac{1}{\card{U}+\card{I}}\sum_{i=1}^{\card{U}+\card{I}}
+\MY_{i,:},
+$$
+</div>
 
     <p>and the covariance matrix $\MSigma$ is obtained via</p>
 
-    <script type="math/tex; mode=display">\MSigma
+    <div class="eq-desktop">
+$$
+\MSigma
 =
 \frac{1}{\card{U}+\card{I}}
 \sum_{i=1}^{\card{U}+\card{I}}
 \left(\MY_{i,:}-\vmu\right)^\T
-\left(\MY_{i,:}-\vmu\right)\in\R^{d\times d}.</script>
+\left(\MY_{i,:}-\vmu\right)\in\R^{d\times d}.
+$$
+</div>
+    <div class="eq-mobile">
+$$
+\MSigma
+=
+\tfrac{1}{\card{U}+\card{I}}
+\sum_{i=1}^{\card{U}+\card{I}}
+\left(\MY_{i,:}-\vmu\right)^\T
+\left(\MY_{i,:}-\vmu\right).
+$$
+</div>
   </li>
   <li>
     <p>The optimization constraint $\norm{\vx_{*}}\leq 1$ forces all user and
@@ -1573,13 +1656,26 @@ the hyperbolic geodesic distance also has to respect the triangle inequality.</p
 <p>The approaches of <a class="citation" href="#hrs">[35, 36, 37]</a> train their embeddings via 
 the BPR loss <a class="citation" href="#rendle2009bpr">[32]</a>, yielding the optimization objective</p>
 
-<script type="math/tex; mode=display">\cL(\vtheta)
+<div class="eq-desktop">
+$$
+\cL(\vtheta)
 =
 \sum_{(u,i,j)}
 -\log\left(\sigma\left(
 \alpha\left(
 d(\vx_u,\vx_i)-d(\vx_u,\vx_j)
-\right)\right)\right),</script>
+\right)\right)\right),
+$$
+</div>
+<div class="eq-mobile">
+$$
+\sum_{(u,i,j)}
+-\log\left(\sigma\left(
+\alpha\left(
+d(\vx_u,\vx_i)-d(\vx_u,\vx_j)
+\right)\right)\right),
+$$
+</div>
 
 <p>where the parameters $\vtheta$ consist of the user embeddings $\MX_U$, the item
 embeddings $\MX_I$ and the scalar $\alpha$. In some of their experiments 
@@ -1604,10 +1700,12 @@ some L2-regularization on the user and item embeddings.</p>
 
 <p>Chamberlain et al. <a class="citation" href="#shrs">[36]</a> further explored the 
 possibilities of expressing users as the Einstein midpoint $\vmu$ (corresponding to a mean) 
-of their positively interacted items in order to reduce the amount of learned parameters:</p>
-
-<script type="math/tex; mode=display">\vx_u:=\vmu(\dset{i\in I}{u \text{ has positively interacted with }i}).</script>
-
+of their positively interacted items in order to reduce the amount of learned parameters.</p>
+<div class="eq-desktop">
+$$
+\vx_u:=\vmu(\dset{i\in I}{u \text{ has positively interacted with }i}).
+$$
+</div>
 <p>In their experiments, Chamberlain et al. showed that expressing the users as the
 midpoint of their interacted items can speed-up the training, due to the
 reduced amount of parameters, without sacrificing the model’s recommendation
@@ -1733,8 +1831,18 @@ with negative sampling. One could also use the pair-wise BPR loss to train the
 model’s parameters, however, in their experiments He et al. observed better 
 performance metrics with the binary cross-entropy loss and negative sampling:</p>
 
-<script type="math/tex; mode=display">\cL(\vtheta)=-\sum_{(u,i)\in\cD}
-\left[x_{ui}\log(\hat{x}_{ui}) + (1-x_{ui})\log(1-\hat{x}_{ui})\right],</script>
+<div class="eq-desktop">
+$$
+\cL(\vtheta)=-\sum_{(u,i)\in\cD}
+\left[x_{ui}\log(\hat{x}_{ui}) + (1-x_{ui})\log(1-\hat{x}_{ui})\right],
+$$
+</div>
+<div class="eq-mobile">
+$$
+-\sum_{(u,i)\in\cD}
+\left[x_{ui}\log(\hat{x}_{ui}) + (1-x_{ui})\log(1-\hat{x}_{ui})\right],
+$$
+</div>
 
 <p>where the training instances $(u,i)\in\cD$ consist of positive and
 negative interactions. The negative interactions are oversampled according to a
@@ -1898,25 +2006,71 @@ multivariate Gaussian (induced by squared loss) and logistic loss.</p>
 
 <p>The entire VAE architecture is then given by the encoder $g_{\phi}$ and decoder $f_{\theta}$ as</p>
 
-<script type="math/tex; mode=display">\vx_u
+<div class="eq-desktop">
+$$
+\vx_u
 \stackrel{g_{\phi}}{\mapsto}
 (\mu_{\phi}(\vx_u),\sigma_{\phi}(\vx_u))
 \stackrel{\epsilon\sim\cN(\vo,\MI)}{\mapsto}
 \vz_u=\vmu_{\phi}(\vx_u)+\epsilon\odot\vsigma_{\phi}(\vx_u)
 \stackrel{f_{\theta}}{\mapsto}
-\hat{\vx}_u,</script>
+\hat{\vx}_u,
+$$
 
-<script type="math/tex; mode=display">\pi(\vz_u)\propto\exp(f_{\theta}(\vz_u)),
-\quad
-\hat{\vx}_u\sim Mult(N_{u},\pi(\vz_{u})),</script>
+with
 
-<script type="math/tex; mode=display">\log\left(\cDist{p_{\theta}}{\hat{\vx}_{u}}{\vz_u}\right)
+$$
+\pi(\vz_u)\propto\exp(f_{\theta}(\vz_u)),
+$$
+
+$$
+\hat{\vx}_u\sim Mult(N_{u},\pi(\vz_{u})),
+$$
+
+$$
+\log\left(\cDist{p_{\theta}}{\hat{\vx}_{u}}{\vz_u}\right)
 =
-\sum_{i=1}^{\card{I}}x_{ui}\log(\pi_i(\vz_u)).</script>
+\sum_{i=1}^{\card{I}}x_{ui}\log(\pi_i(\vz_u)).
+$$
+</div>
+
+<div class="eq-mobile">
+$$
+\begin{align*}
+\vx_u
+&amp;\stackrel{g_{\phi}}{\mapsto}
+(\mu_{\phi}(\vx_u),\sigma_{\phi}(\vx_u))
+\\
+&amp;\stackrel{\llap{\epsilon\sim}\rlap{\cN(\vo,\MI)}}{\mapsto}
+\vz_u=\vmu_{\phi}(\vx_u)+\epsilon\odot\vsigma_{\phi}(\vx_u)
+\\
+&amp;\stackrel{f_{\theta}}{\mapsto}
+\hat{\vx}_u,
+\end{align*}
+$$
+
+with
+
+$$
+\pi(\vz_u)\propto\exp(f_{\theta}(\vz_u)),
+$$
+
+$$
+\hat{\vx}_u\sim Mult(N_{u},\pi(\vz_{u})),
+$$
+
+$$
+\log\left(\cDist{p_{\theta}}{\hat{\vx}_{u}}{\vz_u}\right)
+=
+\sum_{i=1}^{\card{I}}x_{ui}\log(\pi_i(\vz_u)).
+$$
+</div>
 
 <p>The VAE is trained by annealing the evidence lower bound (ELBO)</p>
 
-<script type="math/tex; mode=display">\cL_{\beta}(\theta,\phi)
+<div class="eq-desktop">
+$$
+\cL_{\beta}(\theta,\phi)
 =
 \sum_{\vx_u}\left[
 \Exp[
@@ -1930,7 +2084,32 @@ KL\left(
 ||
 p(\vz_u)
 \right)
-\right],</script>
+\right],
+$$
+</div>
+
+<div class="eq-mobile">
+$$
+\begin{align*}
+\cL_{\beta}(\theta,\phi)
+&amp;=
+\sum_{\vx_u}\Big[
+\Exp[
+\cDist{q_{\phi}}{\vz_u}{\vx_u}
+]{\log\left(
+\cDist{p_{\theta}}{\hat{\vx}_u}{\vz_u}
+\right)}
+\\
+&amp;\quad-\beta
+KL\left(
+\cDist{q_{\phi}}{\vz_u}{\vx_u}
+||
+p(\vz_u)
+\right)
+\Big],
+\end{align*}
+$$
+</div>
 
 <p>where $\beta$ is chosen to be $\beta&lt;1$, relaxing the prior constraint
 that</p>
@@ -2178,6 +2357,40 @@ interaction vectors gives the right relevance predictions for the yet unobserved
       processEscapes: true
     }
   });
+</script>
+
+<script type="text/javascript">
+
+AB = {
+
+    config: {
+        mobileWidth: 768,
+    },
+
+    resizeFigures: function() {
+        widthAttr = ''
+        if($(window).width() <= AB.config.mobileWidth) {
+            widthAttr = 'data-mobile-width';
+        } else {
+            widthAttr = 'data-desktop-width';
+        }
+        $('.figure-with-caption img').each(function() {
+            $(this).width($(this).attr(widthAttr));
+        });
+    },
+
+    init: function() {
+        $(document).ready(function() {
+            AB.resizeFigures();
+        });
+        $(window).resize(function() {
+            AB.resizeFigures();
+        })
+    }
+}
+
+AB.init();
+
 </script>
 
 </body>

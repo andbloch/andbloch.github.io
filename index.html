@@ -49,17 +49,17 @@
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet"
-          href="/css/bootstrap.css?1577811816521089000"/>
+          href="/css/bootstrap.css?1577816802944427000"/>
 
     <!-- Custom CSS -->
     <link rel="stylesheet"
           type="text/css"
-          href="/css/clean-blog.css?1577811816521089000" />
+          href="/css/clean-blog.css?1577816802944427000" />
 
     <!-- Pygments Github CSS -->
     <link rel="stylesheet"
           type="text/css"
-          href="/css/syntax.css?1577811816521089000" />
+          href="/css/syntax.css?1577816802944427000" />
 
     <!-- Custom Fonts -->
     <link rel="stylesheet"
@@ -1162,6 +1162,40 @@ $$
       processEscapes: true
     }
   });
+</script>
+
+<script type="text/javascript">
+
+AB = {
+
+    config: {
+        mobileWidth: 768,
+    },
+
+    resizeFigures: function() {
+        widthAttr = ''
+        if($(window).width() <= AB.config.mobileWidth) {
+            widthAttr = 'data-mobile-width';
+        } else {
+            widthAttr = 'data-desktop-width';
+        }
+        $('.figure-with-caption img').each(function() {
+            $(this).width($(this).attr(widthAttr));
+        });
+    },
+
+    init: function() {
+        $(document).ready(function() {
+            AB.resizeFigures();
+        });
+        $(window).resize(function() {
+            AB.resizeFigures();
+        })
+    }
+}
+
+AB.init();
+
 </script>
 
 </body>

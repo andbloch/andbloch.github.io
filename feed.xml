@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-12-31T18:03:36+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Andreas Bloch</title><entry><title type="html">An Overview of Collaborative Filtering Algorithms for Implicit Feedback Data</title><link href="http://localhost:4000/An-Overview-of-Collaborative-Filtering-Algorithms/" rel="alternate" type="text/html" title="An Overview of Collaborative Filtering Algorithms for Implicit Feedback Data" /><published>2019-12-16T08:00:00+01:00</published><updated>2019-12-16T08:00:00+01:00</updated><id>http://localhost:4000/An-Overview-of-Collaborative-Filtering-Algorithms</id><content type="html" xml:base="http://localhost:4000/An-Overview-of-Collaborative-Filtering-Algorithms/">&lt;p&gt;This blogpost gives an overview of today’s most predominant types of 
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-12-31T19:26:42+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Andreas Bloch</title><entry><title type="html">An Overview of Collaborative Filtering Algorithms for Implicit Feedback Data</title><link href="http://localhost:4000/An-Overview-of-Collaborative-Filtering-Algorithms/" rel="alternate" type="text/html" title="An Overview of Collaborative Filtering Algorithms for Implicit Feedback Data" /><published>2019-12-16T08:00:00+01:00</published><updated>2019-12-16T08:00:00+01:00</updated><id>http://localhost:4000/An-Overview-of-Collaborative-Filtering-Algorithms</id><content type="html" xml:base="http://localhost:4000/An-Overview-of-Collaborative-Filtering-Algorithms/">&lt;p&gt;This blogpost gives an overview of today’s most predominant types of 
 recommender systems for collaborative filtering from implicit feedback data. 
 The overview is by no means exhaustive, but it should provide the reader with 
 a good overview about the topic.&lt;/p&gt;
@@ -232,10 +232,23 @@ item $i\in I$ for a user $u\in U$ through the dot product&lt;/p&gt;
 and item $i$ in a &lt;em&gt;latent factor space&lt;/em&gt;. These latent factor representations
 of users and items are the parameters $\vtheta$ that are aimed to be learned:&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\vtheta=\set{\MX_U,\MX_I},
+&lt;div class=&quot;eq-desktop&quot;&gt;
+$$
+\vtheta=\set{\MX_U,\MX_I},
 \qquad
 \MX_U\in\R^{\card{U}\times d},\quad
-\MX_I\in\R^{\card{I}\times d}.&lt;/script&gt;
+\MX_I\in\R^{\card{I}\times d}.
+$$
+&lt;/div&gt;
+&lt;div class=&quot;eq-mobile&quot;&gt;
+$$
+\vtheta=\set{\MX_U,\MX_I},
+$$
+$$
+\MX_U\in\R^{\card{U}\times d},\quad
+\MX_I\in\R^{\card{I}\times d}.
+$$
+&lt;/div&gt;
 
 &lt;p&gt;Several works showed how these latent factor space dimensions tend to capture
 concepts of users and items, e.g., “male” or “female” for users, or “serious” vs
@@ -253,11 +266,27 @@ how the latent factor dimensions tend to capture concepts about users or items.
 squared loss over the observed rankings $x_{ui}$ of the interaction matrix 
 $\MX\in\R^{\card{U}\times\card{I}}$, collected as training instances $(u,i)\in\cD$:&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\cL(\vtheta)
+&lt;div class=&quot;eq-desktop&quot;&gt;
+$$
+\cL(\vtheta)
 =
 \sum_{(u,i)\in\cD}\left(x_{ui}-\hat{x}_{ui}\right)^2
 =
-\sum_{(u,i)\in\cD}\left(x_{ui}-\scprod{\vx_u,\vx_i}\right)^2.&lt;/script&gt;
+\sum_{(u,i)\in\cD}\left(x_{ui}-\scprod{\vx_u,\vx_i}\right)^2.
+$$
+&lt;/div&gt;
+&lt;div class=&quot;eq-mobile&quot;&gt;
+$$
+\begin{align*}
+\cL(\vtheta)
+&amp;amp;=
+\sum_{(u,i)\in\cD}\left(x_{ui}-\hat{x}_{ui}\right)^2
+\\
+&amp;amp;=
+\sum_{(u,i)\in\cD}\left(x_{ui}-\scprod{\vx_u,\vx_i}\right)^2.
+\end{align*}
+$$
+&lt;/div&gt;
 
 &lt;p&gt;Some approaches for &lt;em&gt;implicit&lt;/em&gt; feedback data, such as
 &lt;a class=&quot;citation&quot; href=&quot;#sarwar2000application&quot;&gt;[19, 20]&lt;/a&gt;, rely on
@@ -315,13 +344,31 @@ systematic tendencies &lt;a class=&quot;citation&quot; href=&quot;#koren2009matr
 &lt;p&gt;It is also a common practice to regularize the user- and item-embeddings and the
 means with L2-regularization&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\Omega(\theta)
+&lt;div class=&quot;eq-desktop&quot;&gt;
+$$
+\Omega(\theta)
 =
 \norm{\MX_U}_2^2
 +\norm{\MX_I}_2^2
 +\norm{\vmu_U}_2^2
 +\norm{\vmu_I}_2^2
-+\mu^2.&lt;/script&gt;
++\mu^2.
+$$
+&lt;/div&gt;
+&lt;div class=&quot;eq-mobile&quot;&gt;
+$$
+\begin{align*}
+\Omega(\theta)
+&amp;amp;=
+\norm{\MX_U}_2^2
++\norm{\MX_I}_2^2
+\\
+&amp;amp;\quad+\norm{\vmu_U}_2^2
++\norm{\vmu_I}_2^2
++\mu^2.
+\end{align*}
+$$
+&lt;/div&gt;
 
 &lt;p&gt;This form of regularization can also be motivated from a probabilistic
 perspective where the user- and item-embeddings and the means are assumed to be
@@ -479,8 +526,18 @@ is the following:&lt;/p&gt;
 by the negative metric space distances $\hat{x}_{ui}=-d(\vx_u,\vx_i)$ and 
 $\hat{x}_{uj}=-d(\vx_u,\vx_j)$:&lt;/p&gt;
 
-    &lt;script type=&quot;math/tex; mode=display&quot;&gt;\cL_m(\vtheta)=\sum_{(i,j)\in\cS}\sum_{(u,k)\nin\cS}
-w_{ij}\left[m+d(\vx_u,\vx_i)^2-d(\vx_u,\vx_j)^2\right]_+.&lt;/script&gt;
+    &lt;div class=&quot;eq-desktop&quot;&gt;
+$$
+\cL_m(\vtheta)=\sum_{(i,j)\in\cS}\sum_{(u,k)\nin\cS}
+w_{ij}\left[m+d(\vx_u,\vx_i)^2-d(\vx_u,\vx_j)^2\right]_+.
+$$
+&lt;/div&gt;
+    &lt;div class=&quot;eq-mobile&quot; style=&quot;font-size:75%&quot;&gt;
+$$
+\cL_m(\vtheta)=\sum_{(i,j)\in\cS}\sum_{(u,k)\nin\cS}
+w_{ij}\left[m+d(\vx_u,\vx_i)^2-d(\vx_u,\vx_j)^2\right]_+.
+$$
+&lt;/div&gt;
 
     &lt;p&gt;The set $\cS$ is the set of observed positive interactions. The gradients caused
 by the WARP loss for a user $u$ and its positive and negative items are
@@ -521,19 +578,45 @@ of the $d$-dimensional user and item-embeddings $\MX_U$ and $\MX_I$:&lt;/p&gt;
 
     &lt;p&gt;The mean embedding vector is then computed as&lt;/p&gt;
 
-    &lt;script type=&quot;math/tex; mode=display&quot;&gt;\vmu
+    &lt;div class=&quot;eq-desktop&quot;&gt;
+$$
+\vmu
 :=
 \frac{1}{\card{U}+\card{I}}\sum_{i=1}^{\card{U}+\card{I}}
-\MY_{i,:}\in\R^{1\times d},&lt;/script&gt;
+\MY_{i,:}\in\R^{1\times d},
+$$
+&lt;/div&gt;
+    &lt;div class=&quot;eq-mobile&quot;&gt;
+$$
+\vmu
+:=
+\tfrac{1}{\card{U}+\card{I}}\sum_{i=1}^{\card{U}+\card{I}}
+\MY_{i,:},
+$$
+&lt;/div&gt;
 
     &lt;p&gt;and the covariance matrix $\MSigma$ is obtained via&lt;/p&gt;
 
-    &lt;script type=&quot;math/tex; mode=display&quot;&gt;\MSigma
+    &lt;div class=&quot;eq-desktop&quot;&gt;
+$$
+\MSigma
 =
 \frac{1}{\card{U}+\card{I}}
 \sum_{i=1}^{\card{U}+\card{I}}
 \left(\MY_{i,:}-\vmu\right)^\T
-\left(\MY_{i,:}-\vmu\right)\in\R^{d\times d}.&lt;/script&gt;
+\left(\MY_{i,:}-\vmu\right)\in\R^{d\times d}.
+$$
+&lt;/div&gt;
+    &lt;div class=&quot;eq-mobile&quot;&gt;
+$$
+\MSigma
+=
+\tfrac{1}{\card{U}+\card{I}}
+\sum_{i=1}^{\card{U}+\card{I}}
+\left(\MY_{i,:}-\vmu\right)^\T
+\left(\MY_{i,:}-\vmu\right).
+$$
+&lt;/div&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;The optimization constraint $\norm{\vx_{*}}\leq 1$ forces all user and
@@ -581,13 +664,26 @@ the hyperbolic geodesic distance also has to respect the triangle inequality.&lt
 &lt;p&gt;The approaches of &lt;a class=&quot;citation&quot; href=&quot;#hrs&quot;&gt;[35, 36, 37]&lt;/a&gt; train their embeddings via 
 the BPR loss &lt;a class=&quot;citation&quot; href=&quot;#rendle2009bpr&quot;&gt;[32]&lt;/a&gt;, yielding the optimization objective&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\cL(\vtheta)
+&lt;div class=&quot;eq-desktop&quot;&gt;
+$$
+\cL(\vtheta)
 =
 \sum_{(u,i,j)}
 -\log\left(\sigma\left(
 \alpha\left(
 d(\vx_u,\vx_i)-d(\vx_u,\vx_j)
-\right)\right)\right),&lt;/script&gt;
+\right)\right)\right),
+$$
+&lt;/div&gt;
+&lt;div class=&quot;eq-mobile&quot;&gt;
+$$
+\sum_{(u,i,j)}
+-\log\left(\sigma\left(
+\alpha\left(
+d(\vx_u,\vx_i)-d(\vx_u,\vx_j)
+\right)\right)\right),
+$$
+&lt;/div&gt;
 
 &lt;p&gt;where the parameters $\vtheta$ consist of the user embeddings $\MX_U$, the item
 embeddings $\MX_I$ and the scalar $\alpha$. In some of their experiments 
@@ -612,10 +708,12 @@ some L2-regularization on the user and item embeddings.&lt;/p&gt;
 
 &lt;p&gt;Chamberlain et al. &lt;a class=&quot;citation&quot; href=&quot;#shrs&quot;&gt;[36]&lt;/a&gt; further explored the 
 possibilities of expressing users as the Einstein midpoint $\vmu$ (corresponding to a mean) 
-of their positively interacted items in order to reduce the amount of learned parameters:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\vx_u:=\vmu(\dset{i\in I}{u \text{ has positively interacted with }i}).&lt;/script&gt;
-
+of their positively interacted items in order to reduce the amount of learned parameters.&lt;/p&gt;
+&lt;div class=&quot;eq-desktop&quot;&gt;
+$$
+\vx_u:=\vmu(\dset{i\in I}{u \text{ has positively interacted with }i}).
+$$
+&lt;/div&gt;
 &lt;p&gt;In their experiments, Chamberlain et al. showed that expressing the users as the
 midpoint of their interacted items can speed-up the training, due to the
 reduced amount of parameters, without sacrificing the model’s recommendation
@@ -741,8 +839,18 @@ with negative sampling. One could also use the pair-wise BPR loss to train the
 model’s parameters, however, in their experiments He et al. observed better 
 performance metrics with the binary cross-entropy loss and negative sampling:&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\cL(\vtheta)=-\sum_{(u,i)\in\cD}
-\left[x_{ui}\log(\hat{x}_{ui}) + (1-x_{ui})\log(1-\hat{x}_{ui})\right],&lt;/script&gt;
+&lt;div class=&quot;eq-desktop&quot;&gt;
+$$
+\cL(\vtheta)=-\sum_{(u,i)\in\cD}
+\left[x_{ui}\log(\hat{x}_{ui}) + (1-x_{ui})\log(1-\hat{x}_{ui})\right],
+$$
+&lt;/div&gt;
+&lt;div class=&quot;eq-mobile&quot;&gt;
+$$
+-\sum_{(u,i)\in\cD}
+\left[x_{ui}\log(\hat{x}_{ui}) + (1-x_{ui})\log(1-\hat{x}_{ui})\right],
+$$
+&lt;/div&gt;
 
 &lt;p&gt;where the training instances $(u,i)\in\cD$ consist of positive and
 negative interactions. The negative interactions are oversampled according to a
@@ -906,25 +1014,71 @@ multivariate Gaussian (induced by squared loss) and logistic loss.&lt;/p&gt;
 
 &lt;p&gt;The entire VAE architecture is then given by the encoder $g_{\phi}$ and decoder $f_{\theta}$ as&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\vx_u
+&lt;div class=&quot;eq-desktop&quot;&gt;
+$$
+\vx_u
 \stackrel{g_{\phi}}{\mapsto}
 (\mu_{\phi}(\vx_u),\sigma_{\phi}(\vx_u))
 \stackrel{\epsilon\sim\cN(\vo,\MI)}{\mapsto}
 \vz_u=\vmu_{\phi}(\vx_u)+\epsilon\odot\vsigma_{\phi}(\vx_u)
 \stackrel{f_{\theta}}{\mapsto}
-\hat{\vx}_u,&lt;/script&gt;
+\hat{\vx}_u,
+$$
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\pi(\vz_u)\propto\exp(f_{\theta}(\vz_u)),
-\quad
-\hat{\vx}_u\sim Mult(N_{u},\pi(\vz_{u})),&lt;/script&gt;
+with
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\log\left(\cDist{p_{\theta}}{\hat{\vx}_{u}}{\vz_u}\right)
+$$
+\pi(\vz_u)\propto\exp(f_{\theta}(\vz_u)),
+$$
+
+$$
+\hat{\vx}_u\sim Mult(N_{u},\pi(\vz_{u})),
+$$
+
+$$
+\log\left(\cDist{p_{\theta}}{\hat{\vx}_{u}}{\vz_u}\right)
 =
-\sum_{i=1}^{\card{I}}x_{ui}\log(\pi_i(\vz_u)).&lt;/script&gt;
+\sum_{i=1}^{\card{I}}x_{ui}\log(\pi_i(\vz_u)).
+$$
+&lt;/div&gt;
+
+&lt;div class=&quot;eq-mobile&quot;&gt;
+$$
+\begin{align*}
+\vx_u
+&amp;amp;\stackrel{g_{\phi}}{\mapsto}
+(\mu_{\phi}(\vx_u),\sigma_{\phi}(\vx_u))
+\\
+&amp;amp;\stackrel{\llap{\epsilon\sim}\rlap{\cN(\vo,\MI)}}{\mapsto}
+\vz_u=\vmu_{\phi}(\vx_u)+\epsilon\odot\vsigma_{\phi}(\vx_u)
+\\
+&amp;amp;\stackrel{f_{\theta}}{\mapsto}
+\hat{\vx}_u,
+\end{align*}
+$$
+
+with
+
+$$
+\pi(\vz_u)\propto\exp(f_{\theta}(\vz_u)),
+$$
+
+$$
+\hat{\vx}_u\sim Mult(N_{u},\pi(\vz_{u})),
+$$
+
+$$
+\log\left(\cDist{p_{\theta}}{\hat{\vx}_{u}}{\vz_u}\right)
+=
+\sum_{i=1}^{\card{I}}x_{ui}\log(\pi_i(\vz_u)).
+$$
+&lt;/div&gt;
 
 &lt;p&gt;The VAE is trained by annealing the evidence lower bound (ELBO)&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\cL_{\beta}(\theta,\phi)
+&lt;div class=&quot;eq-desktop&quot;&gt;
+$$
+\cL_{\beta}(\theta,\phi)
 =
 \sum_{\vx_u}\left[
 \Exp[
@@ -938,7 +1092,32 @@ KL\left(
 ||
 p(\vz_u)
 \right)
-\right],&lt;/script&gt;
+\right],
+$$
+&lt;/div&gt;
+
+&lt;div class=&quot;eq-mobile&quot;&gt;
+$$
+\begin{align*}
+\cL_{\beta}(\theta,\phi)
+&amp;amp;=
+\sum_{\vx_u}\Big[
+\Exp[
+\cDist{q_{\phi}}{\vz_u}{\vx_u}
+]{\log\left(
+\cDist{p_{\theta}}{\hat{\vx}_u}{\vz_u}
+\right)}
+\\
+&amp;amp;\quad-\beta
+KL\left(
+\cDist{q_{\phi}}{\vz_u}{\vx_u}
+||
+p(\vz_u)
+\right)
+\Big],
+\end{align*}
+$$
+&lt;/div&gt;
 
 &lt;p&gt;where $\beta$ is chosen to be $\beta&amp;lt;1$, relaxing the prior constraint
 that&lt;/p&gt;
@@ -2651,13 +2830,28 @@ us the loss for any point (or parameter) $\vtheta$ on the sphere $\cM$.
 Our machine learning framework might then automatically provide us with the 
 derivatives of the loss&lt;/p&gt;
 
-    &lt;script type=&quot;math/tex; mode=display&quot;&gt;\vh(\vtheta^{(t)})
+    &lt;div class=&quot;eq-desktop&quot;&gt;
+$$
+\vh(\vtheta^{(t)})
 =
 \left(
 \fpartial{\cL(\vtheta^{(t)})}{x},
 \fpartial{\cL(\vtheta^{(t)})}{y},
 \fpartial{\cL(\vtheta^{(t)})}{z}
-\right)&lt;/script&gt;
+\right)
+$$
+&lt;/div&gt;
+    &lt;div class=&quot;eq-mobile&quot;&gt;
+$$
+\vh(\vtheta^{(t)})
+=
+\left(
+\tfrac{\partial\cL(\vtheta^{(t)})}{\partial x},
+\tfrac{\partial\cL(\vtheta^{(t)})}{\partial y},
+\tfrac{\partial\cL(\vtheta^{(t)})}{\partial z}
+\right)
+$$
+&lt;/div&gt;
 
     &lt;p&gt;evaluated at our current parameters $\vtheta^{(t)}$. But now, how are we going about 
 updating the parameters $\vtheta^{(t)}$ with $\vh(\vtheta^{(t)})$? We can’t 
@@ -2698,8 +2892,7 @@ $$
 &lt;/div&gt;
     &lt;div class=&quot;eq-mobile&quot;&gt;
 $$
-\begin{align*}
-\cM&amp;amp;=\dset{\MX\in\R^{d\times d}}{
+\cM=\dset{\MX\in\R^{d\times d}}{
 \begin{array}{c}
 \forall i,j\in\set{1,\ldots,d}\colon 
 \\
@@ -2710,15 +2903,15 @@ X_{ij}\geq 0,
 \sum_{k=1}^d X_{ki}=1.
 \end{array}
 },
-\\
-g_{\MX}&amp;amp;=\Tr{(\MA\oslash\MX)\MB^\T}.
-\end{align*}
+$$
+$$
+g_{\MX}=\Tr{(\MA\oslash\MX)\MB^\T}.
 $$
 &lt;/div&gt;
 
     &lt;p&gt;Again, our machine learning framework may give us the derivatives of the 
 loss w.r.t. each of the parameter matrix’ coefficients and evaluate it at our 
-current parameters $\vtheta^{(t)}$:&lt;/p&gt;
+current parameters $\vtheta^{(t)}:$&lt;/p&gt;
 
     &lt;script type=&quot;math/tex; mode=display&quot;&gt;\MH(\vtheta^{(t)})
 =
@@ -2837,7 +3030,7 @@ space $\cT_{\vtheta^{(t)}}\cM$, which represents a first-order approximation of 
 surface around our current parameters $\vtheta^{(t)}$.&lt;/p&gt;
 
 &lt;div class=&quot;figure-with-caption&quot;&gt;
-&lt;img src=&quot;/img/2019-10-15-Stochastic-Gradient-Descent-on-Riemannian-Manifolds/rsgd-steps/orthogonal-projection-of-gradient-onto-tangent-space.png?v=1&quot; alt=&quot;Orthogonal Projection of Gradient onto Tangent Space&quot; width=&quot;70%&quot; /&gt;
+&lt;img src=&quot;/img/2019-10-15-Stochastic-Gradient-Descent-on-Riemannian-Manifolds/rsgd-steps/orthogonal-projection-of-gradient-onto-tangent-space.png?v=1&quot; alt=&quot;Orthogonal Projection of Gradient onto Tangent Space&quot; width=&quot;70%&quot; data-desktop-width=&quot;70%&quot; data-mobile-width=&quot;100%&quot; /&gt;
 &lt;div class=&quot;figure-caption&quot; style=&quot;text-align:center&quot;&gt;
 Orthogonal Projection of Gradient $\vh=\nabla_{\vtheta}\cL(\vtheta^{(t)})$ 
 onto Tangent Space $\cT_{\vtheta^{(t)}}\cM$
@@ -2880,7 +3073,7 @@ map is exactly what makes the parameters stay on the surface and also what force
 gradient updates to follow the curved geodesics of the manifold.&lt;/p&gt;
 
 &lt;div class=&quot;figure-with-caption&quot;&gt;
-&lt;img src=&quot;/img/2019-10-15-Stochastic-Gradient-Descent-on-Riemannian-Manifolds/rsgd-steps/gradient-step-via-expmap.png?v=1&quot; alt=&quot;Orthogonal Projection of Gradient onto Tangent Space&quot; width=&quot;70%&quot; /&gt;
+&lt;img src=&quot;/img/2019-10-15-Stochastic-Gradient-Descent-on-Riemannian-Manifolds/rsgd-steps/gradient-step-via-expmap.png?v=1&quot; alt=&quot;Orthogonal Projection of Gradient onto Tangent Space&quot; width=&quot;70%&quot; data-desktop-width=&quot;70%&quot; data-mobile-width=&quot;100%&quot; /&gt;
 &lt;div class=&quot;figure-caption&quot; style=&quot;text-align:center&quot;&gt;
 Gradient Step via Exponential Map
 &lt;/div&gt;
@@ -2903,7 +3096,7 @@ first-order approximation of the exponential map. The possible differences betwe
 updates through the exponential map and the retraction are illustrated in the figure below:&lt;/p&gt;
 
 &lt;div class=&quot;figure-with-caption&quot;&gt;
-&lt;img src=&quot;/img/2019-10-15-Stochastic-Gradient-Descent-on-Riemannian-Manifolds/rsgd-steps/expmap-vs-retraction.png?v=2&quot; alt=&quot;Exponential Map VS Retraction&quot; width=&quot;70%&quot; /&gt;
+&lt;img src=&quot;/img/2019-10-15-Stochastic-Gradient-Descent-on-Riemannian-Manifolds/rsgd-steps/expmap-vs-retraction.png?v=2&quot; alt=&quot;Exponential Map VS Retraction&quot; width=&quot;70%&quot; data-desktop-width=&quot;70%&quot; data-mobile-width=&quot;100%&quot; /&gt;
 &lt;div class=&quot;figure-caption&quot; style=&quot;text-align:center&quot;&gt;
 Exponential Map VS Retraction
 &lt;/div&gt;
@@ -3044,7 +3237,7 @@ the graph and product space distances:&lt;/p&gt;
 arrange in a setting that approximates the original graph distances of the cycle graph.&lt;/p&gt;
 
 &lt;div class=&quot;figure-with-caption&quot;&gt;
-&lt;img src=&quot;/img/2019-10-15-Stochastic-Gradient-Descent-on-Riemannian-Manifolds/graph-embedding.gif?v=2&quot; alt=&quot;Evolution of Graph Embedding in Product Space&quot; width=&quot;70%&quot; /&gt;
+&lt;img src=&quot;/img/2019-10-15-Stochastic-Gradient-Descent-on-Riemannian-Manifolds/graph-embedding.gif?v=2&quot; alt=&quot;Evolution of Graph Embedding in Product Space&quot; width=&quot;70%&quot; data-desktop-width=&quot;70%&quot; data-mobile-width=&quot;100%&quot; /&gt;
 &lt;div class=&quot;figure-caption&quot; style=&quot;text-align:center&quot;&gt;
 Evolution of Graph Embedding in Product Space
 &lt;/div&gt;
