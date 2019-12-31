@@ -741,6 +741,12 @@ footer{
     margin-bottom: 30px;
 }
 
+h1.page-title {
+    text-align: center;
+    font-size: 36px;
+    padding-bottom: 2em;
+}
+
 /*** Mobile ******************************************/
 
 div.eq-mobile {
@@ -757,6 +763,10 @@ div.eq-mobile {
 
     .navbar {
         position: fixed;
+    }
+
+    h1.page-title {
+        padding-bottom: 1em;
     }
 
     article {
