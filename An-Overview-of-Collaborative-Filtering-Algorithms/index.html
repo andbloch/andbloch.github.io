@@ -49,17 +49,17 @@
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet"
-          href="/css/bootstrap.css?1577816802944427000"/>
+          href="/css/bootstrap.css?1577817939297720000"/>
 
     <!-- Custom CSS -->
     <link rel="stylesheet"
           type="text/css"
-          href="/css/clean-blog.css?1577816802944427000" />
+          href="/css/clean-blog.css?1577817939297720000" />
 
     <!-- Pygments Github CSS -->
     <link rel="stylesheet"
           type="text/css"
-          href="/css/syntax.css?1577816802944427000" />
+          href="/css/syntax.css?1577817939297720000" />
 
     <!-- Custom Fonts -->
     <link rel="stylesheet"
@@ -1839,7 +1839,7 @@ $$
 </div>
 <div class="eq-mobile">
 $$
--\sum_{(u,i)\in\cD}
+-\sum_{\llap{(u,i)}\rlap{\in\cD}}
 \left[x_{ui}\log(\hat{x}_{ui}) + (1-x_{ui})\log(1-\hat{x}_{ui})\right],
 $$
 </div>
@@ -1909,11 +1909,28 @@ f(\MW g(\MV\vx +\vmu)+\vb),</script>
 <p>where $f$ and $g$ are element-wise activation functions. The objective trained
 to optimize Autorec’s parameters $\vtheta$ is</p>
 
-<script type="math/tex; mode=display">\min_{\vtheta}\sum_{\vx\in\cS}^n\norm{\vx-h(\vx;\vtheta)}_{\cO}^2
+<div class="eq-desktop">
+$$
+\min_{\vtheta}\sum_{\vx\in\cS}^n\norm{\vx-h(\vx;\vtheta)}_{\cO}^2
 +\frac{\lambda}{2}
 (\norm{\MW}_F^2+\norm{\MV}_F^2),
 \quad
-\lambda >0,</script>
+\lambda &gt;0,
+$$
+</div>
+<div class="eq-mobile">
+$$
+\begin{align*}
+\min_{\vtheta}
+&amp;\sum_{\vx\in\cS}^n\norm{\vx-h(\vx;\vtheta)}_{\cO}^2
+\\
+&amp;+\frac{\lambda}{2}
+(\norm{\MW}_F^2+\norm{\MV}_F^2),
+\quad
+\lambda &gt;0,
+\end{align*}
+$$
+</div>
 
 <p>where $\norm{\argdot}_{\cO}$ means that gradient-updates are only computed 
 to parameters that are connected to the <em>observed</em> entries of the interaction 
@@ -2100,7 +2117,7 @@ $$
 \cDist{p_{\theta}}{\hat{\vx}_u}{\vz_u}
 \right)}
 \\
-&amp;\quad-\beta
+&amp;\;\quad-\beta
 KL\left(
 \cDist{q_{\phi}}{\vz_u}{\vx_u}
 ||

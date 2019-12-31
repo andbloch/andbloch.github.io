@@ -774,6 +774,11 @@ div.eq-mobile {
         margin-right: 0px;
         padding-left: 10px;
         padding-right: 10px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    div.figure-with-caption div.figure-caption {
+        margin-top: 15px;
     }
 
     div.eq-desktop {

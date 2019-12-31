@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-12-31T19:26:42+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Andreas Bloch</title><entry><title type="html">An Overview of Collaborative Filtering Algorithms for Implicit Feedback Data</title><link href="http://localhost:4000/An-Overview-of-Collaborative-Filtering-Algorithms/" rel="alternate" type="text/html" title="An Overview of Collaborative Filtering Algorithms for Implicit Feedback Data" /><published>2019-12-16T08:00:00+01:00</published><updated>2019-12-16T08:00:00+01:00</updated><id>http://localhost:4000/An-Overview-of-Collaborative-Filtering-Algorithms</id><content type="html" xml:base="http://localhost:4000/An-Overview-of-Collaborative-Filtering-Algorithms/">&lt;p&gt;This blogpost gives an overview of today’s most predominant types of 
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-12-31T19:45:39+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Andreas Bloch</title><entry><title type="html">An Overview of Collaborative Filtering Algorithms for Implicit Feedback Data</title><link href="http://localhost:4000/An-Overview-of-Collaborative-Filtering-Algorithms/" rel="alternate" type="text/html" title="An Overview of Collaborative Filtering Algorithms for Implicit Feedback Data" /><published>2019-12-16T08:00:00+01:00</published><updated>2019-12-16T08:00:00+01:00</updated><id>http://localhost:4000/An-Overview-of-Collaborative-Filtering-Algorithms</id><content type="html" xml:base="http://localhost:4000/An-Overview-of-Collaborative-Filtering-Algorithms/">&lt;p&gt;This blogpost gives an overview of today’s most predominant types of 
 recommender systems for collaborative filtering from implicit feedback data. 
 The overview is by no means exhaustive, but it should provide the reader with 
 a good overview about the topic.&lt;/p&gt;
@@ -847,7 +847,7 @@ $$
 &lt;/div&gt;
 &lt;div class=&quot;eq-mobile&quot;&gt;
 $$
--\sum_{(u,i)\in\cD}
+-\sum_{\llap{(u,i)}\rlap{\in\cD}}
 \left[x_{ui}\log(\hat{x}_{ui}) + (1-x_{ui})\log(1-\hat{x}_{ui})\right],
 $$
 &lt;/div&gt;
@@ -917,11 +917,28 @@ f(\MW g(\MV\vx +\vmu)+\vb),&lt;/script&gt;
 &lt;p&gt;where $f$ and $g$ are element-wise activation functions. The objective trained
 to optimize Autorec’s parameters $\vtheta$ is&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\min_{\vtheta}\sum_{\vx\in\cS}^n\norm{\vx-h(\vx;\vtheta)}_{\cO}^2
+&lt;div class=&quot;eq-desktop&quot;&gt;
+$$
+\min_{\vtheta}\sum_{\vx\in\cS}^n\norm{\vx-h(\vx;\vtheta)}_{\cO}^2
 +\frac{\lambda}{2}
 (\norm{\MW}_F^2+\norm{\MV}_F^2),
 \quad
-\lambda &gt;0,&lt;/script&gt;
+\lambda &amp;gt;0,
+$$
+&lt;/div&gt;
+&lt;div class=&quot;eq-mobile&quot;&gt;
+$$
+\begin{align*}
+\min_{\vtheta}
+&amp;amp;\sum_{\vx\in\cS}^n\norm{\vx-h(\vx;\vtheta)}_{\cO}^2
+\\
+&amp;amp;+\frac{\lambda}{2}
+(\norm{\MW}_F^2+\norm{\MV}_F^2),
+\quad
+\lambda &amp;gt;0,
+\end{align*}
+$$
+&lt;/div&gt;
 
 &lt;p&gt;where $\norm{\argdot}_{\cO}$ means that gradient-updates are only computed 
 to parameters that are connected to the &lt;em&gt;observed&lt;/em&gt; entries of the interaction 
@@ -1108,7 +1125,7 @@ $$
 \cDist{p_{\theta}}{\hat{\vx}_u}{\vz_u}
 \right)}
 \\
-&amp;amp;\quad-\beta
+&amp;amp;\;\quad-\beta
 KL\left(
 \cDist{q_{\phi}}{\vz_u}{\vx_u}
 ||
