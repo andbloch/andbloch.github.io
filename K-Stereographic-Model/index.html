@@ -49,17 +49,17 @@
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet"
-          href="/css/bootstrap.css?1577820010078543000"/>
+          href="/css/bootstrap.css?1577828521863171000"/>
 
     <!-- Custom CSS -->
     <link rel="stylesheet"
           type="text/css"
-          href="/css/clean-blog.css?1577820010078543000" />
+          href="/css/clean-blog.css?1577828521863171000" />
 
     <!-- Pygments Github CSS -->
     <link rel="stylesheet"
           type="text/css"
-          href="/css/syntax.css?1577820010078543000" />
+          href="/css/syntax.css?1577828521863171000" />
 
     <!-- Custom Fonts -->
     <link rel="stylesheet"
@@ -1055,6 +1055,7 @@ ball and the stereographic projection of the sphere. Each of them result from
 the stereographic projection of the hyperboloid and the sphere, respectively, as
 illustrated in the figures below:</p>
 
+<div class="content-desktop">
 <table style="margin-bottom:0px; border: 0px;">
 <tr style="border: 0px;">
 <th style="text-align:center; border: 0px;">Hyperboloid &amp; Poincaré Ball </th>
@@ -1069,6 +1070,21 @@ illustrated in the figures below:</p>
 </td>
 </tr>
 </table>
+</div>
+<div class="content-mobile">
+<div class="figure-with-caption">
+<div class="figure-title" style="margin-bottom: 15px">
+Hyperboloid &amp; Poincaré Ball
+</div>
+<img src="/img/2019-11-21-K-Stereographic-Model/hyperboloid-sproj.png?v=1" width="100%" />
+</div>
+<div class="figure-with-caption">
+<div class="figure-title" style="margin-bottom: 15px">
+Sphere &amp; Stereographic Projection of Sphere
+</div>
+<img src="/img/2019-11-21-K-Stereographic-Model/sphere-sproj.png?v=1" width="100%" />
+</div>
+</div>
 
 <p>In this blogpost we show how the duality of the Poincaré ball and the stereographic
 projection of the sphere can be captured within Ungar’s formalism of gyrovector 
@@ -1119,16 +1135,29 @@ nonempty set $S$ and a binary operation $+\colon S\times S\to S$.</p>
 </blockquote>
 
 <blockquote>
-  <p><span class="def"><strong>D. (Groupoid Automorphism)</strong></span> An <em>automorphism</em> $\phi$ of a groupoid $
-(S,+)$
-is a <em>bijective</em> self-map of $S$ that respects its binary operation,</p>
-
-  <script type="math/tex; mode=display">\forall s_1,s_2\in S
+<span class="def"><strong>D. (Groupoid Automorphism)</strong></span> An 
+<em>automorphism</em> $\phi$ of a groupoid $(S,+)$ is a <em>bijective</em> 
+self-map of $S$ that respects its binary operation,
+<div class="eq-desktop">
+$$
+\forall s_1,s_2\in S
 \colon
 \quad
 \phi(s_1 + s_2)
 =
-\phi(s_1) + \phi(s_2).</script>
+\phi(s_1) + \phi(s_2).
+$$
+</div>
+<div class="eq-mobile">
+$$
+\forall s_1,s_2\in S
+\colon
+\,
+\phi(s_1 + s_2)
+=
+\phi(s_1) + \phi(s_2).
+$$
+</div> 
 </blockquote>
 
 <p>In other words, the groupoid automorphism $\phi$ preserves the structure of the groupoid. 
@@ -1142,54 +1171,96 @@ groupoid $(S,+)$ forms a group, denoted  as $\Aut(S,+)$.</p>
 <p>Now, we define a gyrogroup, which is an essential component of a gyrovector space.</p>
 
 <blockquote>
-  <p><span class="def"><strong>D. (Gyrogroup)</strong></span> A groupoid $(G,\oplus)$ is a <em>gyrogroup</em> 
-if its binary operation satisfies the following axioms and properties. In $G$, there
-exists a unique element, $0$, called the identity, satisfying</p>
+<span class="def"><strong>D. (Gyrogroup)</strong></span> A groupoid $(G,\oplus)$ is a 
+<em>gyrogroup</em> if its binary operation satisfies the following axioms and properties. In $G$, there
+exists a unique element, $0$, called the identity, satisfying
 
-  <script type="math/tex; mode=display">0\oplus a= a\oplus 0= a,
-\qquad\text{additive identity},</script>
+<div class="eq-desktop">
+$$
+0\oplus a= a\oplus 0= a,
+\qquad\text{additive identity},
+$$
+</div>
+<div class="eq-mobile">
+$$
+0\oplus a= a\oplus 0= a,
+$$
+</div>
 
-  <p>for all $a\in G$. For each $a$ in $G$, there exists a unique invese $\ominus a$ in $G$,
-satisfying</p>
+for all $a\in G$. For each $a$ in $G$, there exists a unique invese $\ominus a$ in $G$,
+satisfying
 
-  <script type="math/tex; mode=display">\ominus a \oplus a = a\ominus a = 0,\qquad\text{inverse},</script>
+<div class="eq-desktop">
+$$
+\ominus a \oplus a = a\ominus a = 0,\qquad\text{inverse},
+$$
+</div>
+<div class="eq-mobile">
+$$
+\ominus a \oplus a = a\ominus a = 0,
+$$
+</div>
 
-  <p>where we use the notation $a\ominus b=a\oplus (\ominus b)$ for $a,b\in G$.
-For any $a,b\in G$, the self-map $\gyr[a,b]$ of $G$ is given by the equation</p>
+where we use the notation $a\ominus b=a\oplus (\ominus b)$ for $a,b\in G$.
+For any $a,b\in G$, the self-map $\gyr[a,b]$ of $G$ is given by the equation
 
-  <script type="math/tex; mode=display">\gyr[a,b]z =
-\ominus(a\oplus b) \oplus (a \oplus (b\oplus z)),</script>
+$$
+\gyr[a,b]z =
+\ominus(a\oplus b) \oplus (a \oplus (b\oplus z)),
+$$
 
-  <p>for all $z\in G$. Furthermore, the following conditions hold for all $a,b,c\in
- G$:</p>
+for all $z\in G$. Furthermore, the following conditions hold for all $a,b,c\in
+G$:
 
-  <script type="math/tex; mode=display">% <![CDATA[
+<div class="eq-desktop">
+$$
 \begin{align*}
-\gyr[a,b]&\in \Aut(G,\oplus),
-&& \text{gyroautomorphism property},
+\gyr[a,b]&amp;\in \Aut(G,\oplus),
+&amp;&amp; \text{gyroautomorphism property},
 \\
-a\oplus (b\oplus c) &= (a \oplus b) \oplus \gyr[a,b]c,
-&& \text{left gyroassociative law},
+a\oplus (b\oplus c) &amp;= (a \oplus b) \oplus \gyr[a,b]c,
+&amp;&amp; \text{left gyroassociative law},
 \\
-(a\oplus b) \oplus c &= a \oplus (b \oplus \gyr[b,a]c),
-&& \text{right gyroassociative law},
+(a\oplus b) \oplus c &amp;= a \oplus (b \oplus \gyr[b,a]c),
+&amp;&amp; \text{right gyroassociative law},
 \\
-\gyr[a,b] &= \gyr[a\oplus b, b],
-&& \text{left loop property},
+\gyr[a,b] &amp;= \gyr[a\oplus b, b],
+&amp;&amp; \text{left loop property},
 \\
-\gyr[a,b] &= \gyr[a, b\oplus a],
-&& \text{right loop property},
+\gyr[a,b] &amp;= \gyr[a, b\oplus a],
+&amp;&amp; \text{right loop property},
 \\
-\ominus(a\oplus b) &= \gyr[a,b](\ominus b\ominus a),
-&& \text{gyrosum inversion law},
+\ominus(a\oplus b) &amp;= \gyr[a,b](\ominus b\ominus a),
+&amp;&amp; \text{gyrosum inversion law},
 \\
-\gyr^{-1}[a,b] &= \gyr[b,a],
-&& \text{gyroautomorphism inversion}.
-\end{align*} %]]></script>
+\gyr^{-1}[a,b] &amp;= \gyr[b,a],
+&amp;&amp; \text{gyroautomorphism inversion}.
+\end{align*}
+$$
+</div>
+<div class="eq-mobile">
+$$
+\begin{align*}
+\gyr[a,b]&amp;\in \Aut(G,\oplus),
+\\
+a\oplus (b\oplus c) &amp;= (a \oplus b) \oplus \gyr[a,b]c,
+\\
+(a\oplus b) \oplus c &amp;= a \oplus (b \oplus \gyr[b,a]c),
+\\
+\gyr[a,b] &amp;= \gyr[a\oplus b, b],
+\\
+\gyr[a,b] &amp;= \gyr[a, b\oplus a],
+\\
+\ominus(a\oplus b) &amp;= \gyr[a,b](\ominus b\ominus a),
+\\
+\gyr^{-1}[a,b] &amp;= \gyr[b,a],
+\end{align*}
+$$
+</div>
 
-  <p>The operation $\gyr\colon G\times G\to\Aut(G,\oplus)$ is called the <em>gyrator</em> of $G$ and
+The operation $\gyr\colon G\times G\to\Aut(G,\oplus)$ is called the <em>gyrator</em> of $G$ and
 the automorphism $\gyr[a,b]\colon G\to G$ is called the gyroautomorphism of $G$, generated by $a,
-b\in G$.</p>
+b\in G$.
 </blockquote>
 
 <p>An important thing to note in the definition of the gyrogroup, is that if one was 
@@ -1202,14 +1273,25 @@ the group structure.</p>
 <p>Analogously to groups and gyrogroups, the commutativity for gyrogroups is defined as fllows:</p>
 
 <blockquote>
-  <p><span class="def"><strong>D. (Gyrocommutative Gyrogroup)</strong></span> A gyrogroup is <em>gyrocommutative</em>
-if it satisfies</p>
+<span class="def"><strong>D. (Gyrocommutative Gyrogroup)</strong></span> 
+A gyrogroup is <em>gyrocommutative</em> if it satisfies
 
-  <script type="math/tex; mode=display">a \oplus b
+<div class="eq-desktop">
+$$
+a \oplus b
 =
 \gyr[a,b](b\oplus a),
 \qquad
-\text{gyrocommutative law.}</script>
+\text{gyrocommutative law.}
+$$
+</div>
+<div class="eq-mobile">
+$$
+a \oplus b
+=
+\gyr[a,b](b\oplus a).
+$$
+</div>
 </blockquote>
 
 <p>Some gyrocommutative gyrogroups admit scalar multiplication, turning them into
@@ -1223,100 +1305,165 @@ This concerns the properties 1. and 3.
 -->
 
 <blockquote>
-  <p><span class="def"><strong>D. (Gyrovector Spaces)</strong></span> A <em>real inner
+<span class="def"><strong>D. (Gyrovector Spaces)</strong></span> A <em>real inner
 product gyrovector space</em> $(G,\oplus,\otimes)$ (gyrovector space, in short) is a 
-gyrocommutative gyrogroup $(G,\oplus)$ that obeys the following axioms and properties:</p>
+gyrocommutative gyrogroup $(G,\oplus)$ that obeys the following axioms and properties:
 
-  <ol>
-    <li>
-      <p>$G$ is a subset of a real inner product vector space $\bbV$ called the carrier of
+<ol>
+<li>
+$G$ is a subset of a real inner product vector space $\bbV$ called the carrier of
 $G$, $G\subseteq \bbV$, from which it inherits its inner product, $\scprod{\argdot,\argdot}$,
-and norm, $\norm{\argdot}$, which are invariant under gyroautomorphisms, that is,</p>
+and norm, $\norm{\argdot}$, which are invariant under gyroautomorphisms, that is,
 
-      <script type="math/tex; mode=display">\scprod{\gyr[\vu,\vv]\va,\gyr[\vu,\vv]\vb}=\scprod{\va,\vb},
-\qquad\text{conformality}.</script>
-    </li>
-    <li>
-      <p>$G$ admits a scalar multiplication, $\otimes$, possessing the following properties. For all
-real numbers $r,r_1,r_2\in\R$, natural numbers $n\in\N$ and all points $\va,\vu,\vv\in G$:</p>
+<div class="eq-desktop">
+$$
+\scprod{\gyr[\vu,\vv]\va,\gyr[\vu,\vv]\vb}=\scprod{\va,\vb},
+\qquad\text{conformality}.
+$$
+</div>
+<div class="eq-mobile">
+$$
+\scprod{\gyr[\vu,\vv]\va,\gyr[\vu,\vv]\vb}=\scprod{\va,\vb}.
+$$
+</div>
+</li>
+<li>
+$G$ admits a scalar multiplication, $\otimes$, possessing the following properties. For all
+real numbers $r,r_1,r_2\in\R$, natural numbers $n\in\N$ and all points $\va,\vu,\vv\in G$:
 
-      <p><script type="math/tex">% <![CDATA[
+<div class="eq-desktop">
+$$
 \begin{align*}
-\\
 1\otimes \va 
-&= 
+&amp;= 
 \va,
-&& \text{multiplicative identity},
+&amp;&amp; \text{multiplicative identity},
 \\
 n\otimes \va 
-&= 
+&amp;= 
 \va\oplus\cdots\oplus \va,
-&& \text{gyroaddition }n\text{ times},
+&amp;&amp; \text{gyroaddition }n\text{ times},
 \\
 (-r)\otimes\va  
-&= 
+&amp;= 
 r \otimes (\ominus \va),
-&& \text{sign distributivity},
+&amp;&amp; \text{sign distributivity},
 \\
 (r_1+r_2)\otimes\va 
-&= 
+&amp;= 
 r_1\otimes \va\oplus r_2\otimes\va,
-&&\text{scalar distributive Law},
+&amp;&amp;\text{scalar distributive Law},
 \\
 (r_1r_2)\otimes\va
-&=
+&amp;=
 r_1\otimes(r_2\otimes\va),
-&&\text{scalar associative law},
+&amp;&amp;\text{scalar associative law},
 \\
 r\otimes(r_1\otimes\va\oplus r_2\otimes\va)
-&=
+&amp;=
 r\otimes(r_1\otimes\va)\oplus r\otimes(r_2\otimes\va),
-&&\text{monodistributive law},
+&amp;&amp;\text{monodistributive law},
 \\
 \frac{\abs{r}\otimes\va}{\norm{r\otimes\va}}
-&=
+&amp;=
 \frac{\va}{\norm{\va}},
-&&\text{scaling property},
+&amp;&amp;\text{scaling property},
 \\
 \gyr[\vu,\vv](r\otimes\va)
-&=
+&amp;=
 r\otimes\gyr[\vu,\vv]\va
-&&\text{gyroautomorphism property},
+&amp;&amp;\text{gyroautomorphism property},
 \\
 \gyr[r_1\otimes\va,r_2\otimes\va]
-&=
+&amp;=
 \id
-&&\text{identity automorphism},
+&amp;&amp;\text{identity automorphism},
 \\
+\end{align*}
+$$
+</div>
+<div class="eq-mobile">
+<!-- TODO: mobile misses one equation (monodistributive law)  -->
+$$
+\begin{align*}
+1\otimes \va 
+&amp;= 
+\va,
 \\
-\end{align*} %]]></script>
-where we use the notation $r\otimes\va=\va\otimes r$.</p>
-    </li>
-    <li>
-      <p>The algebra $(\norm{\G},\oplus,\otimes)$ for the set $\norm{G}$ of
-one-dimensional “vectors”,</p>
+n\otimes \va 
+&amp;= 
+\va\oplus\cdots\oplus \va,
+\\
+(-r)\otimes\va  
+&amp;= 
+r \otimes (\ominus \va),
+\\
+(r_1+r_2)\otimes\va 
+&amp;= 
+r_1\otimes \va\oplus r_2\otimes\va,
+\\
+(r_1r_2)\otimes\va
+&amp;=
+r_1\otimes(r_2\otimes\va),
+\\
+\frac{\abs{r}\otimes\va}{\norm{r\otimes\va}}
+&amp;=
+\frac{\va}{\norm{\va}},
+\\
+\gyr[\vu,\vv](r\otimes\va)
+&amp;=
+r\otimes\gyr[\vu,\vv]\va
+\\
+\gyr[r_1\otimes\va,r_2\otimes\va]
+&amp;=
+\id
+\end{align*}
+$$
+</div>
+where we use the notation $r\otimes\va=\va\otimes r$.
+</li>
+<li>
+The algebra $(\norm{\G},\oplus,\otimes)$ for the set $\norm{G}$ of one-dimensional "vectors",
 
-      <script type="math/tex; mode=display">\norm{G}=\dset{\norm{\va}}{\va\in G}\subseteq\R.</script>
+$$
+\norm{G}=\dset{\norm{\va}}{\va\in G}\subseteq\R.
+$$
+ 
+has a real vector space structure with vector addition $\oplus$ and scalar 
+multiplication $\otimes$, such that for all $r\in\R$ and $\va,\vb\in G$,
 
-      <p>has a real vector space structure with vector addition $\oplus$ and scalar 
-multiplication $\otimes$, such that for all $r\in\R$ and $\va,\vb\in G$,</p>
-
-      <script type="math/tex; mode=display">% <![CDATA[
+<div class="eq-desktop">
+$$
 \begin{align*}
 \norm{r\otimes\va}
-&=
+&amp;=
 \abs{r}\otimes\norm{\va},
-&&\text{homogeneity property},
+&amp;&amp;\text{homogeneity property},
 \\
 \norm{\va\oplus\vb}
-&\leq
+&amp;\leq
 \norm{\va}\oplus\norm{\vb},
-&&\text{gyrotriangle property},
-\end{align*} %]]></script>
+&amp;&amp;\text{gyrotriangle property},
+\end{align*}
+$$
+</div>
+<div class="eq-mobile">
+$$
+\begin{align*}
+\norm{r\otimes\va}
+&amp;=
+\abs{r}\otimes\norm{\va},
+\\
+\norm{\va\oplus\vb}
+&amp;\leq
+\norm{\va}\oplus\norm{\vb},
+\end{align*}
+$$
+</div>
 
-      <p>connecting the addition and scalar multiplication of $G$ and $\norm{G}$.</p>
-    </li>
-  </ol>
+connecting the addition and scalar multiplication of $G$ and $\norm{G}$.
+</li>
+</ol>
 </blockquote>
 
 <p>From the definition of above, one can easily verify that $(-1)\otimes\va=\ominus\va$, and 
@@ -1375,39 +1522,75 @@ for spherical and Euclidean geometries and to the open ball of radius
 $R=1/\sqrt{-\kappa}$ for hyperbolic geometries. Thus, another way to express
 $\cM_\kappa^n$ is:</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
+<div class="eq-desktop">
+$$
 \cM_\kappa^n
 =
 \begin{cases}
-\dset{\vx\in\R^n}{\norm{\vx}_2<R},
-& \text{for }\kappa<0,
-& \text{hyperbolic geometry},
+\dset{\vx\in\R^n}{\norm{\vx}_2&lt;R},
+&amp; \text{for }\kappa&lt;0,
+&amp; \text{hyperbolic geometry},
 \\
 \R^n,
-& \text{for }\kappa=0,
-& \text{Euclidean geometry},
+&amp; \text{for }\kappa=0,
+&amp; \text{Euclidean geometry},
 \\
 \R^n,
-& \text{for }\kappa>0,
-& \text{spherical geometry}.
-\end{cases} %]]></script>
+&amp; \text{for }\kappa&gt;0,
+&amp; \text{spherical geometry}.
+\end{cases}
+$$
+</div>
+<div class="eq-mobile">
+$$
+\cM_\kappa^n
+=
+\begin{cases}
+\dset{\vx}{\norm{\vx}_2&lt;R},
+&amp; \kappa&lt;0,
+\text{ (hyp.)},
+\\
+\R^n,
+&amp; \kappa=0, \text{ (Eucl.)},
+\\
+\R^n,
+&amp; \kappa&gt;0,
+\text{ (sph.)}.
+\end{cases}
+$$
+</div>
 
 <p>For the addition in our gyrovector space algebra we use the plain-vanilla Möbius
 addition:</p>
 
 <blockquote>
-  <p><span class="def"><strong>D. (Möbius Addition)</strong></span> The <em>Möbius addition</em> of $\vx,
-\vy\in\cM_\kappa^n$ 
-is defined as</p>
+<span class="def"><strong>D. (Möbius Addition)</strong></span> The <em>Möbius addition</em>
+of $\vx,\vy\in\cM_\kappa^n$ is defined as
 
-  <script type="math/tex; mode=display">\vx\oplus_\kappa\vy
+<div class="eq-desktop">
+$$
+\vx\oplus_\kappa\vy
 =
 \frac{
 \left(1-2\kappa\scprod{\vx,\vy}-\kappa\norm{\vy}_2^2\right)\vx
 +\left(1+\kappa\norm{\vx}_2^2\right)\vy
 }{
 1 - 2\kappa\scprod{\vx,\vy}+\kappa^2\norm{\vx}_2^2\norm{\vy}_2^2
-}.</script>
+}.
+$$
+</div>
+<div class="eq-mobile" style="zoom:72%">
+$$
+\vx\oplus_\kappa\vy
+=
+\frac{
+\left(1-2\kappa\scprod{\vx,\vy}-\kappa\norm{\vy}_2^2\right)\vx
++\left(1+\kappa\norm{\vx}_2^2\right)\vy
+}{
+1 - 2\kappa\scprod{\vx,\vy}+\kappa^2\norm{\vx}_2^2\norm{\vy}_2^2
+}.
+$$
+</div>
 </blockquote>
 
 <p>An important property of the Möbius addition is that it recovers the Euclidean 
@@ -1467,34 +1650,80 @@ formalism of gyrovector spaces.</p>
 <!-- TODO: add definition ranges of these functions at some point -->
 
 <blockquote>
-  <p><span class="def"><strong>D. (Curvature-Dependent Trigonometric Functions)</strong></span></p>
+<span class="def"><strong>D. (Curvature-Dependent Trigonometric Functions)</strong></span>
 
-  <script type="math/tex; mode=display">% <![CDATA[
+<div class="eq-desktop">
+$$
 \tan_\kappa(x)
 =
 \begin{cases}
-\frac{1}{\sqrt{-\kappa}}\tanh(\sqrt{-\kappa}x), & \kappa<0,\\
-x, & \kappa=0,\\
-\frac{1}{\sqrt{\kappa}}\tan(\sqrt{\kappa}x), & \kappa>0.
-\end{cases} %]]></script>
+\frac{1}{\sqrt{-\kappa}}\tanh(\sqrt{-\kappa}x), &amp; \kappa&lt;0,\\
+x, &amp; \kappa=0,\\
+\frac{1}{\sqrt{\kappa}}\tan(\sqrt{\kappa}x), &amp; \kappa&gt;0.
+\end{cases}
+$$
 
-  <script type="math/tex; mode=display">% <![CDATA[
+$$
 \arctan_\kappa(x)
 =
 \begin{cases}
-\frac{1}{\sqrt{-\kappa}}\arctanh(\sqrt{-\kappa}x), & \kappa<0,\\
-x, & \kappa=0,\\
-\frac{1}{\sqrt{\kappa}}\arctan(\sqrt{\kappa}x), & \kappa>0.\\
-\end{cases} %]]></script>
+\frac{1}{\sqrt{-\kappa}}\arctanh(\sqrt{-\kappa}x), &amp; \kappa&lt;0,\\
+x, &amp; \kappa=0,\\
+\frac{1}{\sqrt{\kappa}}\arctan(\sqrt{\kappa}x), &amp; \kappa&gt;0.\\
+\end{cases}
+$$
 
-  <script type="math/tex; mode=display">% <![CDATA[
+$$
 \arcsin_\kappa(x)
 =
 \begin{cases}
-\frac{1}{\sqrt{-\kappa}}\arcsinh(\sqrt{-\kappa}x), & \kappa<0,\\
-x, & \kappa=0,\\
-\frac{1}{\sqrt{\kappa}}\arcsin(\sqrt{\kappa}x), & \kappa>0.\\
-\end{cases} %]]></script>
+\frac{1}{\sqrt{-\kappa}}\arcsinh(\sqrt{-\kappa}x), &amp; \kappa&lt;0,\\
+x, &amp; \kappa=0,\\
+\frac{1}{\sqrt{\kappa}}\arcsin(\sqrt{\kappa}x), &amp; \kappa&gt;0.\\
+\end{cases}
+$$
+</div>
+<div class="eq-mobile">
+$$
+\begin{align*}
+&amp;\tan_\kappa(x)
+=
+\\
+&amp;\qquad
+\begin{cases}
+\frac{1}{\sqrt{-\kappa}}\tanh(\sqrt{-\kappa}x), &amp; \kappa&lt;0,\\
+x, &amp; \kappa=0,\\
+\frac{1}{\sqrt{\kappa}}\tan(\sqrt{\kappa}x), &amp; \kappa&gt;0.
+\end{cases}
+\end{align*}
+$$
+
+$$
+\begin{align*}
+&amp;\arctan_\kappa(x)
+=
+\\
+&amp;\qquad\begin{cases}
+\frac{1}{\sqrt{-\kappa}}\arctanh(\sqrt{-\kappa}x), &amp; \kappa&lt;0,\\
+x, &amp; \kappa=0,\\
+\frac{1}{\sqrt{\kappa}}\arctan(\sqrt{\kappa}x), &amp; \kappa&gt;0.\\
+\end{cases}
+\end{align*}
+$$
+
+$$
+\begin{align*}
+&amp;\arcsin_\kappa(x)
+=
+\\
+&amp;\qquad\begin{cases}
+\frac{1}{\sqrt{-\kappa}}\arcsinh(\sqrt{-\kappa}x), &amp; \kappa&lt;0,\\
+x, &amp; \kappa=0,\\
+\frac{1}{\sqrt{\kappa}}\arcsin(\sqrt{\kappa}x), &amp; \kappa&gt;0.\\
+\end{cases}
+\end{align*}
+$$
+</div>
 </blockquote>
 
 <p>If one ignores the definitions of the upper functions for the cases where 
@@ -1561,7 +1790,7 @@ can use this (pseudo) gyrovector space algebra to express all the necessary
 operations for the Poincaré ball ($\kappa&lt;0$) and the stereographic projection 
 of the sphere ($\kappa&gt;0$):</p>
 
-<table style="background-color:#f5f5f5;">
+<table style="background-color:#f5f5f5;" class="formula-table">
 
 <tr>
 <th style="text-align:left;">Description</th>
@@ -1635,7 +1864,7 @@ $
 
 <tr>
 <td style="text-align:left;">
-Tangent Space Inner Product 
+Tangent Space Inner Product<br /> 
 $\scprod{\argdot,\argdot}_{\vx}^\kappa\colon\cT_{\vx}\cM_\kappa^n\times\cT_{\vx}\cM_\kappa^n\to\R$
 </td>
 <td style="vertical-align:middle; padding-left:0px; padding-right:10px;">
@@ -1757,11 +1986,23 @@ Log Map
 $\log_{\vx}^\kappa\colon\cM_\kappa^n\to\cT_{\vx}\cM_\kappa^n$
 </td>
 <td style="vertical-align:middle; padding-left:0px; padding-right:10px;">
+<div class="eq-desktop">
 $
 \log_{\vx}^\kappa(\vy)=
 2\arctan_\kappa\left(\norm{(-\vx)\oplus_\kappa\vy}_2\right)
 \frac{(-\vx)\oplus_\kappa \vy}{\norm{(-\vx)\oplus_\kappa \vy}_{\vx}^\kappa}
 $
+</div>
+<div class="eq-mobile">
+$
+\begin{align*}
+&amp;\log_{\vx}^\kappa(\vy)=
+\\
+&amp;\quad 2\arctan_\kappa\left(\norm{(-\vx)\oplus_\kappa\vy}_2\right)
+\frac{(-\vx)\oplus_\kappa \vy}{\norm{(-\vx)\oplus_\kappa \vy}_{\vx}^\kappa}
+\end{align*}
+$
+</div>
 </td>
 </tr>
 
@@ -1822,6 +2063,7 @@ Weighted Midpoint
 $\vm_{\kappa}\colon (\cM_\kappa^d)^n\times\R^n\to\cM_\kappa^d$
 </td>
 <td style="vertical-align:middle; padding-left:0px; padding-right:10px;">
+<div class="eq-desktop">
 $
 \vm_\kappa(\vx_{1:n},\alpha_{1:n})
 =
@@ -1837,7 +2079,27 @@ $
 \vx_i
 \right)
 $
-<br />
+</div>
+<div class="eq-mobile">
+$
+\begin{align*}
+&amp;\vm_\kappa(\vx_{1:n},\alpha_{1:n})
+=\\
+&amp;\quad
+\frac{1}{2}
+\otimes_\kappa
+\left(
+\sum_{i=1}^n
+\frac{
+\alpha_i\lambda_{\vx_i}^\kappa
+}{
+\sum_{j=1}^n\alpha_j(\lambda_{\vx_i}^\kappa - 1)
+}
+\vx_i
+\right)
+\end{align*}
+$
+</div>
 for $\kappa&gt;0$ this also requires determining which of
 $\vm_{\kappa}$ and $\vm_{\kappa}^a$ minimizes the sum of distances
 <br />
@@ -1858,7 +2120,7 @@ $\kappa\to 0$.</p>
 <p>The following formulas show how in the limit $\kappa\to\ 0$ an Euclidean geometry,
 with a Cartesian coordinate system at intervals of $2$ units, is recovered:</p>
 
-<table style="background-color:#f5f5f5;">
+<table style="background-color:#f5f5f5;" class="formula-table">
 
 <tr>
 <th style="text-align:left;">Description</th>
@@ -1930,7 +2192,7 @@ $
 
 <tr>
 <td style="text-align:left;">
-Tangent Space Inner Product 
+Tangent Space Inner Product<br />
 $\scprod{\argdot,\argdot}_{\vx}^0\colon\cT_{\vx}\cM_0^n\times\cT_{\vx}\cM_0^n\to\R$
 </td>
 <td style="vertical-align:middle; padding-left:0px; padding-right:10px;">
@@ -2199,8 +2461,6 @@ Grid of Geodesics at Equidistant Intervals<br /> on Stereographic Projection of 
 ($\kappa=1$)
 </div>
 <img src="/img/2019-11-21-K-Stereographic-Model/grid-of-geodesics-K-1.0.svg?v=2" alt="Grid of Geodesics at Equidistant Intervals on Stereographic Projection of Sphere" width="100%" />
-<div class="figure-caption" style="text-align:center">
-</div>
 </div>
 
 <p>Some things to note in this grid are:</p>
@@ -2312,7 +2572,7 @@ the $\kappa$-stereographic model can be found here:</p>
 
 <p style="text-align:center">
 <a class="btn btn-default btn-sm" href="https://github.com/andbloch/geoopt/tree/universal-manifold/geoopt/manifolds/stereographic" target="_blank">
-<i class="fa fa-github fa-2" aria-hidden="true"></i> Source of $\kappa$-Stereographic Model</a>
+<i class="fa fa-github fa-2" aria-hidden="true"></i> $\kappa$-Stereographic Model Source</a>
 </p>
 
 <p>Note that the implementation doesn’t support the Euclidean geometry for $\kappa=0$. 
