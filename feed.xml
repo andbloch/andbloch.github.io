@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-12-31T22:42:01+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Andreas Bloch</title><entry><title type="html">An Overview of Collaborative Filtering Algorithms for Implicit Feedback Data</title><link href="http://localhost:4000/An-Overview-of-Collaborative-Filtering-Algorithms/" rel="alternate" type="text/html" title="An Overview of Collaborative Filtering Algorithms for Implicit Feedback Data" /><published>2019-12-16T08:00:00+01:00</published><updated>2019-12-16T08:00:00+01:00</updated><id>http://localhost:4000/An-Overview-of-Collaborative-Filtering-Algorithms</id><content type="html" xml:base="http://localhost:4000/An-Overview-of-Collaborative-Filtering-Algorithms/">&lt;p&gt;This blogpost gives an overview of today’s most predominant types of 
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-01-02T13:50:52+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Andreas Bloch</title><subtitle>Machine Learning Blog</subtitle><entry><title type="html">An Overview of Collaborative Filtering Algorithms for Implicit Feedback Data</title><link href="http://localhost:4000/An-Overview-of-Collaborative-Filtering-Algorithms/" rel="alternate" type="text/html" title="An Overview of Collaborative Filtering Algorithms for Implicit Feedback Data" /><published>2019-12-16T08:00:00+01:00</published><updated>2019-12-16T08:00:00+01:00</updated><id>http://localhost:4000/An-Overview-of-Collaborative-Filtering-Algorithms</id><content type="html" xml:base="http://localhost:4000/An-Overview-of-Collaborative-Filtering-Algorithms/">&lt;p&gt;This blogpost gives an overview of today’s most predominant types of 
 recommender systems for collaborative filtering from implicit feedback data. 
 The overview is by no means exhaustive, but it should provide the reader with 
 a good overview about the topic.&lt;/p&gt;
@@ -171,9 +171,9 @@ recommender service.&lt;/p&gt;
 &lt;div class=&quot;figure-with-caption&quot;&gt;
 &lt;img src=&quot;/img/2019-12-16-An-Overview-of-Collaborative-Filtering-Algorithms/retrieval-and-ranking-system.png?v=1&quot; alt=&quot;Interplay of Retrieval and Ranking System&quot; width=&quot;100%&quot; /&gt;
 &lt;div class=&quot;figure-caption&quot;&gt;
-The illustration by &lt;a class=&quot;citation&quot; href=&quot;#cheng2016wide&quot;&gt;[13]&lt;/a&gt; shows the 
-typical structuring of a recommender service into a retrieval system and a 
-ranking system.
+Typical structuring of a recommender service into a retrieval system and a 
+ranking system. Illustration by &lt;a class=&quot;citation&quot; href=&quot;#cheng2016wide&quot;&gt;[13]&lt;/a&gt;. 
+typical 
 &lt;/div&gt;
 &lt;/div&gt;
 
@@ -257,8 +257,8 @@ concepts of users and items, e.g., “male” or “female” for users, or “s
 &lt;div class=&quot;figure-with-caption&quot;&gt;
 &lt;img src=&quot;/img/2019-12-16-An-Overview-of-Collaborative-Filtering-Algorithms/mf-latent-factors-interpretation.png?v=1&quot; alt=&quot;Concepts captured in latent factor space&quot; width=&quot;100%&quot; /&gt;
 &lt;div class=&quot;figure-caption&quot;&gt;
-The illustration by &lt;a class=&quot;citation&quot; href=&quot;#koren2009matrix&quot;&gt;[5]&lt;/a&gt; shows
-how the latent factor dimensions tend to capture concepts about users or items.
+Concepts captured by latent factor dimensions. 
+Illustration by &lt;a class=&quot;citation&quot; href=&quot;#koren2009matrix&quot;&gt;[5]&lt;/a&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
@@ -695,8 +695,8 @@ below.&lt;/p&gt;
 &lt;div class=&quot;figure-with-caption&quot;&gt;
 &lt;img src=&quot;/img/2019-12-16-An-Overview-of-Collaborative-Filtering-Algorithms/hrs.png?v=1&quot; alt=&quot;Pairwise Learning in Hyperbolic Recommender System&quot; width=&quot;100%&quot; /&gt;
 &lt;div class=&quot;figure-caption&quot;&gt;
-Illustration of the pairwise learning approach with hyperbolic recommender systems
-by &lt;a class=&quot;citation&quot; href=&quot;#hrs&quot;&gt;[35]&lt;/a&gt;.
+Pairwise learning approach with hyperbolic recommender systems.
+Illustration by &lt;a class=&quot;citation&quot; href=&quot;#hrs&quot;&gt;[35]&lt;/a&gt;.
 &lt;/div&gt;
 &lt;/div&gt;
 
@@ -830,7 +830,7 @@ output function is maintained.&lt;/p&gt;
 &lt;div class=&quot;figure-with-caption&quot;&gt;
 &lt;img src=&quot;/img/2019-12-16-An-Overview-of-Collaborative-Filtering-Algorithms/ncf.png?v=1&quot; alt=&quot;Neural Collaborative Filtering (NCF)&quot; width=&quot;100%&quot; /&gt;
 &lt;div class=&quot;figure-caption&quot; style=&quot;text-align:center&quot;&gt;
-Architecture of NCF illustrated by &lt;a class=&quot;citation&quot; href=&quot;#ncf&quot;&gt;[33]&lt;/a&gt;
+NCF architecture illustrated by &lt;a class=&quot;citation&quot; href=&quot;#ncf&quot;&gt;[33]&lt;/a&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
@@ -958,9 +958,10 @@ the following picture.&lt;/p&gt;
 &lt;div class=&quot;figure-with-caption&quot;&gt;
 &lt;img src=&quot;/img/2019-12-16-An-Overview-of-Collaborative-Filtering-Algorithms/autorec.png?v=1&quot; alt=&quot;Architecture of Autorec&quot; width=&quot;100%&quot; /&gt;
 &lt;div class=&quot;figure-caption&quot;&gt;
-Illustration of the item-based architecture of $I$-Autorec. The edges (parameters)
-that are connected to unknown interactions are not updated due to the masking of the loss
-(affected edges marked in gray).
+Architecture of $I$-Autorec: The edges (parameters)
+that are connected to unobserved interactions are not 
+updated due to the masking of the loss
+(masked edges marked in gray).
 &lt;/div&gt;
 &lt;/div&gt;
 
@@ -1251,7 +1252,7 @@ interaction vectors gives the right relevance predictions for the yet unobserved
 &lt;li&gt;&lt;span id=&quot;liang2018variational&quot;&gt;D. Liang, R. G. Krishnan, M. D. Hoffman, and T. Jebara, “Variational autoencoders for collaborative filtering,” in &lt;i&gt;Proceedings of the 2018 World Wide Web Conference&lt;/i&gt;, 2018, pp. 689–698.&lt;/span&gt;&lt;/li&gt;
 &lt;li&gt;&lt;span id=&quot;strub2015collaborative&quot;&gt;F. Strub and J. Mary, “Collaborative filtering with stacked denoising autoencoders and sparse inputs,” 2015.&lt;/span&gt;&lt;/li&gt;
 &lt;li&gt;&lt;span id=&quot;sedhain2015autorec&quot;&gt;S. Sedhain, A. K. Menon, S. Sanner, and L. Xie, “Autorec: Autoencoders meet collaborative filtering,” in &lt;i&gt;Proceedings of the 24th International Conference on World Wide Web&lt;/i&gt;, 2015, pp. 111–112.&lt;/span&gt;&lt;/li&gt;
-&lt;li&gt;&lt;span id=&quot;kuchaiev2017training&quot;&gt;O. Kuchaiev and B. Ginsburg, “Training deep autoencoders for collaborative filtering,” &lt;i&gt;arXiv preprint arXiv:1708.01715&lt;/i&gt;, 2017.&lt;/span&gt;&lt;/li&gt;&lt;/ol&gt;</content><author><name>Andreas Bloch under the assistance of Octavian Ganea and Gary Bécigneul</name></author><category term="machine learning" /><category term="recommender systems" /><category term="collaborative filtering" /><category term="implicit feedback data" /><summary type="html">Recommender systems are at the heart of many of today's online platforms. Numerous approaches for collaborative filtering from implicit feedback data have been invented over the years. This blogpost provides an overview of several of these recommender algorithms.</summary></entry><entry><title type="html">A Universal Model for Hyperbolic, Euclidean and Spherical Geometries</title><link href="http://localhost:4000/K-Stereographic-Model/" rel="alternate" type="text/html" title="A Universal Model for Hyperbolic, Euclidean and Spherical Geometries" /><published>2019-11-21T20:00:00+01:00</published><updated>2019-11-21T20:00:00+01:00</updated><id>http://localhost:4000/K-Stereographic-Model</id><content type="html" xml:base="http://localhost:4000/K-Stereographic-Model/">&lt;p&gt;The Euclidean space is the default choice for representations in many of 
+&lt;li&gt;&lt;span id=&quot;kuchaiev2017training&quot;&gt;O. Kuchaiev and B. Ginsburg, “Training deep autoencoders for collaborative filtering,” &lt;i&gt;arXiv preprint arXiv:1708.01715&lt;/i&gt;, 2017.&lt;/span&gt;&lt;/li&gt;&lt;/ol&gt;</content><author><name>Andreas Bloch under the assistance of Octavian Ganea and Gary Bécigneul</name></author><category term="Recommender Systems" /><category term="Collaborative Filtering" /><category term="Implicit Feedback Data" /><category term="Overview" /><summary type="html">Recommender systems are at the heart of many of today's online platforms. Numerous approaches for collaborative filtering from implicit feedback data have been invented over the years. This blogpost provides an overview of several of these recommender algorithms.</summary></entry><entry><title type="html">A Universal Model for Hyperbolic, Euclidean and Spherical Geometries</title><link href="http://localhost:4000/K-Stereographic-Model/" rel="alternate" type="text/html" title="A Universal Model for Hyperbolic, Euclidean and Spherical Geometries" /><published>2019-11-21T20:00:00+01:00</published><updated>2019-11-21T20:00:00+01:00</updated><id>http://localhost:4000/K-Stereographic-Model</id><content type="html" xml:base="http://localhost:4000/K-Stereographic-Model/">&lt;p&gt;The Euclidean space is the default choice for representations in many of 
 today’s machine learning tasks. Recent advances have also shown how a variety of 
 tasks can further benefit from representations in (products of) spaces of constant 
 curvature. The paper by Gu et al. &lt;a class=&quot;citation&quot; href=&quot;#gu2018learning&quot;&gt;[1]&lt;/a&gt; 
@@ -3004,7 +3005,7 @@ applications of our $\kappa$-stereographic model.&lt;/p&gt;
 &lt;li&gt;&lt;span id=&quot;ungar2005analytic&quot;&gt;A. A. Ungar, &lt;i&gt;Analytic hyperbolic geometry: Mathematical foundations and applications&lt;/i&gt;. World Scientific, 2005.&lt;/span&gt;&lt;/li&gt;
 &lt;li&gt;&lt;span id=&quot;ungar1991thomas&quot;&gt;A. A. Ungar, “Thomas precession and its associated grouplike structure,” &lt;i&gt;American Journal of Physics&lt;/i&gt;, vol. 59, no. 9, pp. 824–834, 1991.&lt;/span&gt;&lt;/li&gt;
 &lt;li&gt;&lt;span id=&quot;hnn&quot;&gt;O. Ganea, G. Bécigneul, and T. Hofmann, “Hyperbolic neural networks,” in &lt;i&gt;Advances in neural information processing systems&lt;/i&gt;, 2018, pp. 5345–5355.&lt;/span&gt;&lt;/li&gt;
-&lt;li&gt;&lt;span id=&quot;ungar2001hyperbolic&quot;&gt;A. A. Ungar, “Hyperbolic trigonometry and its application in the Poincaré ball model of hyperbolic geometry,” &lt;i&gt;Computers &amp;amp; Mathematics with Applications&lt;/i&gt;, vol. 41, no. 1-2, pp. 135–147, 2001.&lt;/span&gt;&lt;/li&gt;&lt;/ol&gt;</content><author><name>Andreas Bloch in collaboration with Ondrej Skopek and Gregor Bachmann under the assistance of Octavian Ganea and Gary Bécigneul</name></author><category term="math" /><category term="geometry" /><category term="riemannian manifolds" /><summary type="html">This blogpost presents a geometric model that harnesses the formalism gyrovector spaces in order to capture all three geometries of constant curvature at once. Furthermore, the presented model allows to smoothly interpolate between the geometries of constant curvature in order to learn the curvature of spaces jointly with the embeddings.</summary></entry><entry><title type="html">Stochastic Gradient Descent on Riemannian Manifolds</title><link href="http://localhost:4000/Stochastic-Gradient-Descent-on-Riemannian-Manifolds/" rel="alternate" type="text/html" title="Stochastic Gradient Descent on Riemannian Manifolds" /><published>2019-10-15T16:00:00+02:00</published><updated>2019-10-15T16:00:00+02:00</updated><id>http://localhost:4000/Stochastic-Gradient-Descent-on-Riemannian-Manifolds</id><content type="html" xml:base="http://localhost:4000/Stochastic-Gradient-Descent-on-Riemannian-Manifolds/">&lt;p&gt;In this blogpost I’ll explain how Stochastic Gradient Descent (SGD) is generalized to the 
+&lt;li&gt;&lt;span id=&quot;ungar2001hyperbolic&quot;&gt;A. A. Ungar, “Hyperbolic trigonometry and its application in the Poincaré ball model of hyperbolic geometry,” &lt;i&gt;Computers &amp;amp; Mathematics with Applications&lt;/i&gt;, vol. 41, no. 1-2, pp. 135–147, 2001.&lt;/span&gt;&lt;/li&gt;&lt;/ol&gt;</content><author><name>Andreas Bloch in collaboration with Ondrej Skopek and Gregor Bachmann under the assistance of Octavian Ganea and Gary Bécigneul</name></author><category term="Geometry" /><category term="Riemannian Manifolds" /><category term="Hyperbolic Geometry" /><category term="Euclidean Geometry" /><category term="Spherical Geometry" /><summary type="html">This blogpost presents a geometric model that harnesses the formalism gyrovector spaces in order to capture all three geometries of constant curvature at once. Furthermore, the presented model allows to smoothly interpolate between the geometries of constant curvature in order to learn the curvature of spaces jointly with the embeddings.</summary></entry><entry><title type="html">Stochastic Gradient Descent on Riemannian Manifolds</title><link href="http://localhost:4000/Stochastic-Gradient-Descent-on-Riemannian-Manifolds/" rel="alternate" type="text/html" title="Stochastic Gradient Descent on Riemannian Manifolds" /><published>2019-10-15T16:00:00+02:00</published><updated>2019-10-15T16:00:00+02:00</updated><id>http://localhost:4000/Stochastic-Gradient-Descent-on-Riemannian-Manifolds</id><content type="html" xml:base="http://localhost:4000/Stochastic-Gradient-Descent-on-Riemannian-Manifolds/">&lt;p&gt;In this blogpost I’ll explain how Stochastic Gradient Descent (SGD) is generalized to the 
 optimization of loss functions on Riemannian manifolds. 
 First, I’ll give an overview of the kind of problems that are suited for Riemannian 
 optimization. Then, I’ll explain how &lt;em&gt;Riemannian Stochastic Gradient Descent (RSGD)&lt;/em&gt; works 

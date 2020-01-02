@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Stochastic Gradient Descent on Riemannian Manifolds – Andreas Bloch</title>
+    <title>Stochastic Gradient Descent on Riemannian Manifolds – Machine Learning Blog</title>
 
     <meta charset="utf-8" />
     <meta content='text/html; charset=utf-8' http-equiv='Content-Type' />
@@ -10,16 +10,54 @@
     <meta name='viewport'
           content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
 
-    
-    <meta name="description" content="Stochastic Gradient Descent (SGD) is the default workhorse for most of today's machine learning algorithms. While the majority of SGD applications is concerned with Euclidean spaces, recent advances also explored the potential of Riemannian manifolds. This blogpost explains how the concept of SGD is generalized to Riemannian manifolds." />
-    <meta property="og:description" content="Stochastic Gradient Descent (SGD) is the default workhorse for most of today's machine learning algorithms. While the majority of SGD applications is concerned with Euclidean spaces, recent advances also explored the potential of Riemannian manifolds. This blogpost explains how the concept of SGD is generalized to Riemannian manifolds." />
-    
-
+    <!-- Social Media Meta Tags -->
     <meta name="author" content="Andreas Bloch" />
+    <meta property="og:site_name" content="Andreas Bloch" />
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:creator" content="andbloch">
+
+    <!-- <meta property="fb:admins" content="Facebook numberic ID" /> -->
 
     
     <meta property="og:title" content="Stochastic Gradient Descent on Riemannian Manifolds" />
     <meta property="twitter:title" content="Stochastic Gradient Descent on Riemannian Manifolds" />
+    <meta itemprop="name" content="Stochastic Gradient Descent on Riemannian Manifolds">
+    
+
+    <meta property="og:url" content="http://localhost:4000/Stochastic-Gradient-Descent-on-Riemannian-Manifolds/" />
+
+    
+    <meta name="description" content="Stochastic Gradient Descent (SGD) is the default workhorse for most of today's machine learning algorithms. While the majority of SGD applications is concerned with Euclidean spaces, recent advances also explored the potential of Riemannian manifolds. This blogpost explains how the concept of SGD is generalized to Riemannian manifolds." />
+    <meta property="og:description" content="Stochastic Gradient Descent (SGD) is the default workhorse for most of today's machine learning algorithms. While the majority of SGD applications is concerned with Euclidean spaces, recent advances also explored the potential of Riemannian manifolds. This blogpost explains how the concept of SGD is generalized to Riemannian manifolds." />
+    <meta property="og:type" content="article" />
+    <meta name="twitter:description" content="Stochastic Gradient Descent (SGD) is the default workhorse for most of today's machine learning algorithms. While the majority of SGD applications is concerned with Euclidean spaces, recent advances also explored the potential of Riemannian manifolds. This blogpost explains how the concept of SGD is generalized to Riemannian manifolds.">
+    <meta itemprop="description" content="Stochastic Gradient Descent (SGD) is the default workhorse for most of today's machine learning algorithms. While the majority of SGD applications is concerned with Euclidean spaces, recent advances also explored the potential of Riemannian manifolds. This blogpost explains how the concept of SGD is generalized to Riemannian manifolds." />
+
+    <meta property="article:published_time" content="2019-10-15 16:00:00 +0200" />
+
+    <meta property="article:section" content="Machine Learning" />
+
+    
+    <meta property="article:tag" content="Stochastic Gradient Descent" />
+    
+    <meta property="article:tag" content="SGD" />
+    
+    <meta property="article:tag" content="Riemannian Stochastic Gradient Descent" />
+    
+    <meta property="article:tag" content="RSGD" />
+    
+    <meta property="article:tag" content="Riemannian Optimization" />
+    
+    <meta property="article:tag" content="Riemannian Manifolds" />
+    
+    <meta property="article:tag" content="Geometric Deep Learning" />
+    
+
+    <meta property="og:image" content="/img/2019-10-15-Stochastic-Gradient-Descent-on-Riemannian-Manifolds/rsgd-preview.png" />
+    <meta name="twitter:image:src" content="/img/2019-10-15-Stochastic-Gradient-Descent-on-Riemannian-Manifolds/rsgd-preview.png">
+    <meta itemprop="image" content="/img/2019-10-15-Stochastic-Gradient-Descent-on-Riemannian-Manifolds/rsgd-preview.png">
+
     
 
     
@@ -41,7 +79,7 @@
 
     <link rel="alternate"
           type="application/rss+xml"
-          title="Andreas Bloch - "
+          title="Andreas Bloch - Machine Learning Blog"
           href="/feed.xml" />
 
     <link rel="canonical"
@@ -49,17 +87,17 @@
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet"
-          href="/css/bootstrap.css?1577828521863171000"/>
+          href="/css/bootstrap.css?1577969452740600000"/>
 
     <!-- Custom CSS -->
     <link rel="stylesheet"
           type="text/css"
-          href="/css/clean-blog.css?1577828521863171000" />
+          href="/css/clean-blog.css?1577969452740600000" />
 
     <!-- Pygments Github CSS -->
     <link rel="stylesheet"
           type="text/css"
-          href="/css/syntax.css?1577828521863171000" />
+          href="/css/syntax.css?1577969452740600000" />
 
     <!-- Custom Fonts -->
     <link rel="stylesheet"
@@ -965,7 +1003,7 @@ $$
 </nav>
   <!-- Post Header -->
 <!--
-<header class="intro-header" style="position: relative; background-image: url('//img/2019-10-15-Stochastic-Gradient-Descent-on-Riemannian-Manifolds/rsgd-preview.png');">
+<header class="intro-header" style="position: relative; background-image: url('/');">
     <div class="overlay"></div>
     <div class="container">
         <div class="row">
@@ -1869,7 +1907,7 @@ to you and that you are now ready to get started with Riemannian optimization.</
 
 
                 </ul>
-                <p class="copyright text-muted">Copyright &copy; Andreas Bloch 2019</p>
+                <p class="copyright text-muted">Copyright &copy; Andreas Bloch 2020</p>
             </div>
         </div>
     </div>

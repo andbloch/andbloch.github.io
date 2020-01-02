@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>An Overview of Collaborative Filtering Algorithms for Implicit Feedback Data – Andreas Bloch</title>
+    <title>An Overview of Collaborative Filtering Algorithms for Implicit Feedback Data – Machine Learning Blog</title>
 
     <meta charset="utf-8" />
     <meta content='text/html; charset=utf-8' http-equiv='Content-Type' />
@@ -10,16 +10,48 @@
     <meta name='viewport'
           content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
 
-    
-    <meta name="description" content="Recommender systems are at the heart of many of today's online platforms. Numerous approaches for collaborative filtering from implicit feedback data have been invented over the years. This blogpost provides an overview of several of these recommender algorithms." />
-    <meta property="og:description" content="Recommender systems are at the heart of many of today's online platforms. Numerous approaches for collaborative filtering from implicit feedback data have been invented over the years. This blogpost provides an overview of several of these recommender algorithms." />
-    
-
+    <!-- Social Media Meta Tags -->
     <meta name="author" content="Andreas Bloch" />
+    <meta property="og:site_name" content="Andreas Bloch" />
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:creator" content="andbloch">
+
+    <!-- <meta property="fb:admins" content="Facebook numberic ID" /> -->
 
     
     <meta property="og:title" content="An Overview of Collaborative Filtering Algorithms for Implicit Feedback Data" />
     <meta property="twitter:title" content="An Overview of Collaborative Filtering Algorithms for Implicit Feedback Data" />
+    <meta itemprop="name" content="An Overview of Collaborative Filtering Algorithms for Implicit Feedback Data">
+    
+
+    <meta property="og:url" content="http://localhost:4000/An-Overview-of-Collaborative-Filtering-Algorithms/" />
+
+    
+    <meta name="description" content="Recommender systems are at the heart of many of today's online platforms. Numerous approaches for collaborative filtering from implicit feedback data have been invented over the years. This blogpost provides an overview of several of these recommender algorithms." />
+    <meta property="og:description" content="Recommender systems are at the heart of many of today's online platforms. Numerous approaches for collaborative filtering from implicit feedback data have been invented over the years. This blogpost provides an overview of several of these recommender algorithms." />
+    <meta property="og:type" content="article" />
+    <meta name="twitter:description" content="Recommender systems are at the heart of many of today's online platforms. Numerous approaches for collaborative filtering from implicit feedback data have been invented over the years. This blogpost provides an overview of several of these recommender algorithms.">
+    <meta itemprop="description" content="Recommender systems are at the heart of many of today's online platforms. Numerous approaches for collaborative filtering from implicit feedback data have been invented over the years. This blogpost provides an overview of several of these recommender algorithms." />
+
+    <meta property="article:published_time" content="2019-12-16 08:00:00 +0100" />
+
+    <meta property="article:section" content="Machine Learning" />
+
+    
+    <meta property="article:tag" content="Recommender Systems" />
+    
+    <meta property="article:tag" content="Collaborative Filtering" />
+    
+    <meta property="article:tag" content="Implicit Feedback Data" />
+    
+    <meta property="article:tag" content="Overview" />
+    
+
+    <meta property="og:image" content="img/2019-12-16-An-Overview-of-Collaborative-Filtering-Algorithms/bipartite-graph.png" />
+    <meta name="twitter:image:src" content="img/2019-12-16-An-Overview-of-Collaborative-Filtering-Algorithms/bipartite-graph.png">
+    <meta itemprop="image" content="img/2019-12-16-An-Overview-of-Collaborative-Filtering-Algorithms/bipartite-graph.png">
+
     
 
     
@@ -41,7 +73,7 @@
 
     <link rel="alternate"
           type="application/rss+xml"
-          title="Andreas Bloch - "
+          title="Andreas Bloch - Machine Learning Blog"
           href="/feed.xml" />
 
     <link rel="canonical"
@@ -49,17 +81,17 @@
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet"
-          href="/css/bootstrap.css?1577828521863171000"/>
+          href="/css/bootstrap.css?1577969452740600000"/>
 
     <!-- Custom CSS -->
     <link rel="stylesheet"
           type="text/css"
-          href="/css/clean-blog.css?1577828521863171000" />
+          href="/css/clean-blog.css?1577969452740600000" />
 
     <!-- Pygments Github CSS -->
     <link rel="stylesheet"
           type="text/css"
-          href="/css/syntax.css?1577828521863171000" />
+          href="/css/syntax.css?1577969452740600000" />
 
     <!-- Custom Fonts -->
     <link rel="stylesheet"
@@ -965,7 +997,7 @@ $$
 </nav>
   <!-- Post Header -->
 <!--
-<header class="intro-header" style="position: relative; background-image: url('/img/2019-12-16-An-Overview-of-Collaborative-Filtering-Algorithms/bipartite-graph.png');">
+<header class="intro-header" style="position: relative; background-image: url('/');">
     <div class="overlay"></div>
     <div class="container">
         <div class="row">
@@ -1163,9 +1195,9 @@ recommender service.</p>
 <div class="figure-with-caption">
 <img src="/img/2019-12-16-An-Overview-of-Collaborative-Filtering-Algorithms/retrieval-and-ranking-system.png?v=1" alt="Interplay of Retrieval and Ranking System" width="100%" />
 <div class="figure-caption">
-The illustration by <a class="citation" href="#cheng2016wide">[13]</a> shows the 
-typical structuring of a recommender service into a retrieval system and a 
-ranking system.
+Typical structuring of a recommender service into a retrieval system and a 
+ranking system. Illustration by <a class="citation" href="#cheng2016wide">[13]</a>. 
+typical 
 </div>
 </div>
 
@@ -1249,8 +1281,8 @@ concepts of users and items, e.g., “male” or “female” for users, or “s
 <div class="figure-with-caption">
 <img src="/img/2019-12-16-An-Overview-of-Collaborative-Filtering-Algorithms/mf-latent-factors-interpretation.png?v=1" alt="Concepts captured in latent factor space" width="100%" />
 <div class="figure-caption">
-The illustration by <a class="citation" href="#koren2009matrix">[5]</a> shows
-how the latent factor dimensions tend to capture concepts about users or items.
+Concepts captured by latent factor dimensions. 
+Illustration by <a class="citation" href="#koren2009matrix">[5]</a>
 </div>
 </div>
 
@@ -1687,8 +1719,8 @@ below.</p>
 <div class="figure-with-caption">
 <img src="/img/2019-12-16-An-Overview-of-Collaborative-Filtering-Algorithms/hrs.png?v=1" alt="Pairwise Learning in Hyperbolic Recommender System" width="100%" />
 <div class="figure-caption">
-Illustration of the pairwise learning approach with hyperbolic recommender systems
-by <a class="citation" href="#hrs">[35]</a>.
+Pairwise learning approach with hyperbolic recommender systems.
+Illustration by <a class="citation" href="#hrs">[35]</a>.
 </div>
 </div>
 
@@ -1822,7 +1854,7 @@ output function is maintained.</p>
 <div class="figure-with-caption">
 <img src="/img/2019-12-16-An-Overview-of-Collaborative-Filtering-Algorithms/ncf.png?v=1" alt="Neural Collaborative Filtering (NCF)" width="100%" />
 <div class="figure-caption" style="text-align:center">
-Architecture of NCF illustrated by <a class="citation" href="#ncf">[33]</a>
+NCF architecture illustrated by <a class="citation" href="#ncf">[33]</a>
 </div>
 </div>
 
@@ -1950,9 +1982,10 @@ the following picture.</p>
 <div class="figure-with-caption">
 <img src="/img/2019-12-16-An-Overview-of-Collaborative-Filtering-Algorithms/autorec.png?v=1" alt="Architecture of Autorec" width="100%" />
 <div class="figure-caption">
-Illustration of the item-based architecture of $I$-Autorec. The edges (parameters)
-that are connected to unknown interactions are not updated due to the masking of the loss
-(affected edges marked in gray).
+Architecture of $I$-Autorec: The edges (parameters)
+that are connected to unobserved interactions are not 
+updated due to the masking of the loss
+(masked edges marked in gray).
 </div>
 </div>
 
@@ -2350,7 +2383,7 @@ interaction vectors gives the right relevance predictions for the yet unobserved
 
 
                 </ul>
-                <p class="copyright text-muted">Copyright &copy; Andreas Bloch 2019</p>
+                <p class="copyright text-muted">Copyright &copy; Andreas Bloch 2020</p>
             </div>
         </div>
     </div>
