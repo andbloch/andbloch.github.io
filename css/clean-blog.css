@@ -606,6 +606,16 @@ blockquote {
     padding: 12px;
 }
 
+/* Math-Blocks */
+.math-block {
+    line-height: 1.5;
+    margin: 0 0 20px;
+    background-color: #f2f2f2;
+    border-left: 0px; /* bootstrap override */
+    padding: 12px;
+    font-size: 17.5px;
+}
+
 /* Definitions */
 span.def {
     display: inline;

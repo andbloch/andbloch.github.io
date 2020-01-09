@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-01-02T17:06:52+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Andreas Bloch</title><subtitle>Machine Learning Blog</subtitle><entry><title type="html">An Overview of Collaborative Filtering Algorithms for Implicit Feedback Data</title><link href="http://localhost:4000/An-Overview-of-Collaborative-Filtering-Algorithms/" rel="alternate" type="text/html" title="An Overview of Collaborative Filtering Algorithms for Implicit Feedback Data" /><published>2019-12-16T08:00:00+01:00</published><updated>2019-12-16T08:00:00+01:00</updated><id>http://localhost:4000/An-Overview-of-Collaborative-Filtering-Algorithms</id><content type="html" xml:base="http://localhost:4000/An-Overview-of-Collaborative-Filtering-Algorithms/">&lt;p&gt;This blogpost gives an overview of today’s most predominant types of 
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-01-09T14:13:37+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Andreas Bloch</title><subtitle>Machine Learning Blog</subtitle><entry><title type="html">An Overview of Collaborative Filtering Algorithms for Implicit Feedback Data</title><link href="http://localhost:4000/An-Overview-of-Collaborative-Filtering-Algorithms/" rel="alternate" type="text/html" title="An Overview of Collaborative Filtering Algorithms for Implicit Feedback Data" /><published>2019-12-16T08:00:00+01:00</published><updated>2019-12-16T08:00:00+01:00</updated><id>http://localhost:4000/An-Overview-of-Collaborative-Filtering-Algorithms</id><content type="html" xml:base="http://localhost:4000/An-Overview-of-Collaborative-Filtering-Algorithms/">&lt;p&gt;This blogpost gives an overview of today’s most predominant types of 
 recommender systems for collaborative filtering from implicit feedback data. 
 The overview is by no means exhaustive, but it should provide the reader with 
 a good overview about the topic.&lt;/p&gt;
@@ -1258,8 +1258,8 @@ curvature. The paper by Gu et al. &lt;a class=&quot;citation&quot; href=&quot;#g
 presents an approach that estimates and commits to the curvature of spaces in advance
 and then learns embeddings the chosen (products of) spaces of constant curvature.&lt;/p&gt;
 
-&lt;p&gt;In this blogpost we present a geometric model, called the &lt;strong&gt;$\kappa$-Stereographic Model&lt;/strong&gt;, 
-that harnesses the formalism of gyrovector spaces in order to capture all three 
+&lt;p&gt;In this blogpost we present a geometric model, called the &lt;strong&gt;$\kappa$-Stereographic 
+Model&lt;/strong&gt;, that harnesses the formalism of gyrovector spaces in order to capture all three 
 geometries of constant curvature (hyperbolic, Euclidean and spherical) at once. 
 Furthermore, the presented model also allows to smoothly interpolate between the 
 geometries of constant curvature and thus provides a way to learn the curvature of 
@@ -1272,20 +1272,18 @@ All of the theses were related to learning representations in products of spaces
 constant curvature. Two papers that apply the $\kappa$-stereographic model are:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;a href=&quot;https://arxiv.org/abs/1911.08411&quot;&gt;
-&lt;strong&gt;Mixed-curvature Variational Autoencoders&lt;/strong&gt;
-&lt;/a&gt; 
-&lt;a class=&quot;citation&quot; href=&quot;#skopek2019mixed&quot;&gt;[2]&lt;/a&gt; (ICLR 2020),&lt;br /&gt; 
-Ondrej Skopek, Octavian Eugen Ganea, Gary Bécigneul&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;a href=&quot;https://arxiv.org/abs/1911.05076&quot;&gt;
-&lt;strong&gt;Constant Curvature Graph Convolutional Networks&lt;/strong&gt;
-&lt;/a&gt;
-&lt;a class=&quot;citation&quot; href=&quot;#bachmann2019constant&quot;&gt;[3]&lt;/a&gt;,&lt;br /&gt; 
-Gregor Bachmann, Gary Bécigneul, Octavian Eugen Ganea&lt;/p&gt;
-  &lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://arxiv.org/abs/1911.08411&quot;&gt;
+  &lt;strong&gt;Mixed-curvature Variational Autoencoders&lt;/strong&gt;
+  &lt;/a&gt; 
+  &lt;a class=&quot;citation&quot; href=&quot;#skopek2019mixed&quot;&gt;[2]&lt;/a&gt; (ICLR 2020),&lt;br /&gt; 
+  Ondrej Skopek, Octavian Eugen Ganea, Gary Bécigneul
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://arxiv.org/abs/1911.05076&quot;&gt;
+  &lt;strong&gt;Constant Curvature Graph Convolutional Networks&lt;/strong&gt;
+  &lt;/a&gt;
+  &lt;a class=&quot;citation&quot; href=&quot;#bachmann2019constant&quot;&gt;[3]&lt;/a&gt;,&lt;br /&gt; 
+  Gregor Bachmann, Gary Bécigneul, Octavian Eugen Ganea
+&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;This blogpost aims to explain and illustrate the $\kappa$-stereographic
@@ -1299,6 +1297,10 @@ spaces. Then the formulas for the $\kappa$-stereographic model are given and the
 interpolation between spaces of constant curvature is illustrated for a variety
 of concepts. Finally, a code example using the $\kappa$-stereographic 
 model is provided.&lt;/p&gt;
+
+&lt;!-- TODO: Introduction to Riemannian Manifolds for Machine Learning Blogpost --&gt;
+&lt;!-- The interested reader which is not familiar with Riemannian geometry may have --&gt;
+&lt;!-- a look at my introductory blogpost on Riemannian manifolds for machine learning. --&gt;
 
 &lt;h2 id=&quot;models-for-spherical-and-hyperbolic-geometries&quot;&gt;Models for Spherical and Hyperbolic Geometries&lt;/h2&gt;
 
@@ -1390,12 +1392,12 @@ jointly for convenience. For a presentation that restricts the definitions to a
 minimal set of axioms and then separately derivates the resulting properties the 
 interested reader is referred to Ungar’s other work &lt;a class=&quot;citation&quot; href=&quot;#ungar2005analytic&quot;&gt;[5]&lt;/a&gt;.&lt;/p&gt;
 
-&lt;blockquote&gt;
-  &lt;p&gt;&lt;span class=&quot;def&quot;&gt;&lt;strong&gt;D. (Groupoid)&lt;/strong&gt;&lt;/span&gt; A &lt;em&gt;groupoid&lt;/em&gt; $(S, +)$ is a pair of a
-nonempty set $S$ and a binary operation $+\colon S\times S\to S$.&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;div class=&quot;math-block&quot;&gt;
+&lt;span class=&quot;def&quot;&gt;&lt;strong&gt;D. (Groupoid)&lt;/strong&gt;&lt;/span&gt; A &lt;em&gt;groupoid&lt;/em&gt; $(S, +)$ is a pair of a
+nonempty set $S$ and a binary operation $+\colon S\times S\to S$.
+&lt;/div&gt;
 
-&lt;blockquote&gt;
+&lt;div class=&quot;math-block&quot;&gt;
 &lt;span class=&quot;def&quot;&gt;&lt;strong&gt;D. (Groupoid Automorphism)&lt;/strong&gt;&lt;/span&gt; An 
 &lt;em&gt;automorphism&lt;/em&gt; $\phi$ of a groupoid $(S,+)$ is a &lt;em&gt;bijective&lt;/em&gt; 
 self-map of $S$ that respects its binary operation,
@@ -1419,19 +1421,19 @@ $$
 \phi(s_1) + \phi(s_2).
 $$
 &lt;/div&gt; 
-&lt;/blockquote&gt;
+&lt;/div&gt;
 
 &lt;p&gt;In other words, the groupoid automorphism $\phi$ preserves the structure of the groupoid. 
 Furthermore, the set of all automorphisms of a groupoid form a group:&lt;/p&gt;
 
-&lt;blockquote&gt;
-  &lt;p&gt;&lt;span class=&quot;def&quot;&gt;&lt;strong&gt;D. (Automorphism Group)&lt;/strong&gt;&lt;/span&gt; The set of all automorphisms of a
-groupoid $(S,+)$ forms a group, denoted  as $\Aut(S,+)$.&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;div class=&quot;math-block&quot;&gt;
+&lt;span class=&quot;def&quot;&gt;&lt;strong&gt;D. (Automorphism Group)&lt;/strong&gt;&lt;/span&gt; The set of all automorphisms of a
+groupoid $(S,+)$ forms a group, denoted  as $\Aut(S,+)$.
+&lt;/div&gt;
 
 &lt;p&gt;Now, we define a gyrogroup, which is an essential component of a gyrovector space.&lt;/p&gt;
 
-&lt;blockquote&gt;
+&lt;div class=&quot;math-block&quot;&gt;
 &lt;span class=&quot;def&quot;&gt;&lt;strong&gt;D. (Gyrogroup)&lt;/strong&gt;&lt;/span&gt; A groupoid $(G,\oplus)$ is a 
 &lt;em&gt;gyrogroup&lt;/em&gt; if its binary operation satisfies the following axioms and properties. In $G$, there
 exists a unique element, $0$, called the identity, satisfying
@@ -1522,7 +1524,7 @@ $$
 The operation $\gyr\colon G\times G\to\Aut(G,\oplus)$ is called the &lt;em&gt;gyrator&lt;/em&gt; of $G$ and
 the automorphism $\gyr[a,b]\colon G\to G$ is called the gyroautomorphism of $G$, generated by $a,
 b\in G$.
-&lt;/blockquote&gt;
+&lt;/div&gt;
 
 &lt;p&gt;An important thing to note in the definition of the gyrogroup, is that if one was 
 to leave out the gyrations in the definitions, one would get the properties of a 
@@ -1533,7 +1535,7 @@ the group structure.&lt;/p&gt;
 
 &lt;p&gt;Analogously to groups and gyrogroups, the commutativity for gyrogroups is defined as fllows:&lt;/p&gt;
 
-&lt;blockquote&gt;
+&lt;div class=&quot;math-block&quot;&gt;
 &lt;span class=&quot;def&quot;&gt;&lt;strong&gt;D. (Gyrocommutative Gyrogroup)&lt;/strong&gt;&lt;/span&gt; 
 A gyrogroup is &lt;em&gt;gyrocommutative&lt;/em&gt; if it satisfies
 
@@ -1553,7 +1555,7 @@ a \oplus b
 \gyr[a,b](b\oplus a).
 $$
 &lt;/div&gt;
-&lt;/blockquote&gt;
+&lt;/div&gt;
 
 &lt;p&gt;Some gyrocommutative gyrogroups admit scalar multiplication, turning them into
 gyrovector spaces. Just as commutative groups with a scalar multiplication give rise
@@ -1565,7 +1567,7 @@ is meant. The book uses the real subset notation. But I think they mean &quot;su
 This concerns the properties 1. and 3.
 --&gt;
 
-&lt;blockquote&gt;
+&lt;div class=&quot;math-block&quot;&gt;
 &lt;span class=&quot;def&quot;&gt;&lt;strong&gt;D. (Gyrovector Spaces)&lt;/strong&gt;&lt;/span&gt; A &lt;em&gt;real inner
 product gyrovector space&lt;/em&gt; $(G,\oplus,\otimes)$ (gyrovector space, in short) is a 
 gyrocommutative gyrogroup $(G,\oplus)$ that obeys the following axioms and properties:
@@ -1725,7 +1727,7 @@ $$
 connecting the addition and scalar multiplication of $G$ and $\norm{G}$.
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/blockquote&gt;
+&lt;/div&gt;
 
 &lt;p&gt;From the definition of above, one can easily verify that $(-1)\otimes\va=\ominus\va$, and 
 $\norm{\ominus\va}=\norm{\va}$. One should also note that the ambiguous use of $\oplus$ and 
@@ -1766,17 +1768,17 @@ and compute important operations on the manifold in closed form. The concrete de
 of the carrier set and operations for the gyrovector space algebra 
 $(\cM_\kappa^n,\oplus_\kappa,\otimes_\kappa)$ are given in what follows.&lt;/p&gt;
 
-&lt;blockquote&gt;
-  &lt;p&gt;&lt;span class=&quot;def&quot;&gt;&lt;strong&gt;D. (Carrier Set)&lt;/strong&gt;&lt;/span&gt; The &lt;em&gt;carrier set&lt;/em&gt; $\cM_\kappa^n$ of an
-$n$-dimensional gyrovector space, corresponding to a manifold of constant sectional 
-curvature $\kappa$, is defined as:&lt;/p&gt;
+&lt;div class=&quot;math-block&quot;&gt;
+&lt;span class=&quot;def&quot;&gt;&lt;strong&gt;D. (Carrier Set)&lt;/strong&gt;&lt;/span&gt; The &lt;em&gt;carrier set&lt;/em&gt; 
+$\cM_\kappa^n$ of an $n$-dimensional gyrovector space, corresponding to a manifold of constant 
+sectional curvature $\kappa$, is defined as:
 
-  &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+$$
 \cM_\kappa^n
 =
-\dset{\vx\in\R^n}{-\kappa\norm{\vx}_2^2&lt;1}. %]]&gt;&lt;/script&gt;
-
-&lt;/blockquote&gt;
+\dset{\vx\in\R^n}{-\kappa\norm{\vx}_2^2&amp;lt;1}.
+$$
+&lt;/div&gt;
 
 &lt;p&gt;One may easily verify that the carrier set $\cM_\kappa^n$ simplifies to the entire $\R^n$
 for spherical and Euclidean geometries and to the open ball of radius 
@@ -1824,7 +1826,7 @@ $$
 &lt;p&gt;For the addition in our gyrovector space algebra we use the plain-vanilla Möbius
 addition:&lt;/p&gt;
 
-&lt;blockquote&gt;
+&lt;div class=&quot;math-block&quot;&gt;
 &lt;span class=&quot;def&quot;&gt;&lt;strong&gt;D. (Möbius Addition)&lt;/strong&gt;&lt;/span&gt; The &lt;em&gt;Möbius addition&lt;/em&gt;
 of $\vx,\vy\in\cM_\kappa^n$ is defined as
 
@@ -1852,7 +1854,7 @@ $$
 }.
 $$
 &lt;/div&gt;
-&lt;/blockquote&gt;
+&lt;/div&gt;
 
 &lt;p&gt;An important property of the Möbius addition is that it recovers the Euclidean 
 vector space addition when $\kappa\to 0$:&lt;/p&gt;
@@ -1862,12 +1864,14 @@ vector space addition when $\kappa\to 0$:&lt;/p&gt;
 &lt;p&gt;Having defined the Möbius addition, the Möbius subtraction is then simply
 defined as:&lt;/p&gt;
 
-&lt;blockquote&gt;
-  &lt;p&gt;&lt;span class=&quot;def&quot;&gt;&lt;strong&gt;D. (Möbius Subtraction)&lt;/strong&gt;&lt;/span&gt; The &lt;em&gt;Möbius subtraction&lt;/em&gt; of $\vx,
-\vy\in\cM_\kappa^n$ is defined as&lt;/p&gt;
+&lt;div class=&quot;math-block&quot;&gt;
+&lt;span class=&quot;def&quot;&gt;&lt;strong&gt;D. (Möbius Subtraction)&lt;/strong&gt;&lt;/span&gt; The &lt;em&gt;Möbius subtraction&lt;/em&gt;
+of $\vx,\vy\in\cM_\kappa^n$ is defined as
 
-  &lt;script type=&quot;math/tex; mode=display&quot;&gt;\vx\ominus_\kappa\vy = \vx\oplus_\kappa(\ominus\vy).&lt;/script&gt;
-&lt;/blockquote&gt;
+$$
+\vx\ominus_\kappa\vy = \vx\oplus_\kappa(\ominus\vy).
+$$
+&lt;/div&gt;
 
 &lt;p&gt;For $\kappa\leq 0$ it has been shown that $(\cM_\kappa^n,\oplus_\kappa)$ forms a
 &lt;em&gt;commutative gyrogroup&lt;/em&gt;, where additive inverses are simply given as $\ominus \vx=-\vx$
@@ -1876,12 +1880,12 @@ that for $\kappa=0$ the gyration becomes trivial, making the algebra $(\cM_0^n,\
 simply a &lt;em&gt;commutative group&lt;/em&gt;. However, it turns out that for $\kappa&amp;gt;0$ there are exceptions 
 where the Möbius addition is indefinite:&lt;/p&gt;
 
-&lt;blockquote&gt;
-  &lt;p&gt;&lt;span class=&quot;thm&quot;&gt;&lt;strong&gt;T. (Definiteness of Möbius Addition)&lt;/strong&gt;&lt;/span&gt; The Möbius addition
+&lt;div class=&quot;math-block&quot;&gt;
+&lt;span class=&quot;thm&quot;&gt;&lt;strong&gt;T. (Definiteness of Möbius Addition)&lt;/strong&gt;&lt;/span&gt; The Möbius addition
 is indefinite, meaning that the denominator 
 $1-2\kappa\vx^\T\vy+\kappa^2\norm{\vx}_2^2\norm{\vy}_2^2=0$, 
-if and only if $\kappa&amp;gt;0$ and $\vx=\vy/(\kappa\norm{\vy}_2^2)\neq 0$.&lt;/p&gt;
-&lt;/blockquote&gt;
+if and only if $\kappa&amp;gt;0$ and $\vx=\vy/(\kappa\norm{\vy}_2^2)\neq 0$.
+&lt;/div&gt;
 
 &lt;p&gt;The theorem can be proven using the Cauchy-Schwarz inequality. Now, what this means 
 is that for positive curvature $\kappa&amp;gt;0$, we have the situation that for every point 
@@ -1891,8 +1895,8 @@ $\vx$, $\vx\neq \vzero$, there exists &lt;em&gt;exactly one&lt;/em&gt; other col
 
 &lt;p&gt;for which the Möbius addition is indefinite. Therefore, strictly speaking, the gyrogroup 
 structure is broken for $\kappa&amp;gt;0$ due to the indefiniteness of the Möbius addition in these
-cases. Hence, for $\kappa&amp;gt;0$ we only get a &lt;em&gt;pseudo&lt;/em&gt; gyrogroup, which behaves like a gyrogroup,
-as long as the Möbius addition is definite.&lt;/p&gt;
+cases. Hence, for $\kappa&amp;gt;0$ we only get a &lt;em&gt;pseudo&lt;/em&gt; gyrogroup, which behaves like a 
+gyrogroup, as long as the Möbius addition is definite.&lt;/p&gt;
 
 &lt;p&gt;However, since for every point $\vx$, $\vx\neq \vzero$, there is &lt;em&gt;only&lt;/em&gt; exactly &lt;em&gt;one&lt;/em&gt; 
 other point &lt;em&gt;out of the many other possible points&lt;/em&gt; in $\cM_\kappa^n$, for which the Möbius 
@@ -1910,7 +1914,7 @@ formalism of gyrovector spaces.&lt;/p&gt;
 
 &lt;!-- TODO: add definition ranges of these functions at some point --&gt;
 
-&lt;blockquote&gt;
+&lt;div class=&quot;math-block&quot;&gt;
 &lt;span class=&quot;def&quot;&gt;&lt;strong&gt;D. (Curvature-Dependent Trigonometric Functions)&lt;/strong&gt;&lt;/span&gt;
 
 &lt;div class=&quot;eq-desktop&quot;&gt;
@@ -1985,7 +1989,7 @@ x, &amp;amp; \kappa=0,\\
 \end{align*}
 $$
 &lt;/div&gt;
-&lt;/blockquote&gt;
+&lt;/div&gt;
 
 &lt;p&gt;If one ignores the definitions of the upper functions for the cases where 
 $\kappa=0$, one may verify that for any 
@@ -2004,12 +2008,13 @@ the $\kappa$-stereographic model approaches an Euclidean geometry for $\kappa\to
 use them to define an augmented version of the Möbius scalar multiplication as 
 follows:&lt;/p&gt;
 
-&lt;blockquote&gt;
-  &lt;p&gt;&lt;span class=&quot;def&quot;&gt;&lt;strong&gt;D. (Augmented Möbius Scalar Multiplication)&lt;/strong&gt;&lt;/span&gt; The 
+&lt;div class=&quot;math-block&quot;&gt;
+&lt;span class=&quot;def&quot;&gt;&lt;strong&gt;D. (Augmented Möbius Scalar Multiplication)&lt;/strong&gt;&lt;/span&gt; The 
 &lt;em&gt;augmented Möbius scalar multiplication&lt;/em&gt; of $\vx\in\cM_\kappa^n\setminus\set{\vo}$ 
-by $\alpha\in\R$ is defined as&lt;/p&gt;
+by $\alpha\in\R$ is defined as
 
-  &lt;script type=&quot;math/tex; mode=display&quot;&gt;\alpha\otimes_\kappa \vx
+$$
+\alpha\otimes_\kappa \vx
 =
 \tan_\kappa
 \left(
@@ -2018,20 +2023,21 @@ by $\alpha\in\R$ is defined as&lt;/p&gt;
 \left(
 \norm{\vx}_2
 \right)\right)
-\frac{\vx}{\norm{\vx}_2}.&lt;/script&gt;
-&lt;/blockquote&gt;
+\frac{\vx}{\norm{\vx}_2}.
+$$
+&lt;/div&gt;
 
 &lt;p&gt;Hence, the augmented Möbius scalar multiplication only distinguishes itself 
 from the conventional Möbius scalar multiplication through the usage of our parametrized 
 trigonometric functions that also support nonnegative curvature $\kappa\geq0$.
 However, there’s one subtlety for $\kappa &amp;gt; 0$ that has to be considered:&lt;/p&gt;
 
-&lt;blockquote&gt;
-  &lt;p&gt;&lt;span class=&quot;thm&quot;&gt;&lt;strong&gt;T. (Definiteness of Augmented Möbius Scalar Multiplication)&lt;/strong&gt;&lt;/span&gt; 
+&lt;div class=&quot;math-block&quot;&gt;
+&lt;span class=&quot;thm&quot;&gt;&lt;strong&gt;T. (Definiteness of Augmented Möbius Scalar Multiplication)&lt;/strong&gt;&lt;/span&gt; 
 The augmented Möbius scalar multiplication is indefinite, if and only if
 $\kappa&amp;gt;0$ and $\alpha\arctan_{\kappa}(\norm{\vx}_2)=\frac{\pi}{2}+k\pi$ 
-for some $k\in\Z$.&lt;/p&gt;
-&lt;/blockquote&gt;
+for some $k\in\Z$.
+&lt;/div&gt;
 
 &lt;p&gt;However, this indefiniteness is not too tragic. One may redefine the augmented
 scalar multiplication for an indefinite case $\alpha\otimes_k\vx$ recursively as&lt;/p&gt;
@@ -2055,14 +2061,14 @@ of the sphere ($\kappa&amp;gt;0$):&lt;/p&gt;
 
 &lt;tr&gt;
 &lt;th style=&quot;text-align:left;&quot;&gt;Description&lt;/th&gt;
-&lt;th style=&quot;text-align:center;&quot;&gt;Closed-Form Formula on $\cM_\kappa^n$, $\kappa\neq 0$&lt;/th&gt;
+&lt;th style=&quot;text-align:left;&quot;&gt;Closed-Form Formula on $\cM_\kappa^n$, $\kappa\neq 0$&lt;/th&gt;
 &lt;/tr&gt;
 
 &lt;tr&gt;
 &lt;td style=&quot;text-align:left;&quot;&gt;
 Radius
 &lt;/td&gt;
-&lt;td style=&quot;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
+&lt;td style=&quot;text-align:left;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
 $R:=\frac{1}{\sqrt{\abs{\kappa}}}\in(0,\infty)$
 &lt;/td&gt;
 &lt;/tr&gt;
@@ -2071,7 +2077,7 @@ $R:=\frac{1}{\sqrt{\abs{\kappa}}}\in(0,\infty)$
 &lt;td style=&quot;text-align:left;&quot;&gt;
 Tangent Space
 &lt;/td&gt;
-&lt;td style=&quot;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
+&lt;td style=&quot;text-align:left;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
 $\cT_{\vx}\cM_\kappa^n=\bbR^n$
 &lt;/td&gt;
 &lt;/tr&gt;
@@ -2080,7 +2086,7 @@ $\cT_{\vx}\cM_\kappa^n=\bbR^n$
 &lt;td style=&quot;text-align:left;&quot;&gt;
 Conformal Factor
 &lt;/td&gt;
-&lt;td style=&quot;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
+&lt;td style=&quot;text-align:left;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
 $
 \lambda_{\vx}^\kappa
 =
@@ -2096,7 +2102,7 @@ $
 &lt;td style=&quot;text-align:left;&quot;&gt;
 Lorentz Factor
 &lt;/td&gt;
-&lt;td style=&quot;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
+&lt;td style=&quot;text-align:left;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
 $
 \gamma_{\vx}^\kappa
 =
@@ -2112,7 +2118,7 @@ $
 &lt;td style=&quot;text-align:left;&quot;&gt;
 Metric Tensor 
 &lt;/td&gt;
-&lt;td style=&quot;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
+&lt;td style=&quot;text-align:left;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
 $
 \vg^{\kappa}_{\vx}
 =
@@ -2128,7 +2134,7 @@ $
 Tangent Space Inner Product&lt;br /&gt; 
 $\scprod{\argdot,\argdot}_{\vx}^\kappa\colon\cT_{\vx}\cM_\kappa^n\times\cT_{\vx}\cM_\kappa^n\to\R$
 &lt;/td&gt;
-&lt;td style=&quot;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
+&lt;td style=&quot;text-align:left;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
 $
 \scprod{\vu,\vv}_{\vx}^\kappa 
 =
@@ -2144,7 +2150,7 @@ Tangent Space Norm
 &lt;br /&gt;
 $\norm{\argdot}_{\vx}^\kappa\colon\cT_{\vx}\cM_\kappa^n\to\R^+_0$
 &lt;/td&gt;
-&lt;td style=&quot;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
+&lt;td style=&quot;text-align:left;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
 $\norm{\vu}_{\vx}^\kappa=\lambda_{\vx}^\kappa\norm{\vu}_2$
 &lt;/td&gt;
 &lt;/tr&gt;
@@ -2156,7 +2162,7 @@ Manifold Norm
 &lt;br/&gt; 
 $\norm{\argdot}_{M}^\kappa\colon\cM_\kappa^n\to\R^+_0$
 &lt;/td&gt;
-&lt;td style=&quot;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
+&lt;td style=&quot;text-align:left;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
 $
 \norm{\vx}_{M}^\kappa
 =
@@ -2171,7 +2177,7 @@ $
 Angle $\theta_{\vx}(\vu,\vv)$ between two Tangent Vectors 
 $\vu,\vv\in\cT_{\vx}\cM_\kappa^n\setminus\set{\vo}$
 &lt;/td&gt;
-&lt;td style=&quot;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
+&lt;td style=&quot;text-align:left;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
 $
 \theta_{\vx}(\vu,\vv)
 =\arccos\left(
@@ -2188,7 +2194,7 @@ Distance
 &lt;br /&gt; 
 $d_{\kappa}\colon \cM_\kappa^n\times \cM_\kappa^n\to\R^+_0$
 &lt;/td&gt;
-&lt;td style=&quot;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
+&lt;td style=&quot;text-align:left;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
 $
 d_{\kappa}(\vx,\vy)
 =
@@ -2203,7 +2209,7 @@ Distance of $\vx$ to Hyperplane $H_{\vp,\vw}$ Described by Point $\vp$ and Norma
 &lt;br /&gt; 
 $d_{\kappa}^{H_{\vp,\vw}}\colon \cM_\kappa^n\to\R^+_0$
 &lt;/td&gt;
-&lt;td style=&quot;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
+&lt;td style=&quot;text-align:left;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
 $
 d_\kappa^{H_{\vp,\vw}}(\vx)
 =
@@ -2224,7 +2230,7 @@ Exponential Map
 &lt;br /&gt;
 $\exp_{\vx}^{\kappa}\colon\cT_{\vx}\cM_\kappa^n\to\cM_\kappa^n$
 &lt;/td&gt;
-&lt;td style=&quot;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
+&lt;td style=&quot;text-align:left;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
 $
 \exp_{\vx}^{\kappa}(\vu)
 =
@@ -2246,7 +2252,7 @@ Log Map
 &lt;br /&gt;
 $\log_{\vx}^\kappa\colon\cM_\kappa^n\to\cT_{\vx}\cM_\kappa^n$
 &lt;/td&gt;
-&lt;td style=&quot;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
+&lt;td style=&quot;text-align:left;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
 &lt;div class=&quot;eq-desktop&quot;&gt;
 $
 \log_{\vx}^\kappa(\vy)=
@@ -2273,7 +2279,7 @@ Geodesic from $\vx\in\cM_\kappa^n \text{ to } \vy\in\cM_\kappa^n$
 &lt;br /&gt;
 $\vgamma_{\vx\to\vy}^\kappa\colon [0,1]\to\cM_\kappa^n$
 &lt;/td&gt;
-&lt;td style=&quot;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
+&lt;td style=&quot;text-align:left;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
 $
 \vgamma_{\vx\to\vy}^{\kappa}(t)=\vx\oplus_\kappa\left(t\otimes_\kappa\left((-\vx)
 \oplus_\kappa\vy\right)
@@ -2289,7 +2295,7 @@ Starting from $\vx\in\cM_\kappa^n$ in Direction of $\vu\in\cT_{\vx}\cM_\kappa^n$
 &lt;br /&gt;
 $\vgamma_{\vx,\vu}^{\kappa}\colon \R\to\cM_\kappa^n$
 &lt;/td&gt;
-&lt;td style=&quot;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
+&lt;td style=&quot;text-align:left;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
 $
 \vgamma_{\vx,\vu}^{\kappa}(t)
 =
@@ -2308,7 +2314,7 @@ $
 &lt;td style=&quot;text-align:left;&quot;&gt;
 Antipode $\vx^a$ of $\vx$ for $\kappa&amp;gt;0$
 &lt;/td&gt;
-&lt;td style=&quot;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
+&lt;td style=&quot;text-align:left;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
 $
 \vx^a
 =
@@ -2323,7 +2329,7 @@ Weighted Midpoint
 &lt;br /&gt;
 $\vm_{\kappa}\colon (\cM_\kappa^d)^n\times\R^n\to\cM_\kappa^d$
 &lt;/td&gt;
-&lt;td style=&quot;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
+&lt;td style=&quot;text-align:left;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
 &lt;div class=&quot;eq-desktop&quot;&gt;
 $
 \vm_\kappa(\vx_{1:n},\alpha_{1:n})
@@ -2385,14 +2391,14 @@ with a Cartesian coordinate system at intervals of $2$ units, is recovered:&lt;/
 
 &lt;tr&gt;
 &lt;th style=&quot;text-align:left;&quot;&gt;Description&lt;/th&gt;
-&lt;th style=&quot;text-align:center;&quot;&gt;Closed-Form Formula on $\cM_\kappa^n$ for $\kappa\to 0$&lt;/th&gt;
+&lt;th style=&quot;text-align:left;&quot;&gt;Closed-Form Formula on $\cM_\kappa^n$ for $\kappa\to 0$&lt;/th&gt;
 &lt;/tr&gt;
 
 &lt;tr&gt;
 &lt;td style=&quot;text-align:left;&quot;&gt;
 Radius
 &lt;/td&gt;
-&lt;td style=&quot;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
+&lt;td style=&quot;text-align:left;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
 $R\to\infty$
 &lt;/td&gt;
 &lt;/tr&gt;
@@ -2401,7 +2407,7 @@ $R\to\infty$
 &lt;td style=&quot;text-align:left;&quot;&gt;
 Tangent Space
 &lt;/td&gt;
-&lt;td style=&quot;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
+&lt;td style=&quot;text-align:left;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
 $\cT_{\vx}\cM_0^n=\bbR^n$
 &lt;/td&gt;
 &lt;/tr&gt;
@@ -2410,7 +2416,7 @@ $\cT_{\vx}\cM_0^n=\bbR^n$
 &lt;td style=&quot;text-align:left;&quot;&gt;
 Conformal Factor
 &lt;/td&gt;
-&lt;td style=&quot;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
+&lt;td style=&quot;text-align:left;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
 $
 \lambda_{\vx}^0
 =
@@ -2424,7 +2430,7 @@ $
 &lt;td style=&quot;text-align:left;&quot;&gt;
 Lorentz Factor
 &lt;/td&gt;
-&lt;td style=&quot;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
+&lt;td style=&quot;text-align:left;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
 $
 \gamma_{\vx}^0
 =
@@ -2438,7 +2444,7 @@ $
 &lt;td style=&quot;text-align:left;&quot;&gt;
 Metric Tensor 
 &lt;/td&gt;
-&lt;td style=&quot;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
+&lt;td style=&quot;text-align:left;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
 $
 \vg^{0}_{\vx}
 =
@@ -2456,7 +2462,7 @@ $
 Tangent Space Inner Product&lt;br /&gt;
 $\scprod{\argdot,\argdot}_{\vx}^0\colon\cT_{\vx}\cM_0^n\times\cT_{\vx}\cM_0^n\to\R$
 &lt;/td&gt;
-&lt;td style=&quot;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
+&lt;td style=&quot;text-align:left;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
 $
 \scprod{\vu,\vv}_{\vx}^0 
 =
@@ -2475,7 +2481,7 @@ Tangent Space Norm
 &lt;br /&gt;
 $\norm{\argdot}_{\vx}^0\colon\cT_{\vx}\cM_0^n\to\R^+_0$
 &lt;/td&gt;
-&lt;td style=&quot;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
+&lt;td style=&quot;text-align:left;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
 $\norm{\vu}_{\vx}^0=\lambda_{\vx}^0\norm{\vu}_2=2\norm{\vu}_2$
 &lt;/td&gt;
 &lt;/tr&gt;
@@ -2487,7 +2493,7 @@ Manifold Norm
 &lt;br/&gt; 
 $\norm{\argdot}_{M}^0\colon\cM_0^n\to\R^+_0$
 &lt;/td&gt;
-&lt;td style=&quot;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
+&lt;td style=&quot;text-align:left;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
 $
 \norm{\vx}_{M}^0
 =
@@ -2504,7 +2510,7 @@ $
 Angle $\theta_{\vx}(\vu,\vv)$ between two Tangent Vectors 
 $\vu,\vv\in\cT_{\vx}\cM_0^n\setminus\set{\vo}$
 &lt;/td&gt;
-&lt;td style=&quot;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
+&lt;td style=&quot;text-align:left;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
 $
 \theta_{\vx}(\vu,\vv)
 =\arccos\left(
@@ -2520,7 +2526,7 @@ Distance
 &lt;br /&gt; 
 $d_{0}\colon \cM_0^n\times \cM_0^n\to\R^+_0$
 &lt;/td&gt;
-&lt;td style=&quot;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
+&lt;td style=&quot;text-align:left;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
 $
 d_{0}(\vx,\vy)
 =
@@ -2535,7 +2541,7 @@ Distance of $\vx$ to Hyperplane $H_{\vp,\vw}$ Described by Point $\vp$ and Norma
 &lt;br /&gt; 
 $d_{\kappa}^{H_{\vp,\vw}}\colon \cM_\kappa^n\to\R^+_0$
 &lt;/td&gt;
-&lt;td style=&quot;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
+&lt;td style=&quot;text-align:left;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
 $
 d_\kappa^{H_{\vp,\vw}}(\vx)
 =
@@ -2550,7 +2556,7 @@ Exponential Map
 &lt;br /&gt;
 $\exp_{\vx}^{0}\colon\cT_{\vx}\cM_0^n\to\cM_0^n$
 &lt;/td&gt;
-&lt;td style=&quot;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
+&lt;td style=&quot;text-align:left;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
 $
 \exp_{\vx}^{0}(\vu)
 =
@@ -2565,7 +2571,7 @@ Log Map
 &lt;br /&gt;
 $\log_{\vx}^0\colon\cM_0^n\to\cT_{\vx}\cM_0^n$
 &lt;/td&gt;
-&lt;td style=&quot;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
+&lt;td style=&quot;text-align:left;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
 $
 \log_{\vx}^0(\vy)=
 \vy-\vx
@@ -2579,7 +2585,7 @@ Geodesic from $\vx\in\cM_0^n \text{ to } \vy\in\cM_0^n$
 &lt;br /&gt;
 $\vgamma_{\vx\to\vy}^0\colon [0,1]\to\cM_0^n$
 &lt;/td&gt;
-&lt;td style=&quot;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
+&lt;td style=&quot;text-align:left;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
 $
 \vgamma_{\vx\to\vy}^{0}(t)
 =
@@ -2595,7 +2601,7 @@ Starting from $\vx\in\cM_0^n$ in Direction of $\vu\in\cT_{\vx}\cM_0^n$
 &lt;br /&gt;
 $\vgamma_{\vx,\vu}^{0}\colon \R\to\cM_0^n$
 &lt;/td&gt;
-&lt;td style=&quot;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
+&lt;td style=&quot;text-align:left;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
 $
 \vgamma_{\vx,\vu}^{0}(t)
 =
@@ -2612,7 +2618,7 @@ Weighted Midpoint
 &lt;br /&gt;
 $\vm_{0}\colon (\cM_\kappa^d)^n\times\R^n\to\cM_\kappa^d$
 &lt;/td&gt;
-&lt;td style=&quot;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
+&lt;td style=&quot;text-align:left;vertical-align:middle; padding-left:0px; padding-right:10px;&quot;&gt;
 $
 \vm_\kappa(\vx_{1:n},\alpha_{1:n})
 =
@@ -2686,25 +2692,20 @@ projection of the hyperboloid. Here are a few things to note about the grid
 of geodesics on the Poincaré ball.&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;The center of the Poincaré ball, which we also refer to as the origin, represents
-the lower tip of the upper sheet of the two-sheeted hyperboloid.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;The border of the Poincaré ball represents points at infinity, or alternatively,
-points on the hyperboloid that are infinitely far away from the origin.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;The geodesics intersect the border of the Poincaré ball at a right angle.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;From a plain “eye” point-of-view the interval between the geodesics becomes
+&lt;li&gt;The center of the Poincaré ball, which we also refer to as the origin, represents the lower 
+tip of the upper sheet of the two-sheeted hyperboloid.&lt;/li&gt;
+
+&lt;li&gt;The border of the Poincaré ball represents points at infinity, or alternatively,
+points on the hyperboloid that are infinitely far away from the origin.&lt;/li&gt;
+
+&lt;li&gt;The geodesics intersect the border of the Poincaré ball at a right angle.&lt;/li&gt;
+
+&lt;li&gt;From a plain &quot;eye&quot; point-of-view the interval between the geodesics becomes
 tighter and tighter towards the border of the Poincaré ball. But according
 to the hyperbolic metric they are equidistant. This tightening happens because 
 volumes and distances towards border of the Poincaré ball grow exponentially,
 since close to the border, even small dislocations on the Poincaré ball
-correspond to large dislocations on the hyperboloid.&lt;/p&gt;
-  &lt;/li&gt;
+correspond to large dislocations on the hyperboloid.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;One can also imagine how a 3D hyperbolic geometry looks like if one imagines that
@@ -2727,23 +2728,17 @@ Grid of Geodesics at Equidistant Intervals&lt;br /&gt; on Stereographic Projecti
 &lt;p&gt;Some things to note in this grid are:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;The center inside the ball is the stereographic projection of the south pole.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;The ball marked in bold corresponds to the equator of the 2D sphere.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;All the geodesics actually represent a great-circle of the 2D sphere.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;The geodesic length of the part of a great-circle that is inside the bold ball
+&lt;li&gt;The center inside the ball is the stereographic projection of the south pole.&lt;/li&gt;
+
+&lt;li&gt;The ball marked in bold corresponds to the equator of the 2D sphere.&lt;/li&gt;
+
+&lt;li&gt;All the geodesics actually represent a great-circle of the 2D sphere.&lt;/li&gt;
+
+&lt;li&gt;The geodesic length of the part of a great-circle that is inside the bold ball
 (equator) is equal to the geodesic length of the part of the great-circle that is
-on the outside of the equator.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Each pair of geodesics meets exactly twice.&lt;/p&gt;
-  &lt;/li&gt;
+on the outside of the equator.&lt;/li&gt;
+
+&lt;li&gt;Each pair of geodesics meets exactly twice.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;Similarly, one can also imagine how a 3D spherical geometry would look like if one
