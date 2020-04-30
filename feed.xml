@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-01-09T14:13:37+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Andreas Bloch</title><subtitle>Machine Learning Blog</subtitle><entry><title type="html">An Overview of Collaborative Filtering Algorithms for Implicit Feedback Data</title><link href="http://localhost:4000/An-Overview-of-Collaborative-Filtering-Algorithms/" rel="alternate" type="text/html" title="An Overview of Collaborative Filtering Algorithms for Implicit Feedback Data" /><published>2019-12-16T08:00:00+01:00</published><updated>2019-12-16T08:00:00+01:00</updated><id>http://localhost:4000/An-Overview-of-Collaborative-Filtering-Algorithms</id><content type="html" xml:base="http://localhost:4000/An-Overview-of-Collaborative-Filtering-Algorithms/">&lt;p&gt;This blogpost gives an overview of today’s most predominant types of 
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-04-30T12:51:25+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Andreas Bloch</title><subtitle>Machine Learning Blog</subtitle><entry><title type="html">An Overview of Collaborative Filtering Algorithms for Implicit Feedback Data</title><link href="http://localhost:4000/An-Overview-of-Collaborative-Filtering-Algorithms/" rel="alternate" type="text/html" title="An Overview of Collaborative Filtering Algorithms for Implicit Feedback Data" /><published>2019-12-16T08:00:00+01:00</published><updated>2019-12-16T08:00:00+01:00</updated><id>http://localhost:4000/An-Overview-of-Collaborative-Filtering-Algorithms</id><content type="html" xml:base="http://localhost:4000/An-Overview-of-Collaborative-Filtering-Algorithms/">&lt;p&gt;This blogpost gives an overview of today’s most predominant types of 
 recommender systems for collaborative filtering from implicit feedback data. 
 The overview is by no means exhaustive, but it should provide the reader with 
 a good overview about the topic.&lt;/p&gt;
@@ -81,7 +81,7 @@ maybe a some edge weights $w_{u_j,i_k}$ are known. Hence collaborative filtering
 corresponds to predicting promising links from user nodes to item nodes based 
 on the observed common connection patterns. It is called &lt;em&gt;collaborative&lt;/em&gt; filtering,
 because in the collaborative filtering approaches it is commonly assumed that learning the
-interaction patterns of one user (e.g., the items he has interacted) will
+interaction patterns of one user (e.g., the items a user has interacted with) will
 help to predict relevant items for another user that has a similar
 interaction pattern (in terms of interacted items) as the latter user.
 Hence it is as if users were &lt;em&gt;collaborating&lt;/em&gt; to produce the rankings of items
@@ -97,9 +97,9 @@ of the users, to produce a list of rankings as done for example in
   &lt;li&gt;
     &lt;p&gt;&lt;strong&gt;Context-Aware:&lt;/strong&gt; These recommender systems include additional information 
 about a user’s context &lt;a class=&quot;citation&quot; href=&quot;#adomavicius2011context&quot;&gt;[10]&lt;/a&gt;,
-e.g., whether he is accessing the service from a mobile or desktop client, 
-his current geolocation, his current time of day, whether he is stationary or 
-travelling, or whether he is in a quiet or noisy place.&lt;/p&gt;
+e.g., whether the user is accessing the service from a mobile or desktop client, 
+his current geolocation, his current time of day, whether the user is stationary or 
+travelling, or whether the user is in a quiet or noisy place.&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 
@@ -490,11 +490,11 @@ Next, we’ll look at how the training of the embeddings is performed in CML.&lt
 pairs close together and to push negative user-item pairs far apart according
 to some margin. This process will then cluster users who co-like the same items 
 together, and also cluster the items that are co-liked by the same users together. 
-Eventually, a situation is reached where the nearest neighbours of any user will become:&lt;/p&gt;
+Eventually, a situation is reached where the nearest neighbours of any user $u$ will become:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;the items he liked, and&lt;/li&gt;
-  &lt;li&gt;the items liked by other users who share a similar taste with this user.&lt;/li&gt;
+  &lt;li&gt;the items the user $u$ liked, and&lt;/li&gt;
+  &lt;li&gt;the items liked by other users who share a similar taste with user $u$.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;Therefore, learning from the observed positive interactions
